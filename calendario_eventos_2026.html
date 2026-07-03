@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRIO — Calendário de Eventos 2026</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --border: #2e3350;
+    --text: #e2e8f0;
+    --text-muted: #8892b0;
+    --accent: #00c3a5;
+    --alto: #ff6b6b;
+    --medio: #ffa94d;
+    --baixo: #74c0fc;
+    --visita: #a9e34b;
+    --feira: #7048e8;
+    --palestra: #1098ad;
+    --painel: #f76707;
+    --radius: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; }
+
+  header { 
+    background: linear-gradient(135deg, #0f1117 0%, #1a1d27 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 32px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  header h1 { font-size: 22px; font-weight: 700; color: var(--text); }
+  header span { color: var(--accent); }
+  .subtitle { color: var(--text-muted); font-size: 13px; margin-top: 4px; }
+
+  .toolbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 32px;
+    display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+  }
+  .toolbar label { color: var(--text-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+  .filter-group { display: flex; flex-direction: column; gap: 4px; }
+  select, input {
+    background: var(--bg); border: 1px solid var(--border); color: var(--text);
+    padding: 7px 12px; border-radius: var(--radius); font-size: 13px;
+    min-width: 140px; outline: none; cursor: pointer;
+  }
+  select:focus, input:focus { border-color: var(--accent); }
+  input { min-width: 200px; }
+  .count { margin-left: auto; color: var(--text-muted); font-size: 13px; }
+  .count strong { color: var(--accent); }
+
+  .table-wrap { overflow-x: auto; padding: 0 32px 32px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+  thead th {
+    background: var(--surface2); color: var(--text-muted); font-size: 11px;
+    font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+    padding: 12px 14px; text-align: left; border-bottom: 2px solid var(--border);
+    position: sticky; top: 0; cursor: pointer; user-select: none;
+    white-space: nowrap;
+  }
+  thead th:hover { color: var(--accent); }
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  tbody tr:hover { background: var(--surface2); cursor: default; }
+  tbody td { padding: 12px 14px; vertical-align: middle; }
+  tbody tr[title] { cursor: help; }
+
+  .tag {
+    display: inline-block; padding: 3px 10px; border-radius: 20px;
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .tag-alto { background: rgba(255,107,107,.15); color: var(--alto); border: 1px solid rgba(255,107,107,.3); }
+  .tag-medio { background: rgba(255,169,77,.15); color: var(--medio); border: 1px solid rgba(255,169,77,.3); }
+  .tag-baixo { background: rgba(116,192,252,.15); color: var(--baixo); border: 1px solid rgba(116,192,252,.3); }
+  .tag-visita { background: rgba(169,227,75,.15); color: var(--visita); border: 1px solid rgba(169,227,75,.3); }
+
+  .tipo-badge {
+    display: inline-block; padding: 3px 10px; border-radius: 20px;
+    font-size: 11px; font-weight: 600;
+  }
+  .tipo-feira { background: rgba(112,72,232,.2); color: #b197fc; }
+  .tipo-palestra { background: rgba(16,152,173,.2); color: #66d9e8; }
+  .tipo-painel { background: rgba(247,103,7,.2); color: #ffa94d; }
+  .tipo-visita { background: rgba(169,227,75,.15); color: var(--visita); }
+  .tipo-outro { background: var(--surface2); color: var(--text-muted); }
+
+  .badge { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .badge-sim { background: rgba(0,195,165,.15); color: var(--accent); }
+  .badge-nao { background: rgba(255,107,107,.15); color: var(--alto); }
+  .badge-analise { background: rgba(255,169,77,.15); color: var(--medio); }
+
+  .date-cell { white-space: nowrap; color: var(--text); }
+  .date-cell small { color: var(--text-muted); }
+  .inst { color: var(--text-muted); }
+  .estado { 
+    display: inline-block; background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 4px; padding: 2px 8px; font-size: 12px; font-weight: 600;
+    color: var(--text-muted);
+  }
+  .cursos-cell { max-width: 200px; color: var(--text-muted); }
+  .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .hidden { display: none !important; }
+
+  .empty-state {
+    text-align: center; padding: 48px; color: var(--text-muted);
+  }
+
+  .stats-bar {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 12px 32px; display: flex; gap: 32px; flex-wrap: wrap;
+  }
+  .stat { display: flex; flex-direction: column; gap: 2px; }
+  .stat-val { font-size: 20px; font-weight: 700; color: var(--accent); }
+  .stat-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>PRIO — <span>Calendário de Eventos 2026</span></h1>
+    <div class="subtitle">Visão completa · Convites externos + Visitas PRIO</div>
+  </div>
+</header>
+
+<div class="stats-bar" id="statsBar">
+  <div class="stat"><div class="stat-val" id="statTotal">—</div><div class="stat-label">Eventos</div></div>
+  <div class="stat"><div class="stat-val" id="statAlto">—</div><div class="stat-label">Alto impacto</div></div>
+  <div class="stat"><div class="stat-val" id="statFeira">—</div><div class="stat-label">Feiras</div></div>
+  <div class="stat"><div class="stat-val" id="statPalestra">—</div><div class="stat-label">Palestras</div></div>
+  <div class="stat"><div class="stat-val" id="statVisita">—</div><div class="stat-label">Visitas PRIO</div></div>
+  <div class="stat"><div class="stat-val" id="statConfirmado">—</div><div class="stat-label">Confirmados</div></div>
+</div>
+
+<div class="toolbar">
+  <div class="filter-group">
+    <label>Busca</label>
+    <input type="text" id="search" placeholder="Evento, faculdade, cidade...">
+  </div>
+  <div class="filter-group">
+    <label>Mês</label>
+    <select id="filterMes">
+      <option value="">Todos</option>
+      <option>Jan</option><option>Fev</option><option>Mar</option>
+      <option>Abr</option><option>Mai</option><option>Jun</option>
+      <option>Jul</option><option>Ago</option><option>Set</option>
+      <option>Out</option><option>Nov</option><option>Dez</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <label>Tipo</label>
+    <select id="filterTipo">
+      <option value="">Todos</option>
+      <option>Feira</option><option>Palestra</option><option>Painel</option><option>Visita PRIO</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <label>Impacto</label>
+    <select id="filterImpacto">
+      <option value="">Todos</option>
+      <option>Alto</option><option>Médio</option><option>Baixo</option><option>Visita</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <label>Estado</label>
+    <select id="filterEstado">
+      <option value="">Todos</option>
+      <option>RJ</option><option>SP</option><option>PE</option><option>ES</option><option>RS</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <label>Participação</label>
+    <select id="filterParticipacao">
+      <option value="">Todas</option>
+      <option value="Sim">Confirmado</option>
+      <option value="Não">Não participar</option>
+      <option value="Em análise">Em análise</option>
+    </select>
+  </div>
+  <div class="count" id="countLabel"></div>
+</div>
+
+<div class="table-wrap">
+<table id="mainTable">
+  <thead>
+    <tr>
+      <th>Impacto</th>
+      <th>Data</th>
+      <th>Evento</th>
+      <th>Faculdade / Org.</th>
+      <th>UF</th>
+      <th>Tipo</th>
+      <th>Cursos Atingidos</th>
+      <th>Custo Est.</th>
+      <th>Pax PRIO</th>
+      <th>Público Est.</th>
+      <th>Participação</th>
+    </tr>
+  </thead>
+  <tbody id="tableBody">
+
+    <tr data-mes="Fev" data-tipo="Visita PRIO" data-impacto="Visita" data-estado="RJ" data-participacao="" >
+      <td><span class="tag tag-visita">Visita</span></td>
+      <td class="date-cell">05/Fev/2026<br><small>TARDE</small></td>
+      <td><strong>Visita PRIO</strong></td>
+      <td>UFS<br><small class="inst"></small></td>
+      <td><span class="estado">RJ</span></td>
+      <td><span class="tipo-badge tipo-visita">Visita PRIO</span></td>
+      <td class="cursos-cell"><small></small></td>
+      <td class="num">—</td>
+      <td class="num">3</td>
+      <td class="num">3</td>
+      <td></td>
+    </tr>
+    <tr data-mes="Mar" data-tipo="Feira" data-impacto="Médio" data-estado="RJ" data-participacao="Não" title="Participação na Semana Fluxo é prioridade (já conhecemos e somos conhecidos por isso); Custo do espaço é alto; Evento acontece no início do ano">
+      <td><span class="tag tag-medio">Médio</span></td>
+      <td class="date-cell">10/Mar/2026<br><small>09h</small></td>
+      <td><strong>Feira de Carreira da Politécnica-UFRJ</strong><br><small>Participação na Semana Fluxo é prioridade (já conhecemos e somos conhecidos por ...</small></td>
+      <td>UFRJ<br><small class="inst">Escola Politécnica</small></td>
+      <td><span class="estado">RJ</span></td>
+      <td><span class="tipo-badge tipo-feira">Feira</span></td>
+      <td class="cursos-cell"><small>Engenharias</small></td>
+      <td class="num">R$ 27.000</td>
+      <td class="num">30</td>
+      <td class="num">5000</td>
+      <td><span class="badge badge-nao">Não participar</span></td>
+    </tr>
+    <tr data-mes="Mar" data-tipo="Palestra" data-impacto="Baixo" data-estado="ES" data-participacao="Não" >
+      <td><span class="tag tag-baixo">Baixo</span></td>
+      <td class="date-cell">25/Mar/2026<br><small>10h</small></td>
+      <td><strong>PETROUFES</strong></td>
+      <td>UFES<br><small class="inst">SPE</small></td>
+      <td><span class="estado">ES</span></td>
+      <td><span class="tipo-badge tipo-palestra">Palestra</span></td>
+      <td class="cursos-cell"><small>Engenharia de Petróleo - ; Engenharia Química - ; Engenharia de Computação - ; Engenharia de Produção - ; Ciência da Computação</small></td>
+      <td class="num">R$ 4.000</td>
+      <td class="num">1</td>
+      <td class="num">100</td>
+      <td><span class="badge badge-nao">Não participar</span></td>
+    </tr>
+    <tr data-mes="Mar" data-tipo="Visita PRIO" data-impacto="Visita" data-estado="RJ" data-participacao="" >
+      <td><span class="tag tag-visita">Visita</span></td>
+      <td class="date-cell">25/Mar/2026<br><small>TARDE</small></td>
+      <td><strong>Visita PRIO</strong></td>
+      <td>UERJ - FGV - UFRJ<br><small class="inst"></small></td>
+      <td><span class="estado">RJ</span></td>
+      <td><span class="tipo-badge tipo-visita">Visita PRIO</span></td>
+      <td class="cursos-cell"><small></small></td>
+      <td class="num">—</td>
+      <td class="num">38</td>
+      <td class="num">38</td>
+      <td></td>
+    </tr>
+    <tr data-mes="Abr" data-tipo="Visita PRIO" data-impacto="Visita" data-estado="RJ" data-participacao="" >
+      <td><span class="tag tag-visita">Visita</span></td>
+      <td class="date-cell">10/Abr/2026<br><small>TARDE</small></td>
+      <td><strong>Visita PRIO</strong></td>
+      <td>UNICAMP - USP - SPWLA UFRJ<br><small class="inst"></small></td>
+      <td><span class="estado">RJ</span></td>
+      <td><span class="tipo-badge tipo-visita">Visita PRIO</span></td>
+      <td class="cursos-cell"><small></small></td>
+      <td class="num">—</td>
+      <td class="num">24</td>
+      <td class="num">24</td>
+      <td></td>
+    </tr>
+    <tr data-mes="Abr" data-tipo="Feira" data-impacto="Médio" data-estado="SP" data-participacao="" >
+      <td><span class="tag tag-medio">Médio</span></td>
+      <td class="date-cell">14/Abr/2026<br><small>08h</small></td>
+      <td><strong>NX - Networking Experience 2026</strong></td>
+      <td>Mackenzie<br><small class="inst"></small></td>
+      <td><span class="estado">SP</span></td>
+      <td><span class="tipo-badge tipo-feira">Feira</span></td>
+      <td class="cursos-cell"><small>Administração - Ciências Contábeis - Comunicação - Direito - Ciência de Dados - RI - Psicologia</small></td>
+      <td class="num">R$ 8.000</td>
+      <td class="num">1</td>
+      <td class="num">1000</td>
+      <td></td>
+    </tr>
+    <tr data-mes="Abr" data-tipo="Feira" data-impacto="Médio" data-estado="RJ" data-participacao="Sim" >
+      <td><span class="tag tag-medio">Médio</span></td>
+      <td class="date-cell">28/Abr/2026<br><small>17h</small></td>
+      <td><strong>Conecta</strong></td>
+      <td>IBMEC<br><small class="inst">IBMEC Carreiras</small></td>
+      <td><span class="estado">RJ</span></td>
+      <td><span class="tipo-badge tipo-feira">Feira</span></td>
+      <td class="cursos-cell"><small>Administração - Ciências Contábeis - Comunicação - Direito - Ciência de Dados - RI - Engenharia de Produção</small></td>
+      <td class="num">—</td>
+      <td class="num">1</td>
+      <td class="num">50</td>
+      <td><span class="badge badge-sim">Confirmado</span></td>
+    </tr>
+    <tr data-mes="Mai" data-tipo="Visita PRIO" data-impacto="Visita" data-estado="RJ" data-participacao="" >
+      <td><span class="tag tag-visita">Visita</span></td>
+      <td class="date-cell">20/Mai/2026<br><small>MANHÃ</small></td>
+      <td><strong>Visita PRIO</strong></td>
+      <td><br><small class="inst"></small></td>
+      <td><span class="estado">RJ</span></td>
+      <td><span class="tipo-badge tipo-visita">Visita PRIO</span></td>
+      <td class="cursos-cell"><small></small></td>
+      <td class="num">—</td>
+      <td class="num">80</td>
+      <td class="num">80</td>
+      <td></td>
+    </tr>
+    <tr data-mes="Mai" data-tipo="Feira" data-impacto="Alto" data-estado="SP" data-participacao="Sim" >
+      <td><span class="tag tag-alto">Alto</span></td>
+      <td class="date-cell">21/Mai/2026<br><small>09h</small></td>
+      <td><strong>Feira de Recrutamento e Carreira</strong></td>
+      <td>USP<br><small class="inst">FEA JÚNIOR</small></td>
+      <td><span class="estado">SP</span></td>
+      <td><span class="tipo-badge tipo-feira">Feira</span></td>
+      <td class="cursos-cell"><small>Business - Engenharias - Exatas/Tech</small></td>
+      <td class="num">R$ 22.000</td>
+      <td class="num">3</td>
+      <td class="num"></td>
+      <td><span class="badge badge-sim">Confirmado</span></td>
+    </tr>
+    <tr data-mes="Mai" data-tipo="Palestra" data-impacto="Baixo" data-estado="SP" data-participacao="Não" title="Focado apenas para automação, com temas não alinhados com a PRIO; Logística para São Carlos/SP vai ser caro x quantidade de alunos atingidos">
+      <td><span class="tag tag-baixo">Baixo</span></td>
+      <td class="date-cell">25/Mai/2026<br><small>09h</small></td>
+      <td><strong>SEMATRON (Semana de Engenharia Mecatrônica)</strong><br><small>Focado apenas para automação, com temas não alinhados com a PRIO; Logística para...</small></td>
+      <td>USP<br><small class="inst">EESC-USP</small></td>
+      <td><span class="estado">SP</span></td>
+      <td><span class="tipo-badge tipo-palestra">Palestra</span></td>
+      <td class="cursos-cell"><small>Engenharia Mecatrônica</small></td>
+      <td class="num">R$ 8.000</td>
+      <td class="num">1</td>
+      <td class="num">200</td>
+      <td><span class="badge badge-nao">Não participar</span></td>
+    </tr>
+    <tr data-mes="Mai" data-tipo="Palestra" data-impacto="Baixo" data-estado="RS" data-participacao="" >
+      <td><span class="tag tag-baixo">Baixo</span></td>
+      <td class="date-cell">26/Mai/2026<br><small>17h</small></td>
+      <td><strong>Speed Job </strong></td>
+      <td>UFPel<br><small class="inst">SPE</small></td>
+      <td><span class="estado">RS</span></td>
+      <td><span class="tipo-badge tipo-palestra">Palestra</span></td>
+      <td class="cursos-cell"><small>Engenherias</small></td>
+      <td class="num">—</td>
+      <td class="num">1</td>
+      <td class="num"></td>
+      <td></td>
+    </tr>
+    <tr data-mes="Jun" data-tipo="Painel" data-impacto="Médio" data-estado="" data-participacao="Sim" >
+      <td><span class="tag tag-medio">Médio</span></td>
+      <td class="date-cell">01/Jun/2026<br><small>14h</small></td>
+      <td><strong>Feira Virtual Emprega</strong></td>
+      <td>N/A<br><small class="inst">Vero Solutions</small></td>
+      <td><span class="estado"></span></td>
+      <td><span class="tipo-badge tipo-painel">Painel</span></td>
+      <td class="cursos-cell"><small>Todos</small></td>
+      <td class="num">—</td>
+      <td class="num">1</td>
+      <td class="num"></td>
+      <td><span class="badge badge-sim">Confirmado</span></td>
+    </tr>
+    <tr data-mes="Ago" data-tipo="Feira" data-impacto="Alto" data-estado="SP" data-participacao="" >
+      <td><span class="tag tag-alto">Alto</span></td>
+      <td class="date-cell">12/Ago/2026<br><small>10h</small></td>
+      <td><strong>Feira de Carreiras</strong></td>
+      <td>UNICAMP<br><small class="inst">Integra</small></td>
+      <td><span class="estado">SP</span></td>
+      <td><span class="tipo-badge tipo-feira">Feira</span></td>
+      <td class="cursos-cell"><small>Engenharia de Produção e Manufatura - Administração</small></td>
+      <td class="num">—</td>
+      <td class="num"></td>
+      <td class="num"></td>
+      <td></td>
+    </tr>
+    <tr data-mes="Ago" data-tipo="Visita PRIO" data-impacto="Visita" data-estado="RJ" data-participacao="" >
+      <td><span class="tag tag-visita">Visita</span></td>
+      <td class="date-cell">12/Ago/2026<br><small>MANHÃ</small></td>
+      <td><strong>Visita PRIO</strong></td>
+      <td><br><small class="inst"></small></td>
+      <td><span class="estado">RJ</span></td>
+      <td><span class="tipo-badge tipo-visita">Visita PRIO</span></td>
+      <td class="cursos-cell"><small></small></td>
+      <td class="num">—</td>
+      <td class="num">80</td>
+      <td class="num">80</td>
+      <td></td>
+    </tr>
+    <tr data-mes="Ago" data-tipo="Feira" data-impacto="Alto" data-estado="SP" data-participacao="Sim" >
+      <td><span class="tag tag-alto">Alto</span></td>
+      <td class="date-cell">15/Ago/2026<br><small>10h</small></td>
+      <td><strong>Feira de Carreiras</strong></td>
+      <td>ITA<br><small class="inst"></small></td>
+      <td><span class="estado">SP</span></td>
+      <td><span class="tipo-badge tipo-feira">Feira</span></td>
+      <td class="cursos-cell"><small>Engenharias</small></td>
+      <td class="num">—</td>
+      <td class="num"></td>
+      <td class="num">2100</td>
+      <td><span class="badge badge-sim">Confirmado</span></td>
+    </tr>
+    <tr data-mes="Ago" data-tipo="Visita PRIO" data-impacto="Visita" data-estado="RJ" data-participacao="" >
+      <td><span class="tag tag-visita">Visita</span></td>
+      <td class="date-cell">19/Ago/2026<br><small>TARDE</small></td>
+      <td><strong>Visita PRIO</strong></td>
+      <td><br><small class="inst"></small></td>
+      <td><span class="estado">RJ</span></td>
+      <td><span class="tipo-badge tipo-visita">Visita PRIO</span></td>
+      <td class="cursos-cell"><small></small></td>
+      <td class="num">—</td>
+      <td class="num">80</td>
+      <td class="num">80</td>
+      <td></td>
+    </tr>
+    <tr data-mes="Ago" data-tipo="Visita PRIO" data-impacto="Visita" data-estado="RJ" data-participacao="" >
+      <td><span class="tag tag-visita">Visita</span></td>
+      <td class="date-cell">26/Ago/2026<br><small>TARDE</small></td>
+      <td><strong>Visita PRIO</strong></td>
+      <td><br><small class="inst"></small></td>
+      <td><span class="estado">RJ</span></td>
+      <td><span class="tipo-badge tipo-visita">Visita PRIO</span></td>
+      <td class="cursos-cell"><small></small></td>
+      <td class="num">—</td>
+      <td class="num">80</td>
+      <td class="num">80</td>
+      <td></td>
+    </tr>
+    <tr data-mes="Ago" data-tipo="Palestra" data-impacto="Baixo" data-estado="RJ" data-participacao="Não" title=" 1 hora ou 1 hora e meia; Ideal fazer terça ou quinta (10h ou 14h). Na semana da Fluxo">
+      <td><span class="tag tag-baixo">Baixo</span></td>
+      <td class="date-cell">31/Ago/2026<br><small>08h</small></td>
+      <td><strong>27º Encontro da Engenharia de Produção</strong><br><small> 1 hora ou 1 hora e meia; Ideal fazer terça ou quinta (10h ou 14h). Na semana da...</small></td>
+      <td>UENF<br><small class="inst">EENGE</small></td>
+      <td><span class="estado">RJ</span></td>
+      <td><span class="tipo-badge tipo-palestra">Palestra</span></td>
+      <td class="cursos-cell"><small>Engenharia de Produção, Metalúrgica e Civil</small></td>
+      <td class="num">R$ 2.000</td>
+      <td class="num">1</td>
+      <td class="num">150</td>
+      <td><span class="badge badge-nao">Não participar</span></td>
+    </tr>
+    <tr data-mes="Set" data-tipo="Visita PRIO" data-impacto="Visita" data-estado="RJ" data-participacao="" >
+      <td><span class="tag tag-visita">Visita</span></td>
+      <td class="date-cell">08/Set/2026<br><small>TARDE</small></td>
+      <td><strong>Visita PRIO</strong></td>
+      <td><br><small class="inst"></small></td>
+      <td><span class="estado">RJ</span></td>
+      <td><span class="tipo-badge tipo-visita">Visita PRIO</span></td>
+      <td class="cursos-cell"><small></small></td>
+      <td class="num">—</td>
+      <td class="num">80</td>
+      <td class="num">80</td>
+      <td></td>
+    </tr>
+    <tr data-mes="Set" data-tipo="Visita PRIO" data-impacto="Visita" data-estado="RJ" data-participacao="" >
+      <td><span class="tag tag-visita">Visita</span></td>
+      <td class="date-cell">11/Set/2026<br><small>TARDE</small></td>
+      <td><strong>Visita PRIO</strong></td>
+      <td><br><small class="inst"></small></td>
+      <td><span class="estado">RJ</span></td>
+      <td><span class="tipo-badge tipo-visita">Visita PRIO</span></td>
+      <td class="cursos-cell"><small></small></td>
+      <td class="num">—</td>
+      <td class="num">80</td>
+      <td class="num">80</td>
+      <td></td>
+    </tr>
+    <tr data-mes="Set" data-tipo="Visita PRIO" data-impacto="Visita" data-estado="RJ" data-participacao="" >
+      <td><span class="tag tag-visita">Visita</span></td>
+      <td class="date-cell">17/Set/2026<br><small>MANHÃ</small></td>
+      <td><strong>Visita PRIO</strong></td>
+      <td><br><small class="inst"></small></td>
+      <td><span class="estado">RJ</span></td>
+      <td><span class="tipo-badge tipo-visita">Visita PRIO</span></td>
+      <td class="cursos-cell"><small></small></td>
+      <td class="num">—</td>
+      <td class="num">80</td>
+      <td class="num">80</td>
+      <td></td>
+    </tr>
+    <tr data-mes="Set" data-tipo="Feira" data-impacto="Alto" data-estado="PE" data-participacao="Sim" >
+      <td><span class="tag tag-alto">Alto</span></td>
+      <td class="date-cell">22/Set/2026<br><small>09h</small></td>
+      <td><strong>UFPE no Mercado</strong></td>
+      <td>UFPE<br><small class="inst">A.C.E. Consultoria</small></td>
+      <td><span class="estado">PE</span></td>
+      <td><span class="tipo-badge tipo-feira">Feira</span></td>
+      <td class="cursos-cell"><small>Business</small></td>
+      <td class="num">R$ 13.000</td>
+      <td class="num">3</td>
+      <td class="num"></td>
+      <td><span class="badge badge-sim">Confirmado</span></td>
+    </tr>
+    <tr data-mes="Set" data-tipo="Visita PRIO" data-impacto="Visita" data-estado="RJ" data-participacao="" >
+      <td><span class="tag tag-visita">Visita</span></td>
+      <td class="date-cell">22/Set/2026<br><small>TARDE</small></td>
+      <td><strong>Visita PRIO</strong></td>
+      <td>ROG.E (21 a 24 de setembro)<br><small class="inst"></small></td>
+      <td><span class="estado">RJ</span></td>
+      <td><span class="tipo-badge tipo-visita">Visita PRIO</span></td>
+      <td class="cursos-cell"><small></small></td>
+      <td class="num">—</td>
+      <td class="num">80</td>
+      <td class="num">80</td>
+      <td></td>
+    </tr>
+    <tr data-mes="Set" data-tipo="Palestra" data-impacto="Médio" data-estado="RJ" data-participacao="Sim" >
+      <td><span class="tag tag-medio">Médio</span></td>
+      <td class="date-cell">23/Set/2026<br><small>TBD</small></td>
+      <td><strong>Semana Ayra</strong></td>
+      <td>UFRJ<br><small class="inst">Ayra</small></td>
+      <td><span class="estado">RJ</span></td>
+      <td><span class="tipo-badge tipo-palestra">Palestra</span></td>
+      <td class="cursos-cell"><small></small></td>
+      <td class="num">—</td>
+      <td class="num"></td>
+      <td class="num">80</td>
+      <td><span class="badge badge-sim">Confirmado</span></td>
+    </tr>
+    <tr data-mes="Set" data-tipo="Visita PRIO" data-impacto="Visita" data-estado="RJ" data-participacao="" >
+      <td><span class="tag tag-visita">Visita</span></td>
+      <td class="date-cell">25/Set/2026<br><small>TARDE</small></td>
+      <td><strong>Visita PRIO</strong></td>
+      <td>IME<br><small class="inst"></small></td>
+      <td><span class="estado">RJ</span></td>
+      <td><span class="tipo-badge tipo-visita">Visita PRIO</span></td>
+      <td class="cursos-cell"><small></small></td>
+      <td class="num">—</td>
+      <td class="num">80</td>
+      <td class="num">80</td>
+      <td></td>
+    </tr>
+    <tr data-mes="Set" data-tipo="Palestra" data-impacto="Médio" data-estado="RJ" data-participacao="Em análise" >
+      <td><span class="tag tag-medio">Médio</span></td>
+      <td class="date-cell">28/Set/2026<br><small>09h</small></td>
+      <td><strong>Evento Interação</strong></td>
+      <td>UFF<br><small class="inst">META</small></td>
+      <td><span class="estado">RJ</span></td>
+      <td><span class="tipo-badge tipo-palestra">Palestra</span></td>
+      <td class="cursos-cell"><small>Engenharias</small></td>
+      <td class="num">R$ 3.800</td>
+      <td class="num">1</td>
+      <td class="num">80</td>
+      <td><span class="badge badge-analise">Em análise</span></td>
+    </tr>
+    <tr data-mes="Out" data-tipo="Visita PRIO" data-impacto="Visita" data-estado="RJ" data-participacao="" >
+      <td><span class="tag tag-visita">Visita</span></td>
+      <td class="date-cell">01/Out/2026<br><small>MANHÃ</small></td>
+      <td><strong>Visita PRIO</strong></td>
+      <td><br><small class="inst"></small></td>
+      <td><span class="estado">RJ</span></td>
+      <td><span class="tipo-badge tipo-visita">Visita PRIO</span></td>
+      <td class="cursos-cell"><small></small></td>
+      <td class="num">—</td>
+      <td class="num">80</td>
+      <td class="num">80</td>
+      <td></td>
+    </tr>
+    <tr data-mes="Out" data-tipo="Visita PRIO" data-impacto="Visita" data-estado="RJ" data-participacao="" >
+      <td><span class="tag tag-visita">Visita</span></td>
+      <td class="date-cell">13/Out/2026<br><small>TARDE</small></td>
+      <td><strong>Visita PRIO</strong></td>
+      <td><br><small class="inst"></small></td>
+      <td><span class="estado">RJ</span></td>
+      <td><span class="tipo-badge tipo-visita">Visita PRIO</span></td>
+      <td class="cursos-cell"><small></small></td>
+      <td class="num">—</td>
+      <td class="num">80</td>
+      <td class="num">80</td>
+      <td></td>
+    </tr>
+    <tr data-mes="" data-tipo="" data-impacto="" data-estado="RJ" data-participacao="" >
+      <td><span class="tag tag-outro"></span></td>
+      <td class="date-cell"><br><small></small></td>
+      <td><strong>SPEtro XVI UFRJ</strong></td>
+      <td>UFRJ<br><small class="inst">SPEtro</small></td>
+      <td><span class="estado">RJ</span></td>
+      <td><span class="tipo-badge tipo-outro"></span></td>
+      <td class="cursos-cell"><small></small></td>
+      <td class="num">—</td>
+      <td class="num"></td>
+      <td class="num"></td>
+      <td></td>
+    </tr>
+    <tr data-mes="" data-tipo="Palestra" data-impacto="Médio" data-estado="RJ" data-participacao="Não" title="Time de Petrofísicos da PRIO não possuiam disponibilidade">
+      <td><span class="tag tag-medio">Médio</span></td>
+      <td class="date-cell">Fevereiro/Março<br><small>TBD</small></td>
+      <td><strong>Palestras de Férias</strong><br><small>Time de Petrofísicos da PRIO não possuiam disponibilidade</small></td>
+      <td>UFRJ<br><small class="inst">SPWLA</small></td>
+      <td><span class="estado">RJ</span></td>
+      <td><span class="tipo-badge tipo-palestra">Palestra</span></td>
+      <td class="cursos-cell"><small>Geologia - Geofísica - Petrofísica</small></td>
+      <td class="num">—</td>
+      <td class="num">1</td>
+      <td class="num"></td>
+      <td><span class="badge badge-nao">Não participar</span></td>
+    </tr>
+    <tr data-mes="" data-tipo="Palestra" data-impacto="Médio" data-estado="RJ" data-participacao="Sim" >
+      <td><span class="tag tag-medio">Médio</span></td>
+      <td class="date-cell">Maio/Junho<br><small>TBD</small></td>
+      <td><strong>Semana da Petrofísica</strong></td>
+      <td>UFRJ<br><small class="inst">SPWLA</small></td>
+      <td><span class="estado">RJ</span></td>
+      <td><span class="tipo-badge tipo-palestra">Palestra</span></td>
+      <td class="cursos-cell"><small>Geologia - Geofísica - Petrofísica</small></td>
+      <td class="num">—</td>
+      <td class="num">1</td>
+      <td class="num"></td>
+      <td><span class="badge badge-sim">Confirmado</span></td>
+    </tr>
+    <tr data-mes="" data-tipo="Palestra" data-impacto="Baixo" data-estado="SP" data-participacao="Não" title="Custo alto para poucos estudantes">
+      <td><span class="tag tag-baixo">Baixo</span></td>
+      <td class="date-cell">Novembro<br><small>TBD</small></td>
+      <td><strong>XIV Workshop de Petróleo da SPE</strong><br><small>Custo alto para poucos estudantes</small></td>
+      <td>USP<br><small class="inst">SPE</small></td>
+      <td><span class="estado">SP</span></td>
+      <td><span class="tipo-badge tipo-palestra">Palestra</span></td>
+      <td class="cursos-cell"><small>Engenharia de Petróleo - Geologia - Geofísica</small></td>
+      <td class="num">R$ 2.000</td>
+      <td class="num">1</td>
+      <td class="num">50</td>
+      <td><span class="badge badge-nao">Não participar</span></td>
+    </tr>
+  </tbody>
+</table>
+<div class="empty-state hidden" id="emptyState">Nenhum evento encontrado com os filtros selecionados.</div>
+</div>
+
+<script>
+const rows = Array.from(document.querySelectorAll('#tableBody tr'));
+
+function applyFilters() {
+  const search = document.getElementById('search').value.toLowerCase();
+  const mes = document.getElementById('filterMes').value;
+  const tipo = document.getElementById('filterTipo').value;
+  const impacto = document.getElementById('filterImpacto').value;
+  const estado = document.getElementById('filterEstado').value;
+  const participacao = document.getElementById('filterParticipacao').value;
+
+  let visible = 0;
+  let stats = {alto:0, feira:0, palestra:0, visita:0, confirmado:0};
+
+  rows.forEach(r => {
+    const rMes = r.dataset.mes || '';
+    const rTipo = r.dataset.tipo || '';
+    const rImpacto = r.dataset.impacto || '';
+    const rEstado = r.dataset.estado || '';
+    const rPart = r.dataset.participacao || '';
+    const text = r.textContent.toLowerCase();
+
+    const ok = (
+      (!search || text.includes(search)) &&
+      (!mes || rMes === mes) &&
+      (!tipo || rTipo === tipo) &&
+      (!impacto || rImpacto === impacto) &&
+      (!estado || rEstado === estado) &&
+      (!participacao || rPart === participacao)
+    );
+
+    r.classList.toggle('hidden', !ok);
+    if (ok) {
+      visible++;
+      if (rImpacto === 'Alto') stats.alto++;
+      if (rTipo === 'Feira') stats.feira++;
+      if (rTipo === 'Palestra') stats.palestra++;
+      if (rTipo === 'Visita PRIO') stats.visita++;
+      if (rPart === 'Sim') stats.confirmado++;
+    }
+  });
+
+  document.getElementById('countLabel').innerHTML = `Exibindo <strong>${visible}</strong> de <strong>${rows.length}</strong> eventos`;
+  document.getElementById('emptyState').classList.toggle('hidden', visible > 0);
+  document.getElementById('statTotal').textContent = visible;
+  document.getElementById('statAlto').textContent = stats.alto;
+  document.getElementById('statFeira').textContent = stats.feira;
+  document.getElementById('statPalestra').textContent = stats.palestra;
+  document.getElementById('statVisita').textContent = stats.visita;
+  document.getElementById('statConfirmado').textContent = stats.confirmado;
+}
+
+['search','filterMes','filterTipo','filterImpacto','filterEstado','filterParticipacao'].forEach(id => {
+  document.getElementById(id).addEventListener('input', applyFilters);
+});
+
+applyFilters();
+</script>
+</body>
+</html>
