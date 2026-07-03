@@ -6,679 +6,953 @@
 <title>PRIO — Calendário de Eventos 2026</title>
 <style>
   :root {
-    --bg: #0f1117;
-    --surface: #1a1d27;
-    --surface2: #22263a;
-    --border: #2e3350;
-    --text: #e2e8f0;
-    --text-muted: #8892b0;
-    --accent: #00c3a5;
-    --alto: #ff6b6b;
-    --medio: #ffa94d;
-    --baixo: #74c0fc;
-    --visita: #a9e34b;
-    --feira: #7048e8;
-    --palestra: #1098ad;
-    --painel: #f76707;
-    --radius: 8px;
+    --blue: #1d4ed8;
+    --blue-light: #eff6ff;
+    --blue-mid: #dbeafe;
+    --blue-dark: #1e3a8a;
+    --text: #111827;
+    --text-muted: #6b7280;
+    --border: #e5e7eb;
+    --bg: #f9fafb;
+    --surface: #ffffff;
+    --radius: 10px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; font-size: 14px; }
 
-  header { 
-    background: linear-gradient(135deg, #0f1117 0%, #1a1d27 100%);
+  /* HEADER */
+  header {
+    background: var(--surface);
     border-bottom: 1px solid var(--border);
-    padding: 24px 32px;
-    display: flex; align-items: center; gap: 16px;
+    padding: 20px 40px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
   }
-  header h1 { font-size: 22px; font-weight: 700; color: var(--text); }
-  header span { color: var(--accent); }
-  .subtitle { color: var(--text-muted); font-size: 13px; margin-top: 4px; }
+  .header-left h1 { font-size: 20px; font-weight: 700; color: var(--blue-dark); }
+  .header-left p { color: var(--text-muted); font-size: 13px; margin-top: 2px; }
+  .header-logo { font-size: 28px; font-weight: 900; color: var(--blue); letter-spacing: -1px; }
 
+  /* STATS */
+  .stats-bar {
+    background: var(--blue-dark);
+    padding: 16px 40px;
+    display: flex; gap: 40px; flex-wrap: wrap;
+  }
+  .stat { display: flex; flex-direction: column; gap: 1px; }
+  .stat-val { font-size: 22px; font-weight: 800; color: #ffffff; }
+  .stat-label { font-size: 11px; color: #93c5fd; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  /* TOOLBAR */
   .toolbar {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
-    padding: 16px 32px;
-    display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+    padding: 0 40px;
+    display: flex; align-items: center; gap: 0;
   }
-  .toolbar label { color: var(--text-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-  .filter-group { display: flex; flex-direction: column; gap: 4px; }
-  select, input {
+
+  /* TABS */
+  .tabs { display: flex; gap: 0; }
+  .tab {
+    padding: 14px 24px; font-size: 13px; font-weight: 600; cursor: pointer;
+    border-bottom: 3px solid transparent; color: var(--text-muted);
+    transition: all 0.15s; white-space: nowrap; user-select: none;
+    background: none; border-top: none; border-left: none; border-right: none;
+  }
+  .tab:hover { color: var(--blue); }
+  .tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+  .tab .count-badge {
+    display: inline-block; background: var(--blue-light); color: var(--blue);
+    border-radius: 20px; padding: 1px 8px; font-size: 11px; margin-left: 6px;
+    font-weight: 700;
+  }
+  .tab.active .count-badge { background: var(--blue); color: #fff; }
+
+  .toolbar-right { margin-left: auto; display: flex; gap: 10px; align-items: center; }
+  .toolbar-right input, .toolbar-right select {
     background: var(--bg); border: 1px solid var(--border); color: var(--text);
-    padding: 7px 12px; border-radius: var(--radius); font-size: 13px;
-    min-width: 140px; outline: none; cursor: pointer;
+    padding: 6px 12px; border-radius: 6px; font-size: 13px; outline: none;
   }
-  select:focus, input:focus { border-color: var(--accent); }
-  input { min-width: 200px; }
-  .count { margin-left: auto; color: var(--text-muted); font-size: 13px; }
-  .count strong { color: var(--accent); }
+  .toolbar-right input { min-width: 180px; }
+  .toolbar-right input:focus, .toolbar-right select:focus { border-color: var(--blue); }
 
-  .table-wrap { overflow-x: auto; padding: 0 32px 32px; }
-  table { width: 100%; border-collapse: collapse; margin-top: 16px; }
-  thead th {
-    background: var(--surface2); color: var(--text-muted); font-size: 11px;
-    font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
-    padding: 12px 14px; text-align: left; border-bottom: 2px solid var(--border);
-    position: sticky; top: 0; cursor: pointer; user-select: none;
-    white-space: nowrap;
-  }
-  thead th:hover { color: var(--accent); }
-  tbody tr {
-    border-bottom: 1px solid var(--border);
-    transition: background 0.15s;
-  }
-  tbody tr:hover { background: var(--surface2); cursor: default; }
-  tbody td { padding: 12px 14px; vertical-align: middle; }
-  tbody tr[title] { cursor: help; }
+  /* CONTENT */
+  .content { max-width: 860px; margin: 0 auto; padding: 32px 24px; }
 
-  .tag {
-    display: inline-block; padding: 3px 10px; border-radius: 20px;
-    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+  /* MONTH SEPARATOR */
+  .month-sep {
+    display: flex; align-items: center; gap: 16px;
+    margin: 32px 0 20px 0;
   }
-  .tag-alto { background: rgba(255,107,107,.15); color: var(--alto); border: 1px solid rgba(255,107,107,.3); }
-  .tag-medio { background: rgba(255,169,77,.15); color: var(--medio); border: 1px solid rgba(255,169,77,.3); }
-  .tag-baixo { background: rgba(116,192,252,.15); color: var(--baixo); border: 1px solid rgba(116,192,252,.3); }
-  .tag-visita { background: rgba(169,227,75,.15); color: var(--visita); border: 1px solid rgba(169,227,75,.3); }
-
-  .tipo-badge {
-    display: inline-block; padding: 3px 10px; border-radius: 20px;
-    font-size: 11px; font-weight: 600;
+  .month-sep span {
+    font-size: 13px; font-weight: 700; color: var(--blue);
+    text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap;
+    background: var(--blue-light); padding: 4px 14px; border-radius: 20px;
+    border: 1px solid var(--blue-mid);
   }
-  .tipo-feira { background: rgba(112,72,232,.2); color: #b197fc; }
-  .tipo-palestra { background: rgba(16,152,173,.2); color: #66d9e8; }
-  .tipo-painel { background: rgba(247,103,7,.2); color: #ffa94d; }
-  .tipo-visita { background: rgba(169,227,75,.15); color: var(--visita); }
-  .tipo-outro { background: var(--surface2); color: var(--text-muted); }
-
-  .badge { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-  .badge-sim { background: rgba(0,195,165,.15); color: var(--accent); }
-  .badge-nao { background: rgba(255,107,107,.15); color: var(--alto); }
-  .badge-analise { background: rgba(255,169,77,.15); color: var(--medio); }
-
-  .date-cell { white-space: nowrap; color: var(--text); }
-  .date-cell small { color: var(--text-muted); }
-  .inst { color: var(--text-muted); }
-  .estado { 
-    display: inline-block; background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 4px; padding: 2px 8px; font-size: 12px; font-weight: 600;
-    color: var(--text-muted);
+  .month-sep::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
   }
-  .cursos-cell { max-width: 200px; color: var(--text-muted); }
-  .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  /* CARD */
+  .card {
+    display: flex; gap: 0; margin-bottom: 12px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: box-shadow 0.15s, border-color 0.15s;
+    overflow: hidden;
+  }
+  .card:hover { box-shadow: 0 4px 16px rgba(29,78,216,.08); border-color: #bfdbfe; }
+
+  .card-timeline {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 16px 0; width: 36px; flex-shrink: 0;
+    background: var(--bg);
+    border-right: 1px solid var(--border);
+  }
+  .tl-dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    flex-shrink: 0; border: 2px solid white;
+    box-shadow: 0 0 0 2px currentColor;
+    margin-top: 4px;
+  }
+  .tl-line { flex: 1; width: 2px; background: var(--border); margin-top: 6px; }
+
+  .card-body { padding: 14px 18px; flex: 1; min-width: 0; }
+
+  .card-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+  .card-date { font-size: 13px; font-weight: 700; color: var(--text-muted); min-width: 64px; }
+  .card-badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+
+  .card-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .card-inst { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+
+  .card-meta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
+  .meta-item { font-size: 12px; color: var(--text-muted); }
+
+  .card-cursos { font-size: 12px; color: var(--text-muted); margin-top: 6px; line-height: 1.5; }
+  .card-comment {
+    font-size: 12px; color: #374151; background: #fefce8;
+    border-left: 3px solid #fbbf24; padding: 6px 10px; margin-top: 8px;
+    border-radius: 0 4px 4px 0; line-height: 1.5;
+  }
+
+  /* PILLS */
+  .pill { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; border: 1px solid transparent; }
+  .pill-imp { /* dynamic */ }
+  .pill-feira { background: #f3e8ff; color: #7c3aed; border-color: #e9d5ff; }
+  .pill-palestra { background: #e0f2fe; color: #0369a1; border-color: #bae6fd; }
+  .pill-painel { background: #fff7ed; color: #c2410c; border-color: #fed7aa; }
+  .pill-visita { background: #dcfce7; color: #166534; border-color: #bbf7d0; }
+  .pill-outro { background: var(--bg); color: var(--text-muted); border-color: var(--border); }
+  .pill-sim { background: #dcfce7; color: #166534; border-color: #bbf7d0; }
+  .pill-nao { background: #fee2e2; color: #991b1b; border-color: #fecaca; }
+  .pill-analise { background: #fef9c3; color: #854d0e; border-color: #fef08a; }
+
   .hidden { display: none !important; }
-
-  .empty-state {
-    text-align: center; padding: 48px; color: var(--text-muted);
-  }
-
-  .stats-bar {
-    background: var(--surface); border-bottom: 1px solid var(--border);
-    padding: 12px 32px; display: flex; gap: 32px; flex-wrap: wrap;
-  }
-  .stat { display: flex; flex-direction: column; gap: 2px; }
-  .stat-val { font-size: 20px; font-weight: 700; color: var(--accent); }
-  .stat-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); font-size: 15px; }
 </style>
 </head>
 <body>
 
 <header>
-  <div>
-    <h1>PRIO — <span>Calendário de Eventos 2026</span></h1>
-    <div class="subtitle">Visão completa · Convites externos + Visitas PRIO</div>
+  <div class="header-left">
+    <h1>Calendário de Eventos 2026</h1>
+    <p>Visão completa · Convites externos + Visitas PRIO · ordenado por data</p>
   </div>
+  <div class="header-logo">PRIO</div>
 </header>
 
-<div class="stats-bar" id="statsBar">
-  <div class="stat"><div class="stat-val" id="statTotal">—</div><div class="stat-label">Eventos</div></div>
+<div class="stats-bar">
+  <div class="stat"><div class="stat-val" id="statTotal">—</div><div class="stat-label">Total visível</div></div>
   <div class="stat"><div class="stat-val" id="statAlto">—</div><div class="stat-label">Alto impacto</div></div>
   <div class="stat"><div class="stat-val" id="statFeira">—</div><div class="stat-label">Feiras</div></div>
-  <div class="stat"><div class="stat-val" id="statPalestra">—</div><div class="stat-label">Palestras</div></div>
+  <div class="stat"><div class="stat-val" id="statPalestra">—</div><div class="stat-label">Eventos/Palestras</div></div>
   <div class="stat"><div class="stat-val" id="statVisita">—</div><div class="stat-label">Visitas PRIO</div></div>
   <div class="stat"><div class="stat-val" id="statConfirmado">—</div><div class="stat-label">Confirmados</div></div>
 </div>
 
 <div class="toolbar">
-  <div class="filter-group">
-    <label>Busca</label>
-    <input type="text" id="search" placeholder="Evento, faculdade, cidade...">
+  <div class="tabs">
+    <button class="tab active" data-tab="todos">Todos <span class="count-badge" id="badgeTodos">—</span></button>
+    <button class="tab" data-tab="feira">Feiras <span class="count-badge" id="badgeFeira">—</span></button>
+    <button class="tab" data-tab="evento">Eventos / Palestras <span class="count-badge" id="badgeEvento">—</span></button>
+    <button class="tab" data-tab="visita">Visitas PRIO <span class="count-badge" id="badgeVisita">—</span></button>
   </div>
-  <div class="filter-group">
-    <label>Mês</label>
-    <select id="filterMes">
-      <option value="">Todos</option>
-      <option>Jan</option><option>Fev</option><option>Mar</option>
-      <option>Abr</option><option>Mai</option><option>Jun</option>
-      <option>Jul</option><option>Ago</option><option>Set</option>
-      <option>Out</option><option>Nov</option><option>Dez</option>
-    </select>
-  </div>
-  <div class="filter-group">
-    <label>Tipo</label>
-    <select id="filterTipo">
-      <option value="">Todos</option>
-      <option>Feira</option><option>Palestra</option><option>Painel</option><option>Visita PRIO</option>
-    </select>
-  </div>
-  <div class="filter-group">
-    <label>Impacto</label>
+  <div class="toolbar-right">
+    <input type="text" id="search" placeholder="🔍  Buscar evento, faculdade...">
     <select id="filterImpacto">
-      <option value="">Todos</option>
-      <option>Alto</option><option>Médio</option><option>Baixo</option><option>Visita</option>
+      <option value="">Todos os impactos</option>
+      <option>Alto</option><option>Médio</option><option>Baixo</option>
     </select>
-  </div>
-  <div class="filter-group">
-    <label>Estado</label>
     <select id="filterEstado">
-      <option value="">Todos</option>
+      <option value="">Todos os estados</option>
       <option>RJ</option><option>SP</option><option>PE</option><option>ES</option><option>RS</option>
     </select>
   </div>
-  <div class="filter-group">
-    <label>Participação</label>
-    <select id="filterParticipacao">
-      <option value="">Todas</option>
-      <option value="Sim">Confirmado</option>
-      <option value="Não">Não participar</option>
-      <option value="Em análise">Em análise</option>
-    </select>
-  </div>
-  <div class="count" id="countLabel"></div>
 </div>
 
-<div class="table-wrap">
-<table id="mainTable">
-  <thead>
-    <tr>
-      <th>Impacto</th>
-      <th>Data</th>
-      <th>Evento</th>
-      <th>Faculdade / Org.</th>
-      <th>UF</th>
-      <th>Tipo</th>
-      <th>Cursos Atingidos</th>
-      <th>Custo Est.</th>
-      <th>Pax PRIO</th>
-      <th>Público Est.</th>
-      <th>Participação</th>
-    </tr>
-  </thead>
-  <tbody id="tableBody">
-
-    <tr data-mes="Fev" data-tipo="Visita PRIO" data-impacto="Visita" data-estado="RJ" data-participacao="" >
-      <td><span class="tag tag-visita">Visita</span></td>
-      <td class="date-cell">05/Fev/2026<br><small>TARDE</small></td>
-      <td><strong>Visita PRIO</strong></td>
-      <td>UFS<br><small class="inst"></small></td>
-      <td><span class="estado">RJ</span></td>
-      <td><span class="tipo-badge tipo-visita">Visita PRIO</span></td>
-      <td class="cursos-cell"><small></small></td>
-      <td class="num">—</td>
-      <td class="num">3</td>
-      <td class="num">3</td>
-      <td></td>
-    </tr>
-    <tr data-mes="Mar" data-tipo="Feira" data-impacto="Médio" data-estado="RJ" data-participacao="Não" title="Participação na Semana Fluxo é prioridade (já conhecemos e somos conhecidos por isso); Custo do espaço é alto; Evento acontece no início do ano">
-      <td><span class="tag tag-medio">Médio</span></td>
-      <td class="date-cell">10/Mar/2026<br><small>09h</small></td>
-      <td><strong>Feira de Carreira da Politécnica-UFRJ</strong><br><small>Participação na Semana Fluxo é prioridade (já conhecemos e somos conhecidos por ...</small></td>
-      <td>UFRJ<br><small class="inst">Escola Politécnica</small></td>
-      <td><span class="estado">RJ</span></td>
-      <td><span class="tipo-badge tipo-feira">Feira</span></td>
-      <td class="cursos-cell"><small>Engenharias</small></td>
-      <td class="num">R$ 27.000</td>
-      <td class="num">30</td>
-      <td class="num">5000</td>
-      <td><span class="badge badge-nao">Não participar</span></td>
-    </tr>
-    <tr data-mes="Mar" data-tipo="Palestra" data-impacto="Baixo" data-estado="ES" data-participacao="Não" >
-      <td><span class="tag tag-baixo">Baixo</span></td>
-      <td class="date-cell">25/Mar/2026<br><small>10h</small></td>
-      <td><strong>PETROUFES</strong></td>
-      <td>UFES<br><small class="inst">SPE</small></td>
-      <td><span class="estado">ES</span></td>
-      <td><span class="tipo-badge tipo-palestra">Palestra</span></td>
-      <td class="cursos-cell"><small>Engenharia de Petróleo - ; Engenharia Química - ; Engenharia de Computação - ; Engenharia de Produção - ; Ciência da Computação</small></td>
-      <td class="num">R$ 4.000</td>
-      <td class="num">1</td>
-      <td class="num">100</td>
-      <td><span class="badge badge-nao">Não participar</span></td>
-    </tr>
-    <tr data-mes="Mar" data-tipo="Visita PRIO" data-impacto="Visita" data-estado="RJ" data-participacao="" >
-      <td><span class="tag tag-visita">Visita</span></td>
-      <td class="date-cell">25/Mar/2026<br><small>TARDE</small></td>
-      <td><strong>Visita PRIO</strong></td>
-      <td>UERJ - FGV - UFRJ<br><small class="inst"></small></td>
-      <td><span class="estado">RJ</span></td>
-      <td><span class="tipo-badge tipo-visita">Visita PRIO</span></td>
-      <td class="cursos-cell"><small></small></td>
-      <td class="num">—</td>
-      <td class="num">38</td>
-      <td class="num">38</td>
-      <td></td>
-    </tr>
-    <tr data-mes="Abr" data-tipo="Visita PRIO" data-impacto="Visita" data-estado="RJ" data-participacao="" >
-      <td><span class="tag tag-visita">Visita</span></td>
-      <td class="date-cell">10/Abr/2026<br><small>TARDE</small></td>
-      <td><strong>Visita PRIO</strong></td>
-      <td>UNICAMP - USP - SPWLA UFRJ<br><small class="inst"></small></td>
-      <td><span class="estado">RJ</span></td>
-      <td><span class="tipo-badge tipo-visita">Visita PRIO</span></td>
-      <td class="cursos-cell"><small></small></td>
-      <td class="num">—</td>
-      <td class="num">24</td>
-      <td class="num">24</td>
-      <td></td>
-    </tr>
-    <tr data-mes="Abr" data-tipo="Feira" data-impacto="Médio" data-estado="SP" data-participacao="" >
-      <td><span class="tag tag-medio">Médio</span></td>
-      <td class="date-cell">14/Abr/2026<br><small>08h</small></td>
-      <td><strong>NX - Networking Experience 2026</strong></td>
-      <td>Mackenzie<br><small class="inst"></small></td>
-      <td><span class="estado">SP</span></td>
-      <td><span class="tipo-badge tipo-feira">Feira</span></td>
-      <td class="cursos-cell"><small>Administração - Ciências Contábeis - Comunicação - Direito - Ciência de Dados - RI - Psicologia</small></td>
-      <td class="num">R$ 8.000</td>
-      <td class="num">1</td>
-      <td class="num">1000</td>
-      <td></td>
-    </tr>
-    <tr data-mes="Abr" data-tipo="Feira" data-impacto="Médio" data-estado="RJ" data-participacao="Sim" >
-      <td><span class="tag tag-medio">Médio</span></td>
-      <td class="date-cell">28/Abr/2026<br><small>17h</small></td>
-      <td><strong>Conecta</strong></td>
-      <td>IBMEC<br><small class="inst">IBMEC Carreiras</small></td>
-      <td><span class="estado">RJ</span></td>
-      <td><span class="tipo-badge tipo-feira">Feira</span></td>
-      <td class="cursos-cell"><small>Administração - Ciências Contábeis - Comunicação - Direito - Ciência de Dados - RI - Engenharia de Produção</small></td>
-      <td class="num">—</td>
-      <td class="num">1</td>
-      <td class="num">50</td>
-      <td><span class="badge badge-sim">Confirmado</span></td>
-    </tr>
-    <tr data-mes="Mai" data-tipo="Visita PRIO" data-impacto="Visita" data-estado="RJ" data-participacao="" >
-      <td><span class="tag tag-visita">Visita</span></td>
-      <td class="date-cell">20/Mai/2026<br><small>MANHÃ</small></td>
-      <td><strong>Visita PRIO</strong></td>
-      <td><br><small class="inst"></small></td>
-      <td><span class="estado">RJ</span></td>
-      <td><span class="tipo-badge tipo-visita">Visita PRIO</span></td>
-      <td class="cursos-cell"><small></small></td>
-      <td class="num">—</td>
-      <td class="num">80</td>
-      <td class="num">80</td>
-      <td></td>
-    </tr>
-    <tr data-mes="Mai" data-tipo="Feira" data-impacto="Alto" data-estado="SP" data-participacao="Sim" >
-      <td><span class="tag tag-alto">Alto</span></td>
-      <td class="date-cell">21/Mai/2026<br><small>09h</small></td>
-      <td><strong>Feira de Recrutamento e Carreira</strong></td>
-      <td>USP<br><small class="inst">FEA JÚNIOR</small></td>
-      <td><span class="estado">SP</span></td>
-      <td><span class="tipo-badge tipo-feira">Feira</span></td>
-      <td class="cursos-cell"><small>Business - Engenharias - Exatas/Tech</small></td>
-      <td class="num">R$ 22.000</td>
-      <td class="num">3</td>
-      <td class="num"></td>
-      <td><span class="badge badge-sim">Confirmado</span></td>
-    </tr>
-    <tr data-mes="Mai" data-tipo="Palestra" data-impacto="Baixo" data-estado="SP" data-participacao="Não" title="Focado apenas para automação, com temas não alinhados com a PRIO; Logística para São Carlos/SP vai ser caro x quantidade de alunos atingidos">
-      <td><span class="tag tag-baixo">Baixo</span></td>
-      <td class="date-cell">25/Mai/2026<br><small>09h</small></td>
-      <td><strong>SEMATRON (Semana de Engenharia Mecatrônica)</strong><br><small>Focado apenas para automação, com temas não alinhados com a PRIO; Logística para...</small></td>
-      <td>USP<br><small class="inst">EESC-USP</small></td>
-      <td><span class="estado">SP</span></td>
-      <td><span class="tipo-badge tipo-palestra">Palestra</span></td>
-      <td class="cursos-cell"><small>Engenharia Mecatrônica</small></td>
-      <td class="num">R$ 8.000</td>
-      <td class="num">1</td>
-      <td class="num">200</td>
-      <td><span class="badge badge-nao">Não participar</span></td>
-    </tr>
-    <tr data-mes="Mai" data-tipo="Palestra" data-impacto="Baixo" data-estado="RS" data-participacao="" >
-      <td><span class="tag tag-baixo">Baixo</span></td>
-      <td class="date-cell">26/Mai/2026<br><small>17h</small></td>
-      <td><strong>Speed Job </strong></td>
-      <td>UFPel<br><small class="inst">SPE</small></td>
-      <td><span class="estado">RS</span></td>
-      <td><span class="tipo-badge tipo-palestra">Palestra</span></td>
-      <td class="cursos-cell"><small>Engenherias</small></td>
-      <td class="num">—</td>
-      <td class="num">1</td>
-      <td class="num"></td>
-      <td></td>
-    </tr>
-    <tr data-mes="Jun" data-tipo="Painel" data-impacto="Médio" data-estado="" data-participacao="Sim" >
-      <td><span class="tag tag-medio">Médio</span></td>
-      <td class="date-cell">01/Jun/2026<br><small>14h</small></td>
-      <td><strong>Feira Virtual Emprega</strong></td>
-      <td>N/A<br><small class="inst">Vero Solutions</small></td>
-      <td><span class="estado"></span></td>
-      <td><span class="tipo-badge tipo-painel">Painel</span></td>
-      <td class="cursos-cell"><small>Todos</small></td>
-      <td class="num">—</td>
-      <td class="num">1</td>
-      <td class="num"></td>
-      <td><span class="badge badge-sim">Confirmado</span></td>
-    </tr>
-    <tr data-mes="Ago" data-tipo="Feira" data-impacto="Alto" data-estado="SP" data-participacao="" >
-      <td><span class="tag tag-alto">Alto</span></td>
-      <td class="date-cell">12/Ago/2026<br><small>10h</small></td>
-      <td><strong>Feira de Carreiras</strong></td>
-      <td>UNICAMP<br><small class="inst">Integra</small></td>
-      <td><span class="estado">SP</span></td>
-      <td><span class="tipo-badge tipo-feira">Feira</span></td>
-      <td class="cursos-cell"><small>Engenharia de Produção e Manufatura - Administração</small></td>
-      <td class="num">—</td>
-      <td class="num"></td>
-      <td class="num"></td>
-      <td></td>
-    </tr>
-    <tr data-mes="Ago" data-tipo="Visita PRIO" data-impacto="Visita" data-estado="RJ" data-participacao="" >
-      <td><span class="tag tag-visita">Visita</span></td>
-      <td class="date-cell">12/Ago/2026<br><small>MANHÃ</small></td>
-      <td><strong>Visita PRIO</strong></td>
-      <td><br><small class="inst"></small></td>
-      <td><span class="estado">RJ</span></td>
-      <td><span class="tipo-badge tipo-visita">Visita PRIO</span></td>
-      <td class="cursos-cell"><small></small></td>
-      <td class="num">—</td>
-      <td class="num">80</td>
-      <td class="num">80</td>
-      <td></td>
-    </tr>
-    <tr data-mes="Ago" data-tipo="Feira" data-impacto="Alto" data-estado="SP" data-participacao="Sim" >
-      <td><span class="tag tag-alto">Alto</span></td>
-      <td class="date-cell">15/Ago/2026<br><small>10h</small></td>
-      <td><strong>Feira de Carreiras</strong></td>
-      <td>ITA<br><small class="inst"></small></td>
-      <td><span class="estado">SP</span></td>
-      <td><span class="tipo-badge tipo-feira">Feira</span></td>
-      <td class="cursos-cell"><small>Engenharias</small></td>
-      <td class="num">—</td>
-      <td class="num"></td>
-      <td class="num">2100</td>
-      <td><span class="badge badge-sim">Confirmado</span></td>
-    </tr>
-    <tr data-mes="Ago" data-tipo="Visita PRIO" data-impacto="Visita" data-estado="RJ" data-participacao="" >
-      <td><span class="tag tag-visita">Visita</span></td>
-      <td class="date-cell">19/Ago/2026<br><small>TARDE</small></td>
-      <td><strong>Visita PRIO</strong></td>
-      <td><br><small class="inst"></small></td>
-      <td><span class="estado">RJ</span></td>
-      <td><span class="tipo-badge tipo-visita">Visita PRIO</span></td>
-      <td class="cursos-cell"><small></small></td>
-      <td class="num">—</td>
-      <td class="num">80</td>
-      <td class="num">80</td>
-      <td></td>
-    </tr>
-    <tr data-mes="Ago" data-tipo="Visita PRIO" data-impacto="Visita" data-estado="RJ" data-participacao="" >
-      <td><span class="tag tag-visita">Visita</span></td>
-      <td class="date-cell">26/Ago/2026<br><small>TARDE</small></td>
-      <td><strong>Visita PRIO</strong></td>
-      <td><br><small class="inst"></small></td>
-      <td><span class="estado">RJ</span></td>
-      <td><span class="tipo-badge tipo-visita">Visita PRIO</span></td>
-      <td class="cursos-cell"><small></small></td>
-      <td class="num">—</td>
-      <td class="num">80</td>
-      <td class="num">80</td>
-      <td></td>
-    </tr>
-    <tr data-mes="Ago" data-tipo="Palestra" data-impacto="Baixo" data-estado="RJ" data-participacao="Não" title=" 1 hora ou 1 hora e meia; Ideal fazer terça ou quinta (10h ou 14h). Na semana da Fluxo">
-      <td><span class="tag tag-baixo">Baixo</span></td>
-      <td class="date-cell">31/Ago/2026<br><small>08h</small></td>
-      <td><strong>27º Encontro da Engenharia de Produção</strong><br><small> 1 hora ou 1 hora e meia; Ideal fazer terça ou quinta (10h ou 14h). Na semana da...</small></td>
-      <td>UENF<br><small class="inst">EENGE</small></td>
-      <td><span class="estado">RJ</span></td>
-      <td><span class="tipo-badge tipo-palestra">Palestra</span></td>
-      <td class="cursos-cell"><small>Engenharia de Produção, Metalúrgica e Civil</small></td>
-      <td class="num">R$ 2.000</td>
-      <td class="num">1</td>
-      <td class="num">150</td>
-      <td><span class="badge badge-nao">Não participar</span></td>
-    </tr>
-    <tr data-mes="Set" data-tipo="Visita PRIO" data-impacto="Visita" data-estado="RJ" data-participacao="" >
-      <td><span class="tag tag-visita">Visita</span></td>
-      <td class="date-cell">08/Set/2026<br><small>TARDE</small></td>
-      <td><strong>Visita PRIO</strong></td>
-      <td><br><small class="inst"></small></td>
-      <td><span class="estado">RJ</span></td>
-      <td><span class="tipo-badge tipo-visita">Visita PRIO</span></td>
-      <td class="cursos-cell"><small></small></td>
-      <td class="num">—</td>
-      <td class="num">80</td>
-      <td class="num">80</td>
-      <td></td>
-    </tr>
-    <tr data-mes="Set" data-tipo="Visita PRIO" data-impacto="Visita" data-estado="RJ" data-participacao="" >
-      <td><span class="tag tag-visita">Visita</span></td>
-      <td class="date-cell">11/Set/2026<br><small>TARDE</small></td>
-      <td><strong>Visita PRIO</strong></td>
-      <td><br><small class="inst"></small></td>
-      <td><span class="estado">RJ</span></td>
-      <td><span class="tipo-badge tipo-visita">Visita PRIO</span></td>
-      <td class="cursos-cell"><small></small></td>
-      <td class="num">—</td>
-      <td class="num">80</td>
-      <td class="num">80</td>
-      <td></td>
-    </tr>
-    <tr data-mes="Set" data-tipo="Visita PRIO" data-impacto="Visita" data-estado="RJ" data-participacao="" >
-      <td><span class="tag tag-visita">Visita</span></td>
-      <td class="date-cell">17/Set/2026<br><small>MANHÃ</small></td>
-      <td><strong>Visita PRIO</strong></td>
-      <td><br><small class="inst"></small></td>
-      <td><span class="estado">RJ</span></td>
-      <td><span class="tipo-badge tipo-visita">Visita PRIO</span></td>
-      <td class="cursos-cell"><small></small></td>
-      <td class="num">—</td>
-      <td class="num">80</td>
-      <td class="num">80</td>
-      <td></td>
-    </tr>
-    <tr data-mes="Set" data-tipo="Feira" data-impacto="Alto" data-estado="PE" data-participacao="Sim" >
-      <td><span class="tag tag-alto">Alto</span></td>
-      <td class="date-cell">22/Set/2026<br><small>09h</small></td>
-      <td><strong>UFPE no Mercado</strong></td>
-      <td>UFPE<br><small class="inst">A.C.E. Consultoria</small></td>
-      <td><span class="estado">PE</span></td>
-      <td><span class="tipo-badge tipo-feira">Feira</span></td>
-      <td class="cursos-cell"><small>Business</small></td>
-      <td class="num">R$ 13.000</td>
-      <td class="num">3</td>
-      <td class="num"></td>
-      <td><span class="badge badge-sim">Confirmado</span></td>
-    </tr>
-    <tr data-mes="Set" data-tipo="Visita PRIO" data-impacto="Visita" data-estado="RJ" data-participacao="" >
-      <td><span class="tag tag-visita">Visita</span></td>
-      <td class="date-cell">22/Set/2026<br><small>TARDE</small></td>
-      <td><strong>Visita PRIO</strong></td>
-      <td>ROG.E (21 a 24 de setembro)<br><small class="inst"></small></td>
-      <td><span class="estado">RJ</span></td>
-      <td><span class="tipo-badge tipo-visita">Visita PRIO</span></td>
-      <td class="cursos-cell"><small></small></td>
-      <td class="num">—</td>
-      <td class="num">80</td>
-      <td class="num">80</td>
-      <td></td>
-    </tr>
-    <tr data-mes="Set" data-tipo="Palestra" data-impacto="Médio" data-estado="RJ" data-participacao="Sim" >
-      <td><span class="tag tag-medio">Médio</span></td>
-      <td class="date-cell">23/Set/2026<br><small>TBD</small></td>
-      <td><strong>Semana Ayra</strong></td>
-      <td>UFRJ<br><small class="inst">Ayra</small></td>
-      <td><span class="estado">RJ</span></td>
-      <td><span class="tipo-badge tipo-palestra">Palestra</span></td>
-      <td class="cursos-cell"><small></small></td>
-      <td class="num">—</td>
-      <td class="num"></td>
-      <td class="num">80</td>
-      <td><span class="badge badge-sim">Confirmado</span></td>
-    </tr>
-    <tr data-mes="Set" data-tipo="Visita PRIO" data-impacto="Visita" data-estado="RJ" data-participacao="" >
-      <td><span class="tag tag-visita">Visita</span></td>
-      <td class="date-cell">25/Set/2026<br><small>TARDE</small></td>
-      <td><strong>Visita PRIO</strong></td>
-      <td>IME<br><small class="inst"></small></td>
-      <td><span class="estado">RJ</span></td>
-      <td><span class="tipo-badge tipo-visita">Visita PRIO</span></td>
-      <td class="cursos-cell"><small></small></td>
-      <td class="num">—</td>
-      <td class="num">80</td>
-      <td class="num">80</td>
-      <td></td>
-    </tr>
-    <tr data-mes="Set" data-tipo="Palestra" data-impacto="Médio" data-estado="RJ" data-participacao="Em análise" >
-      <td><span class="tag tag-medio">Médio</span></td>
-      <td class="date-cell">28/Set/2026<br><small>09h</small></td>
-      <td><strong>Evento Interação</strong></td>
-      <td>UFF<br><small class="inst">META</small></td>
-      <td><span class="estado">RJ</span></td>
-      <td><span class="tipo-badge tipo-palestra">Palestra</span></td>
-      <td class="cursos-cell"><small>Engenharias</small></td>
-      <td class="num">R$ 3.800</td>
-      <td class="num">1</td>
-      <td class="num">80</td>
-      <td><span class="badge badge-analise">Em análise</span></td>
-    </tr>
-    <tr data-mes="Out" data-tipo="Visita PRIO" data-impacto="Visita" data-estado="RJ" data-participacao="" >
-      <td><span class="tag tag-visita">Visita</span></td>
-      <td class="date-cell">01/Out/2026<br><small>MANHÃ</small></td>
-      <td><strong>Visita PRIO</strong></td>
-      <td><br><small class="inst"></small></td>
-      <td><span class="estado">RJ</span></td>
-      <td><span class="tipo-badge tipo-visita">Visita PRIO</span></td>
-      <td class="cursos-cell"><small></small></td>
-      <td class="num">—</td>
-      <td class="num">80</td>
-      <td class="num">80</td>
-      <td></td>
-    </tr>
-    <tr data-mes="Out" data-tipo="Visita PRIO" data-impacto="Visita" data-estado="RJ" data-participacao="" >
-      <td><span class="tag tag-visita">Visita</span></td>
-      <td class="date-cell">13/Out/2026<br><small>TARDE</small></td>
-      <td><strong>Visita PRIO</strong></td>
-      <td><br><small class="inst"></small></td>
-      <td><span class="estado">RJ</span></td>
-      <td><span class="tipo-badge tipo-visita">Visita PRIO</span></td>
-      <td class="cursos-cell"><small></small></td>
-      <td class="num">—</td>
-      <td class="num">80</td>
-      <td class="num">80</td>
-      <td></td>
-    </tr>
-    <tr data-mes="" data-tipo="" data-impacto="" data-estado="RJ" data-participacao="" >
-      <td><span class="tag tag-outro"></span></td>
-      <td class="date-cell"><br><small></small></td>
-      <td><strong>SPEtro XVI UFRJ</strong></td>
-      <td>UFRJ<br><small class="inst">SPEtro</small></td>
-      <td><span class="estado">RJ</span></td>
-      <td><span class="tipo-badge tipo-outro"></span></td>
-      <td class="cursos-cell"><small></small></td>
-      <td class="num">—</td>
-      <td class="num"></td>
-      <td class="num"></td>
-      <td></td>
-    </tr>
-    <tr data-mes="" data-tipo="Palestra" data-impacto="Médio" data-estado="RJ" data-participacao="Não" title="Time de Petrofísicos da PRIO não possuiam disponibilidade">
-      <td><span class="tag tag-medio">Médio</span></td>
-      <td class="date-cell">Fevereiro/Março<br><small>TBD</small></td>
-      <td><strong>Palestras de Férias</strong><br><small>Time de Petrofísicos da PRIO não possuiam disponibilidade</small></td>
-      <td>UFRJ<br><small class="inst">SPWLA</small></td>
-      <td><span class="estado">RJ</span></td>
-      <td><span class="tipo-badge tipo-palestra">Palestra</span></td>
-      <td class="cursos-cell"><small>Geologia - Geofísica - Petrofísica</small></td>
-      <td class="num">—</td>
-      <td class="num">1</td>
-      <td class="num"></td>
-      <td><span class="badge badge-nao">Não participar</span></td>
-    </tr>
-    <tr data-mes="" data-tipo="Palestra" data-impacto="Médio" data-estado="RJ" data-participacao="Sim" >
-      <td><span class="tag tag-medio">Médio</span></td>
-      <td class="date-cell">Maio/Junho<br><small>TBD</small></td>
-      <td><strong>Semana da Petrofísica</strong></td>
-      <td>UFRJ<br><small class="inst">SPWLA</small></td>
-      <td><span class="estado">RJ</span></td>
-      <td><span class="tipo-badge tipo-palestra">Palestra</span></td>
-      <td class="cursos-cell"><small>Geologia - Geofísica - Petrofísica</small></td>
-      <td class="num">—</td>
-      <td class="num">1</td>
-      <td class="num"></td>
-      <td><span class="badge badge-sim">Confirmado</span></td>
-    </tr>
-    <tr data-mes="" data-tipo="Palestra" data-impacto="Baixo" data-estado="SP" data-participacao="Não" title="Custo alto para poucos estudantes">
-      <td><span class="tag tag-baixo">Baixo</span></td>
-      <td class="date-cell">Novembro<br><small>TBD</small></td>
-      <td><strong>XIV Workshop de Petróleo da SPE</strong><br><small>Custo alto para poucos estudantes</small></td>
-      <td>USP<br><small class="inst">SPE</small></td>
-      <td><span class="estado">SP</span></td>
-      <td><span class="tipo-badge tipo-palestra">Palestra</span></td>
-      <td class="cursos-cell"><small>Engenharia de Petróleo - Geologia - Geofísica</small></td>
-      <td class="num">R$ 2.000</td>
-      <td class="num">1</td>
-      <td class="num">50</td>
-      <td><span class="badge badge-nao">Não participar</span></td>
-    </tr>
-  </tbody>
-</table>
-<div class="empty-state hidden" id="emptyState">Nenhum evento encontrado com os filtros selecionados.</div>
+<div class="content">
+  <div id="timeline">
+<div class="month-sep" data-month="Fevereiro"><span>Fevereiro</span></div>
+<div class="card" data-tab="visita" data-impacto="Visita" data-mes="Fevereiro">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#198754"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">05/Fev</div>
+      <div class="card-badges">
+        <span class="pill pill-visita">Visita PRIO</span>
+        <span class="pill pill-imp" style="background:#19875418;color:#198754;border-color:#19875440">Visita</span>
+        
+      </div>
+    </div>
+    <div class="card-title">Visita PRIO</div>
+    
+    <div class="card-meta"><span class="meta-item">📍 UFS, RJ</span> <span class="meta-item">🕐 TARDE</span> <span class="meta-item">👥 3 da PRIO</span> <span class="meta-item">🎓 ~3 alunos</span></div>
+    
+    
+  </div>
+</div><div class="month-sep" data-month="Março"><span>Março</span></div>
+<div class="card" data-tab="feira" data-impacto="Médio" data-mes="Março">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#fd7e14"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">10/Mar</div>
+      <div class="card-badges">
+        <span class="pill pill-feira">Feira</span>
+        <span class="pill pill-imp" style="background:#fd7e1418;color:#fd7e14;border-color:#fd7e1440">Médio</span>
+        <span class="pill pill-nao">✗ Não participar</span>
+      </div>
+    </div>
+    <div class="card-title">Feira de Carreira da Politécnica-UFRJ</div>
+    <div class="card-inst">Escola Politécnica</div>
+    <div class="card-meta"><span class="meta-item">📍 UFRJ, RJ</span> <span class="meta-item">🕐 09h</span> <span class="meta-item">💰 R$ 27.000</span> <span class="meta-item">👥 30 da PRIO</span> <span class="meta-item">🎓 ~5000 alunos</span></div>
+    <div class="card-cursos">Cursos: Engenharias</div>
+    <div class="card-comment">💬 Participação na Semana Fluxo é prioridade (já conhecemos e somos conhecidos por isso); Custo do espaço é alto; Evento acontece no início do ano</div>
+  </div>
+</div>
+<div class="card" data-tab="evento" data-impacto="Baixo" data-mes="Março">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#0d6efd"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">25/Mar</div>
+      <div class="card-badges">
+        <span class="pill pill-palestra">Palestra</span>
+        <span class="pill pill-imp" style="background:#0d6efd18;color:#0d6efd;border-color:#0d6efd40">Baixo</span>
+        <span class="pill pill-nao">✗ Não participar</span>
+      </div>
+    </div>
+    <div class="card-title">PETROUFES</div>
+    <div class="card-inst">SPE</div>
+    <div class="card-meta"><span class="meta-item">📍 UFES, ES</span> <span class="meta-item">🕐 10h</span> <span class="meta-item">💰 R$ 4.000</span> <span class="meta-item">👥 1 da PRIO</span> <span class="meta-item">🎓 ~100 alunos</span></div>
+    <div class="card-cursos">Cursos: Engenharia de Petróleo - ; Engenharia Química - ; Engenharia de Computação - ; Engenharia de Produção - ; Ciência da Computação</div>
+    
+  </div>
+</div>
+<div class="card" data-tab="visita" data-impacto="Visita" data-mes="Março">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#198754"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">25/Mar</div>
+      <div class="card-badges">
+        <span class="pill pill-visita">Visita PRIO</span>
+        <span class="pill pill-imp" style="background:#19875418;color:#198754;border-color:#19875440">Visita</span>
+        
+      </div>
+    </div>
+    <div class="card-title">Visita PRIO</div>
+    
+    <div class="card-meta"><span class="meta-item">📍 UERJ - FGV - UFRJ, RJ</span> <span class="meta-item">🕐 TARDE</span> <span class="meta-item">👥 38 da PRIO</span> <span class="meta-item">🎓 ~38 alunos</span></div>
+    
+    
+  </div>
+</div><div class="month-sep" data-month="Abril"><span>Abril</span></div>
+<div class="card" data-tab="visita" data-impacto="Visita" data-mes="Abril">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#198754"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">10/Abr</div>
+      <div class="card-badges">
+        <span class="pill pill-visita">Visita PRIO</span>
+        <span class="pill pill-imp" style="background:#19875418;color:#198754;border-color:#19875440">Visita</span>
+        
+      </div>
+    </div>
+    <div class="card-title">Visita PRIO</div>
+    
+    <div class="card-meta"><span class="meta-item">📍 UNICAMP - USP - SPWLA UFRJ, RJ</span> <span class="meta-item">🕐 TARDE</span> <span class="meta-item">👥 24 da PRIO</span> <span class="meta-item">🎓 ~24 alunos</span></div>
+    
+    
+  </div>
+</div>
+<div class="card" data-tab="feira" data-impacto="Médio" data-mes="Abril">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#fd7e14"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">14/Abr</div>
+      <div class="card-badges">
+        <span class="pill pill-feira">Feira</span>
+        <span class="pill pill-imp" style="background:#fd7e1418;color:#fd7e14;border-color:#fd7e1440">Médio</span>
+        
+      </div>
+    </div>
+    <div class="card-title">NX - Networking Experience 2026</div>
+    
+    <div class="card-meta"><span class="meta-item">📍 Mackenzie, SP</span> <span class="meta-item">🕐 08h</span> <span class="meta-item">💰 R$ 8.000</span> <span class="meta-item">👥 1 da PRIO</span> <span class="meta-item">🎓 ~1000 alunos</span></div>
+    <div class="card-cursos">Cursos: Administração - Ciências Contábeis - Comunicação - Direito - Ciência de Dados - RI - Psicologia</div>
+    
+  </div>
+</div>
+<div class="card" data-tab="feira" data-impacto="Médio" data-mes="Abril">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#fd7e14"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">28/Abr</div>
+      <div class="card-badges">
+        <span class="pill pill-feira">Feira</span>
+        <span class="pill pill-imp" style="background:#fd7e1418;color:#fd7e14;border-color:#fd7e1440">Médio</span>
+        <span class="pill pill-sim">✓ Confirmado</span>
+      </div>
+    </div>
+    <div class="card-title">Conecta</div>
+    <div class="card-inst">IBMEC Carreiras</div>
+    <div class="card-meta"><span class="meta-item">📍 IBMEC, RJ</span> <span class="meta-item">🕐 17h</span> <span class="meta-item">👥 1 da PRIO</span> <span class="meta-item">🎓 ~50 alunos</span></div>
+    <div class="card-cursos">Cursos: Administração - Ciências Contábeis - Comunicação - Direito - Ciência de Dados - RI - Engenharia de Produção</div>
+    
+  </div>
+</div><div class="month-sep" data-month="Maio"><span>Maio</span></div>
+<div class="card" data-tab="visita" data-impacto="Visita" data-mes="Maio">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#198754"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">20/Mai</div>
+      <div class="card-badges">
+        <span class="pill pill-visita">Visita PRIO</span>
+        <span class="pill pill-imp" style="background:#19875418;color:#198754;border-color:#19875440">Visita</span>
+        
+      </div>
+    </div>
+    <div class="card-title">Visita PRIO</div>
+    
+    <div class="card-meta"><span class="meta-item">📍 , RJ</span> <span class="meta-item">🕐 MANHÃ</span> <span class="meta-item">👥 80 da PRIO</span> <span class="meta-item">🎓 ~80 alunos</span></div>
+    
+    
+  </div>
+</div>
+<div class="card" data-tab="feira" data-impacto="Alto" data-mes="Maio">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#dc3545"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">21/Mai</div>
+      <div class="card-badges">
+        <span class="pill pill-feira">Feira</span>
+        <span class="pill pill-imp" style="background:#dc354518;color:#dc3545;border-color:#dc354540">Alto</span>
+        <span class="pill pill-sim">✓ Confirmado</span>
+      </div>
+    </div>
+    <div class="card-title">Feira de Recrutamento e Carreira</div>
+    <div class="card-inst">FEA JÚNIOR</div>
+    <div class="card-meta"><span class="meta-item">📍 USP, SP</span> <span class="meta-item">🕐 09h</span> <span class="meta-item">💰 R$ 22.000</span> <span class="meta-item">👥 3 da PRIO</span></div>
+    <div class="card-cursos">Cursos: Business - Engenharias - Exatas/Tech</div>
+    
+  </div>
+</div>
+<div class="card" data-tab="evento" data-impacto="Baixo" data-mes="Maio">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#0d6efd"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">25/Mai</div>
+      <div class="card-badges">
+        <span class="pill pill-palestra">Palestra</span>
+        <span class="pill pill-imp" style="background:#0d6efd18;color:#0d6efd;border-color:#0d6efd40">Baixo</span>
+        <span class="pill pill-nao">✗ Não participar</span>
+      </div>
+    </div>
+    <div class="card-title">SEMATRON (Semana de Engenharia Mecatrônica)</div>
+    <div class="card-inst">EESC-USP</div>
+    <div class="card-meta"><span class="meta-item">📍 USP, SP</span> <span class="meta-item">🕐 09h</span> <span class="meta-item">💰 R$ 8.000</span> <span class="meta-item">👥 1 da PRIO</span> <span class="meta-item">🎓 ~200 alunos</span></div>
+    <div class="card-cursos">Cursos: Engenharia Mecatrônica</div>
+    <div class="card-comment">💬 Focado apenas para automação, com temas não alinhados com a PRIO; Logística para São Carlos/SP vai ser caro x quantidade de alunos atingidos</div>
+  </div>
+</div>
+<div class="card" data-tab="evento" data-impacto="Baixo" data-mes="Maio">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#0d6efd"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">26/Mai</div>
+      <div class="card-badges">
+        <span class="pill pill-palestra">Palestra</span>
+        <span class="pill pill-imp" style="background:#0d6efd18;color:#0d6efd;border-color:#0d6efd40">Baixo</span>
+        
+      </div>
+    </div>
+    <div class="card-title">Speed Job </div>
+    <div class="card-inst">SPE</div>
+    <div class="card-meta"><span class="meta-item">📍 UFPel, RS</span> <span class="meta-item">🕐 17h</span> <span class="meta-item">👥 1 da PRIO</span></div>
+    <div class="card-cursos">Cursos: Engenherias</div>
+    
+  </div>
+</div><div class="month-sep" data-month="Junho"><span>Junho</span></div>
+<div class="card" data-tab="evento" data-impacto="Médio" data-mes="Junho">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#fd7e14"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">01/Jun</div>
+      <div class="card-badges">
+        <span class="pill pill-painel">Painel</span>
+        <span class="pill pill-imp" style="background:#fd7e1418;color:#fd7e14;border-color:#fd7e1440">Médio</span>
+        <span class="pill pill-sim">✓ Confirmado</span>
+      </div>
+    </div>
+    <div class="card-title">Feira Virtual Emprega</div>
+    <div class="card-inst">Vero Solutions</div>
+    <div class="card-meta"><span class="meta-item">🕐 14h</span> <span class="meta-item">👥 1 da PRIO</span></div>
+    <div class="card-cursos">Cursos: Todos</div>
+    
+  </div>
+</div><div class="month-sep" data-month="Agosto"><span>Agosto</span></div>
+<div class="card" data-tab="feira" data-impacto="Alto" data-mes="Agosto">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#dc3545"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">12/Ago</div>
+      <div class="card-badges">
+        <span class="pill pill-feira">Feira</span>
+        <span class="pill pill-imp" style="background:#dc354518;color:#dc3545;border-color:#dc354540">Alto</span>
+        
+      </div>
+    </div>
+    <div class="card-title">Feira de Carreiras</div>
+    <div class="card-inst">Integra</div>
+    <div class="card-meta"><span class="meta-item">📍 UNICAMP, SP</span> <span class="meta-item">🕐 10h</span></div>
+    <div class="card-cursos">Cursos: Engenharia de Produção e Manufatura - Administração</div>
+    
+  </div>
+</div>
+<div class="card" data-tab="visita" data-impacto="Visita" data-mes="Agosto">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#198754"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">12/Ago</div>
+      <div class="card-badges">
+        <span class="pill pill-visita">Visita PRIO</span>
+        <span class="pill pill-imp" style="background:#19875418;color:#198754;border-color:#19875440">Visita</span>
+        
+      </div>
+    </div>
+    <div class="card-title">Visita PRIO</div>
+    
+    <div class="card-meta"><span class="meta-item">📍 , RJ</span> <span class="meta-item">🕐 MANHÃ</span> <span class="meta-item">👥 80 da PRIO</span> <span class="meta-item">🎓 ~80 alunos</span></div>
+    
+    
+  </div>
+</div>
+<div class="card" data-tab="feira" data-impacto="Alto" data-mes="Agosto">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#dc3545"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">15/Ago</div>
+      <div class="card-badges">
+        <span class="pill pill-feira">Feira</span>
+        <span class="pill pill-imp" style="background:#dc354518;color:#dc3545;border-color:#dc354540">Alto</span>
+        <span class="pill pill-sim">✓ Confirmado</span>
+      </div>
+    </div>
+    <div class="card-title">Feira de Carreiras</div>
+    
+    <div class="card-meta"><span class="meta-item">📍 ITA, SP</span> <span class="meta-item">🕐 10h</span> <span class="meta-item">🎓 ~2100 alunos</span></div>
+    <div class="card-cursos">Cursos: Engenharias</div>
+    
+  </div>
+</div>
+<div class="card" data-tab="visita" data-impacto="Visita" data-mes="Agosto">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#198754"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">19/Ago</div>
+      <div class="card-badges">
+        <span class="pill pill-visita">Visita PRIO</span>
+        <span class="pill pill-imp" style="background:#19875418;color:#198754;border-color:#19875440">Visita</span>
+        
+      </div>
+    </div>
+    <div class="card-title">Visita PRIO</div>
+    
+    <div class="card-meta"><span class="meta-item">📍 , RJ</span> <span class="meta-item">🕐 TARDE</span> <span class="meta-item">👥 80 da PRIO</span> <span class="meta-item">🎓 ~80 alunos</span></div>
+    
+    
+  </div>
+</div>
+<div class="card" data-tab="visita" data-impacto="Visita" data-mes="Agosto">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#198754"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">26/Ago</div>
+      <div class="card-badges">
+        <span class="pill pill-visita">Visita PRIO</span>
+        <span class="pill pill-imp" style="background:#19875418;color:#198754;border-color:#19875440">Visita</span>
+        
+      </div>
+    </div>
+    <div class="card-title">Visita PRIO</div>
+    
+    <div class="card-meta"><span class="meta-item">📍 , RJ</span> <span class="meta-item">🕐 TARDE</span> <span class="meta-item">👥 80 da PRIO</span> <span class="meta-item">🎓 ~80 alunos</span></div>
+    
+    
+  </div>
+</div>
+<div class="card" data-tab="evento" data-impacto="Baixo" data-mes="Agosto">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#0d6efd"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">31/Ago</div>
+      <div class="card-badges">
+        <span class="pill pill-palestra">Palestra</span>
+        <span class="pill pill-imp" style="background:#0d6efd18;color:#0d6efd;border-color:#0d6efd40">Baixo</span>
+        <span class="pill pill-nao">✗ Não participar</span>
+      </div>
+    </div>
+    <div class="card-title">27º Encontro da Engenharia de Produção</div>
+    <div class="card-inst">EENGE</div>
+    <div class="card-meta"><span class="meta-item">📍 UENF, RJ</span> <span class="meta-item">🕐 08h</span> <span class="meta-item">💰 R$ 2.000</span> <span class="meta-item">👥 1 da PRIO</span> <span class="meta-item">🎓 ~150 alunos</span></div>
+    <div class="card-cursos">Cursos: Engenharia de Produção, Metalúrgica e Civil</div>
+    <div class="card-comment">💬  1 hora ou 1 hora e meia; Ideal fazer terça ou quinta (10h ou 14h). Na semana da Fluxo</div>
+  </div>
+</div><div class="month-sep" data-month="Setembro"><span>Setembro</span></div>
+<div class="card" data-tab="visita" data-impacto="Visita" data-mes="Setembro">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#198754"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">08/Set</div>
+      <div class="card-badges">
+        <span class="pill pill-visita">Visita PRIO</span>
+        <span class="pill pill-imp" style="background:#19875418;color:#198754;border-color:#19875440">Visita</span>
+        
+      </div>
+    </div>
+    <div class="card-title">Visita PRIO</div>
+    
+    <div class="card-meta"><span class="meta-item">📍 , RJ</span> <span class="meta-item">🕐 TARDE</span> <span class="meta-item">👥 80 da PRIO</span> <span class="meta-item">🎓 ~80 alunos</span></div>
+    
+    
+  </div>
+</div>
+<div class="card" data-tab="visita" data-impacto="Visita" data-mes="Setembro">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#198754"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">11/Set</div>
+      <div class="card-badges">
+        <span class="pill pill-visita">Visita PRIO</span>
+        <span class="pill pill-imp" style="background:#19875418;color:#198754;border-color:#19875440">Visita</span>
+        
+      </div>
+    </div>
+    <div class="card-title">Visita PRIO</div>
+    
+    <div class="card-meta"><span class="meta-item">📍 , RJ</span> <span class="meta-item">🕐 TARDE</span> <span class="meta-item">👥 80 da PRIO</span> <span class="meta-item">🎓 ~80 alunos</span></div>
+    
+    
+  </div>
+</div>
+<div class="card" data-tab="visita" data-impacto="Visita" data-mes="Setembro">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#198754"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">17/Set</div>
+      <div class="card-badges">
+        <span class="pill pill-visita">Visita PRIO</span>
+        <span class="pill pill-imp" style="background:#19875418;color:#198754;border-color:#19875440">Visita</span>
+        
+      </div>
+    </div>
+    <div class="card-title">Visita PRIO</div>
+    
+    <div class="card-meta"><span class="meta-item">📍 , RJ</span> <span class="meta-item">🕐 MANHÃ</span> <span class="meta-item">👥 80 da PRIO</span> <span class="meta-item">🎓 ~80 alunos</span></div>
+    
+    
+  </div>
+</div>
+<div class="card" data-tab="feira" data-impacto="Alto" data-mes="Setembro">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#dc3545"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">22/Set</div>
+      <div class="card-badges">
+        <span class="pill pill-feira">Feira</span>
+        <span class="pill pill-imp" style="background:#dc354518;color:#dc3545;border-color:#dc354540">Alto</span>
+        <span class="pill pill-sim">✓ Confirmado</span>
+      </div>
+    </div>
+    <div class="card-title">UFPE no Mercado</div>
+    <div class="card-inst">A.C.E. Consultoria</div>
+    <div class="card-meta"><span class="meta-item">📍 UFPE, PE</span> <span class="meta-item">🕐 09h</span> <span class="meta-item">💰 R$ 13.000</span> <span class="meta-item">👥 3 da PRIO</span></div>
+    <div class="card-cursos">Cursos: Business</div>
+    
+  </div>
+</div>
+<div class="card" data-tab="visita" data-impacto="Visita" data-mes="Setembro">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#198754"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">22/Set</div>
+      <div class="card-badges">
+        <span class="pill pill-visita">Visita PRIO</span>
+        <span class="pill pill-imp" style="background:#19875418;color:#198754;border-color:#19875440">Visita</span>
+        
+      </div>
+    </div>
+    <div class="card-title">Visita PRIO</div>
+    
+    <div class="card-meta"><span class="meta-item">📍 ROG.E (21 a 24 de setembro), RJ</span> <span class="meta-item">🕐 TARDE</span> <span class="meta-item">👥 80 da PRIO</span> <span class="meta-item">🎓 ~80 alunos</span></div>
+    
+    
+  </div>
+</div>
+<div class="card" data-tab="evento" data-impacto="Médio" data-mes="Setembro">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#fd7e14"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">23/Set</div>
+      <div class="card-badges">
+        <span class="pill pill-palestra">Palestra</span>
+        <span class="pill pill-imp" style="background:#fd7e1418;color:#fd7e14;border-color:#fd7e1440">Médio</span>
+        <span class="pill pill-sim">✓ Confirmado</span>
+      </div>
+    </div>
+    <div class="card-title">Semana Ayra</div>
+    <div class="card-inst">Ayra</div>
+    <div class="card-meta"><span class="meta-item">📍 UFRJ, RJ</span> <span class="meta-item">🕐 TBD</span> <span class="meta-item">🎓 ~80 alunos</span></div>
+    
+    
+  </div>
+</div>
+<div class="card" data-tab="visita" data-impacto="Visita" data-mes="Setembro">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#198754"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">25/Set</div>
+      <div class="card-badges">
+        <span class="pill pill-visita">Visita PRIO</span>
+        <span class="pill pill-imp" style="background:#19875418;color:#198754;border-color:#19875440">Visita</span>
+        
+      </div>
+    </div>
+    <div class="card-title">Visita PRIO</div>
+    
+    <div class="card-meta"><span class="meta-item">📍 IME, RJ</span> <span class="meta-item">🕐 TARDE</span> <span class="meta-item">👥 80 da PRIO</span> <span class="meta-item">🎓 ~80 alunos</span></div>
+    
+    
+  </div>
+</div>
+<div class="card" data-tab="evento" data-impacto="Médio" data-mes="Setembro">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#fd7e14"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">28/Set</div>
+      <div class="card-badges">
+        <span class="pill pill-palestra">Palestra</span>
+        <span class="pill pill-imp" style="background:#fd7e1418;color:#fd7e14;border-color:#fd7e1440">Médio</span>
+        <span class="pill pill-analise">⏳ Em análise</span>
+      </div>
+    </div>
+    <div class="card-title">Evento Interação</div>
+    <div class="card-inst">META</div>
+    <div class="card-meta"><span class="meta-item">📍 UFF, RJ</span> <span class="meta-item">🕐 09h</span> <span class="meta-item">💰 R$ 3.800</span> <span class="meta-item">👥 1 da PRIO</span> <span class="meta-item">🎓 ~80 alunos</span></div>
+    <div class="card-cursos">Cursos: Engenharias</div>
+    
+  </div>
+</div><div class="month-sep" data-month="Outubro"><span>Outubro</span></div>
+<div class="card" data-tab="visita" data-impacto="Visita" data-mes="Outubro">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#198754"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">01/Out</div>
+      <div class="card-badges">
+        <span class="pill pill-visita">Visita PRIO</span>
+        <span class="pill pill-imp" style="background:#19875418;color:#198754;border-color:#19875440">Visita</span>
+        
+      </div>
+    </div>
+    <div class="card-title">Visita PRIO</div>
+    
+    <div class="card-meta"><span class="meta-item">📍 , RJ</span> <span class="meta-item">🕐 MANHÃ</span> <span class="meta-item">👥 80 da PRIO</span> <span class="meta-item">🎓 ~80 alunos</span></div>
+    
+    
+  </div>
+</div>
+<div class="card" data-tab="visita" data-impacto="Visita" data-mes="Outubro">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#198754"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">13/Out</div>
+      <div class="card-badges">
+        <span class="pill pill-visita">Visita PRIO</span>
+        <span class="pill pill-imp" style="background:#19875418;color:#198754;border-color:#19875440">Visita</span>
+        
+      </div>
+    </div>
+    <div class="card-title">Visita PRIO</div>
+    
+    <div class="card-meta"><span class="meta-item">📍 , RJ</span> <span class="meta-item">🕐 TARDE</span> <span class="meta-item">👥 80 da PRIO</span> <span class="meta-item">🎓 ~80 alunos</span></div>
+    
+    
+  </div>
+</div>
+<div class="card" data-tab="evento" data-impacto="" data-mes="">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#6c757d"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">—</div>
+      <div class="card-badges">
+        <span class="pill pill-outro"></span>
+        <span class="pill pill-imp" style="background:#6c757d18;color:#6c757d;border-color:#6c757d40"></span>
+        
+      </div>
+    </div>
+    <div class="card-title">SPEtro XVI UFRJ</div>
+    <div class="card-inst">SPEtro</div>
+    <div class="card-meta"><span class="meta-item">📍 UFRJ, RJ</span></div>
+    
+    
+  </div>
+</div>
+<div class="card" data-tab="evento" data-impacto="Médio" data-mes="">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#fd7e14"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">Fevereiro/Março</div>
+      <div class="card-badges">
+        <span class="pill pill-palestra">Palestra</span>
+        <span class="pill pill-imp" style="background:#fd7e1418;color:#fd7e14;border-color:#fd7e1440">Médio</span>
+        <span class="pill pill-nao">✗ Não participar</span>
+      </div>
+    </div>
+    <div class="card-title">Palestras de Férias</div>
+    <div class="card-inst">SPWLA</div>
+    <div class="card-meta"><span class="meta-item">📍 UFRJ, RJ</span> <span class="meta-item">🕐 TBD</span> <span class="meta-item">👥 1 da PRIO</span></div>
+    <div class="card-cursos">Cursos: Geologia - Geofísica - Petrofísica</div>
+    <div class="card-comment">💬 Time de Petrofísicos da PRIO não possuiam disponibilidade</div>
+  </div>
+</div>
+<div class="card" data-tab="evento" data-impacto="Médio" data-mes="">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#fd7e14"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">Maio/Junho</div>
+      <div class="card-badges">
+        <span class="pill pill-palestra">Palestra</span>
+        <span class="pill pill-imp" style="background:#fd7e1418;color:#fd7e14;border-color:#fd7e1440">Médio</span>
+        <span class="pill pill-sim">✓ Confirmado</span>
+      </div>
+    </div>
+    <div class="card-title">Semana da Petrofísica</div>
+    <div class="card-inst">SPWLA</div>
+    <div class="card-meta"><span class="meta-item">📍 UFRJ, RJ</span> <span class="meta-item">🕐 TBD</span> <span class="meta-item">👥 1 da PRIO</span></div>
+    <div class="card-cursos">Cursos: Geologia - Geofísica - Petrofísica</div>
+    
+  </div>
+</div>
+<div class="card" data-tab="evento" data-impacto="Baixo" data-mes="">
+  <div class="card-timeline">
+    <div class="tl-dot" style="background:#0d6efd"></div>
+    <div class="tl-line"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <div class="card-date">Novembro</div>
+      <div class="card-badges">
+        <span class="pill pill-palestra">Palestra</span>
+        <span class="pill pill-imp" style="background:#0d6efd18;color:#0d6efd;border-color:#0d6efd40">Baixo</span>
+        <span class="pill pill-nao">✗ Não participar</span>
+      </div>
+    </div>
+    <div class="card-title">XIV Workshop de Petróleo da SPE</div>
+    <div class="card-inst">SPE</div>
+    <div class="card-meta"><span class="meta-item">📍 USP, SP</span> <span class="meta-item">🕐 TBD</span> <span class="meta-item">💰 R$ 2.000</span> <span class="meta-item">👥 1 da PRIO</span> <span class="meta-item">🎓 ~50 alunos</span></div>
+    <div class="card-cursos">Cursos: Engenharia de Petróleo - Geologia - Geofísica</div>
+    <div class="card-comment">💬 Custo alto para poucos estudantes</div>
+  </div>
+</div>
+  </div>
+  <div class="empty-state hidden" id="emptyState">Nenhum evento encontrado.</div>
 </div>
 
 <script>
-const rows = Array.from(document.querySelectorAll('#tableBody tr'));
+let activeTab = 'todos';
+const cards = Array.from(document.querySelectorAll('.card'));
+const monthSeps = Array.from(document.querySelectorAll('.month-sep'));
 
 function applyFilters() {
   const search = document.getElementById('search').value.toLowerCase();
-  const mes = document.getElementById('filterMes').value;
-  const tipo = document.getElementById('filterTipo').value;
   const impacto = document.getElementById('filterImpacto').value;
   const estado = document.getElementById('filterEstado').value;
-  const participacao = document.getElementById('filterParticipacao').value;
 
-  let visible = 0;
-  let stats = {alto:0, feira:0, palestra:0, visita:0, confirmado:0};
+  let stats = {total:0, alto:0, feira:0, palestra:0, visita:0, confirmado:0};
+  let tabCounts = {todos:0, feira:0, evento:0, visita:0};
 
-  rows.forEach(r => {
-    const rMes = r.dataset.mes || '';
-    const rTipo = r.dataset.tipo || '';
-    const rImpacto = r.dataset.impacto || '';
-    const rEstado = r.dataset.estado || '';
-    const rPart = r.dataset.participacao || '';
-    const text = r.textContent.toLowerCase();
-
-    const ok = (
+  // Count all for tabs (ignoring active tab filter)
+  cards.forEach(c => {
+    const tab = c.dataset.tab;
+    const imp = c.dataset.impacto;
+    const text = c.textContent.toLowerCase();
+    const est = c.querySelector('.meta-item') ? c.textContent : '';
+    if (
       (!search || text.includes(search)) &&
-      (!mes || rMes === mes) &&
-      (!tipo || rTipo === tipo) &&
-      (!impacto || rImpacto === impacto) &&
-      (!estado || rEstado === estado) &&
-      (!participacao || rPart === participacao)
-    );
-
-    r.classList.toggle('hidden', !ok);
-    if (ok) {
-      visible++;
-      if (rImpacto === 'Alto') stats.alto++;
-      if (rTipo === 'Feira') stats.feira++;
-      if (rTipo === 'Palestra') stats.palestra++;
-      if (rTipo === 'Visita PRIO') stats.visita++;
-      if (rPart === 'Sim') stats.confirmado++;
+      (!impacto || imp === impacto) &&
+      (!estado || text.includes(estado.toLowerCase()))
+    ) {
+      tabCounts.todos++;
+      tabCounts[tab] = (tabCounts[tab] || 0) + 1;
     }
   });
 
-  document.getElementById('countLabel').innerHTML = `Exibindo <strong>${visible}</strong> de <strong>${rows.length}</strong> eventos`;
-  document.getElementById('emptyState').classList.toggle('hidden', visible > 0);
-  document.getElementById('statTotal').textContent = visible;
+  document.getElementById('badgeTodos').textContent = tabCounts.todos;
+  document.getElementById('badgeFeira').textContent = tabCounts.feira || 0;
+  document.getElementById('badgeEvento').textContent = tabCounts.evento || 0;
+  document.getElementById('badgeVisita').textContent = tabCounts.visita || 0;
+
+  const visibleMonths = new Set();
+
+  cards.forEach(c => {
+    const tab = c.dataset.tab;
+    const imp = c.dataset.impacto;
+    const mes = c.dataset.mes;
+    const text = c.textContent.toLowerCase();
+    const tabMatch = activeTab === 'todos' || tab === activeTab;
+    const searchMatch = !search || text.includes(search);
+    const impMatch = !impacto || imp === impacto;
+    const estMatch = !estado || text.includes(estado.toLowerCase());
+
+    const show = tabMatch && searchMatch && impMatch && estMatch;
+    c.classList.toggle('hidden', !show);
+
+    if (show) {
+      stats.total++;
+      if (imp === 'Alto') stats.alto++;
+      if (tab === 'feira') stats.feira++;
+      if (tab === 'evento') stats.palestra++;
+      if (tab === 'visita') stats.visita++;
+      if (text.includes('✓')) stats.confirmado++;
+      if (mes) visibleMonths.add(mes);
+    }
+  });
+
+  // Show/hide month separators
+  monthSeps.forEach(m => {
+    m.classList.toggle('hidden', !visibleMonths.has(m.dataset.month));
+  });
+
+  document.getElementById('statTotal').textContent = stats.total;
   document.getElementById('statAlto').textContent = stats.alto;
   document.getElementById('statFeira').textContent = stats.feira;
   document.getElementById('statPalestra').textContent = stats.palestra;
   document.getElementById('statVisita').textContent = stats.visita;
   document.getElementById('statConfirmado').textContent = stats.confirmado;
+  document.getElementById('emptyState').classList.toggle('hidden', stats.total > 0);
 }
 
-['search','filterMes','filterTipo','filterImpacto','filterEstado','filterParticipacao'].forEach(id => {
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    activeTab = t.dataset.tab;
+    applyFilters();
+  });
+});
+
+['search','filterImpacto','filterEstado'].forEach(id => {
   document.getElementById(id).addEventListener('input', applyFilters);
 });
 
