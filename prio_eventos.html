@@ -166,7 +166,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
       <option value="">Todas as participações</option>
       <option value="Sim">✓ Confirmado</option>
       <option value="Em análise">⏳ Em análise</option>
-      <option value="">Sem resposta</option>
+      <option value="none">— Sem resposta</option>
     </select>
     <select id="filter-est">
       <option value="">Todos os estados</option>
@@ -1947,14 +1947,18 @@ function applyTL(){
   const q=document.getElementById('search-tl').value.toLowerCase();
   const est=document.getElementById('filter-est').value;
   const part=document.getElementById('filter-part').value;
+  const seenIds=new Set();
   let conf=0;
   allCards.forEach(c=>{
     const txt=c.textContent.toLowerCase();
     const cardPart=c.dataset.part||'';
-    const partOk=!part||(part==='Sim'&&cardPart==='Sim')||(part==='Em análise'&&cardPart==='Em análise');
+    let partOk=true;
+    if(part==='Sim') partOk=cardPart==='Sim';
+    else if(part==='Em análise') partOk=cardPart==='Em análise';
+    else if(part==='none') partOk=cardPart==='';
     const ok=(!q||txt.includes(q))&&(!est||txt.includes(est.toLowerCase()))&&partOk;
     c.classList.toggle('hidden',!ok);
-    if(ok&&cardPart==='Sim')conf++;
+    if(ok&&cardPart==='Sim'&&!seenIds.has(c.dataset.id)){seenIds.add(c.dataset.id);conf++;}
   });
   // month seps: check each panel
   document.querySelectorAll('.tl-panel').forEach(panel=>{
