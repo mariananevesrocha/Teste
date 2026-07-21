@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PRIO · Gestão de Eventos 2026</title>
+<title>Timeline Eventos Atração PRIO</title>
 <style>
 :root{--blue:#1d4ed8;--blue-d:#1e3a8a;--blue-l:#eff6ff;--blue-m:#dbeafe;--text:#111827;--muted:#6b7280;--border:#e5e7eb;--bg:#f3f4f6;--white:#fff;--radius:10px;--sidebar:228px}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -146,10 +146,10 @@ tbody td{padding:9px 12px;vertical-align:middle}
 <aside class="sidebar">
   <div class="sidebar-logo">
     <div class="logo">PRIO</div>
-    <div class="logo-sub">Gestão de Eventos 2026</div>
+    <div class="logo-sub">Atração &amp; Seleção 2026</div>
   </div>
   <nav>
-    <div class="nav-item active" onclick="goto('timeline',this)"><span class="nav-icon">📅</span> Timeline <span class="nav-badge">13</span></div>
+    <div class="nav-item active" onclick="goto('timeline',this)"><span class="nav-icon">📅</span> Timeline <span class="nav-badge">15</span></div>
     <div class="nav-item" onclick="goto('visitas',this)"><span class="nav-icon">🏢</span> Visitas PRIO <span class="nav-badge">14</span></div>
     <div class="nav-item" onclick="goto('contatos',this)"><span class="nav-icon">📋</span> Contatos <span class="nav-badge">72</span></div>
     <div class="nav-item" onclick="goto('brindes',this)"><span class="nav-icon">🎁</span> Brindes</div>
@@ -160,7 +160,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
 
 <div class="main">
   <div class="topbar" id="topbar-tl">
-    <div class="topbar-title">Timeline de Eventos</div>
+    <div class="topbar-title">Timeline Eventos Atração PRIO</div>
     <input type="text" id="search-tl" placeholder="🔍 Buscar evento...">
     <select id="filter-part">
       <option value="">Todas as participações</option>
@@ -180,9 +180,9 @@ tbody td{padding:9px 12px;vertical-align:middle}
   </div>
 
   <div class="tabs-row" id="tabs-tl">
-    <button class="tab active" data-tab="todos">Todos <span class="cb" id="cb-todos">13</span></button>
-    <button class="tab" data-tab="feira">Feiras <span class="cb" id="cb-feira">7</span></button>
-    <button class="tab" data-tab="palestra">Palestras <span class="cb" id="cb-palestra">6</span></button>
+    <button class="tab active" data-tab="todos">Todos <span class="cb" id="cb-todos">15</span></button>
+    <button class="tab" data-tab="feira">Feiras <span class="cb" id="cb-feira">8</span></button>
+    <button class="tab" data-tab="palestra">Palestras <span class="cb" id="cb-palestra">3</span></button>
   </div>
   <div class="tabs-row hidden" id="tabs-vis">
     <button class="tab active" data-vtab="planejamento">Planejamento</button>
@@ -194,14 +194,14 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <!-- TIMELINE -->
     <section class="section active" id="sec-timeline">
       <div class="stats">
-        <div class="stat-card dark"><div class="val" id="st-total">13</div><div class="lbl">Eventos ativos</div></div>
-        <div class="stat-card"><div class="val">7</div><div class="lbl">Feiras</div></div>
-        <div class="stat-card"><div class="val">6</div><div class="lbl">Palestras</div></div>
+        <div class="stat-card dark"><div class="val" id="st-total">15</div><div class="lbl">Eventos ativos</div></div>
+        <div class="stat-card"><div class="val">8</div><div class="lbl">Feiras</div></div>
+        <div class="stat-card"><div class="val">3</div><div class="lbl">Palestras</div></div>
         <div class="stat-card"><div class="val" id="st-conf">—</div><div class="lbl">Confirmados</div></div>
       </div>
-      <div id="tl-feira" class="tl-panel"><div class="month-sep" data-month="Abril"><span class="month-label">Abril 2026</span><div class="month-line"></div></div><div class="card" data-id="9" data-part="" data-tab="feira" data-mes="Abril">
+      <div id="tl-feira" class="tl-panel"><div class="month-sep" data-month="Março"><span class="month-label">Março 2026</span><div class="month-line"></div></div><div class="card" data-id="1" data-part="" data-tab="feira" data-mes="Março">
   <div class="card-left" style="border-left:4px solid #7c3aed">
-    <div class="card-date">14/Abr</div>
+    <div class="card-date">26/Mar</div>
     <div class="card-dot" style="background:#7c3aed"></div>
   </div>
   <div class="card-body">
@@ -209,20 +209,19 @@ tbody td{padding:9px 12px;vertical-align:middle}
       <span class="pill pill-feira">Feira</span>
       
     </div>
-    <div class="card-title">NX - Networking Experience 2026</div>
-    <div class="card-sub">Mackenzie · SP · 08h</div>
+    <div class="card-title">Feira Técnica SENAI</div>
+    <div class="card-sub">TBD</div>
     <div class="card-footer">
-      <span class="meta">💰 R$ 8.000</span>
-      <span class="meta">🎓 ~1000 alunos</span>
-      <span class="meta">👥 1 da PRIO</span>
-      <div class="checklist-mini" onclick="openChecklist(9)" title="Checklist do evento">
+      <span class="meta">💰 —</span>
+      
+      
+      <div class="checklist-mini" onclick="openChecklist(1)" title="Checklist do evento">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
-    
   </div>
-</div><div class="card" data-id="11" data-part="Sim" data-tab="feira" data-mes="Abril">
+</div><div class="month-sep" data-month="Abril"><span class="month-label">Abril 2026</span><div class="month-line"></div></div><div class="card" data-id="3" data-part="Sim" data-tab="feira" data-mes="Abril">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">28/Abr</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -232,20 +231,19 @@ tbody td{padding:9px 12px;vertical-align:middle}
       <span class="pill pill-feira">Feira</span>
       <span class="pill pill-sim">✓ Confirmado</span>
     </div>
-    <div class="card-title">Conecta</div>
+    <div class="card-title">CONECTA IBMEC</div>
     <div class="card-sub">IBMEC · RJ · 17h</div>
     <div class="card-footer">
       <span class="meta">💰 —</span>
       <span class="meta">🎓 ~50 alunos</span>
       <span class="meta">👥 1 da PRIO</span>
-      <div class="checklist-mini" onclick="openChecklist(11)" title="Checklist do evento">
+      <div class="checklist-mini" onclick="openChecklist(3)" title="Checklist do evento">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
-    
   </div>
-</div><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="3" data-part="Sim" data-tab="feira" data-mes="Maio">
+</div><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="5" data-part="Sim" data-tab="feira" data-mes="Maio">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">21/Mai</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -255,20 +253,19 @@ tbody td{padding:9px 12px;vertical-align:middle}
       <span class="pill pill-feira">Feira</span>
       <span class="pill pill-sim">✓ Confirmado</span>
     </div>
-    <div class="card-title">Feira de Recrutamento e Carreira</div>
-    <div class="card-sub">USP · SP · 09h</div>
+    <div class="card-title">FEIRA FEA USP</div>
+    <div class="card-sub">USP · SP · TBD</div>
     <div class="card-footer">
-      <span class="meta">💰 R$ 22.000</span>
+      <span class="meta">💰 —</span>
       
-      <span class="meta">👥 3 da PRIO</span>
-      <div class="checklist-mini" onclick="openChecklist(3)" title="Checklist do evento">
+      
+      <div class="checklist-mini" onclick="openChecklist(5)" title="Checklist do evento">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
-    
   </div>
-</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="17" data-part="" data-tab="feira" data-mes="Agosto">
+</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="9" data-part="Sim" data-tab="feira" data-mes="Agosto">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">12/Ago</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -276,22 +273,21 @@ tbody td{padding:9px 12px;vertical-align:middle}
   <div class="card-body">
     <div class="card-top">
       <span class="pill pill-feira">Feira</span>
-      
+      <span class="pill pill-sim">✓ Confirmado</span>
     </div>
-    <div class="card-title">Feira de Carreiras</div>
+    <div class="card-title">FEIRA DE CARREIRAS INTEGRA UNICAMP</div>
     <div class="card-sub">UNICAMP · SP · 10h</div>
     <div class="card-footer">
       <span class="meta">💰 —</span>
+      <span class="meta">🎓 ~2100 alunos</span>
       
-      
-      <div class="checklist-mini" onclick="openChecklist(17)" title="Checklist do evento">
+      <div class="checklist-mini" onclick="openChecklist(9)" title="Checklist do evento">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
-    
   </div>
-</div><div class="card" data-id="2" data-part="Sim" data-tab="feira" data-mes="Agosto">
+</div><div class="card" data-id="10" data-part="Sim" data-tab="feira" data-mes="Agosto">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">15/Ago</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -301,20 +297,41 @@ tbody td{padding:9px 12px;vertical-align:middle}
       <span class="pill pill-feira">Feira</span>
       <span class="pill pill-sim">✓ Confirmado</span>
     </div>
-    <div class="card-title">Feira de Carreiras</div>
+    <div class="card-title">FEIRA DE CARREIRAS ITA</div>
     <div class="card-sub">ITA · SP · 10h</div>
     <div class="card-footer">
       <span class="meta">💰 —</span>
       <span class="meta">🎓 ~2100 alunos</span>
       
-      <div class="checklist-mini" onclick="openChecklist(2)" title="Checklist do evento">
+      <div class="checklist-mini" onclick="openChecklist(10)" title="Checklist do evento">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
-    
   </div>
-</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="18" data-part="Sim" data-tab="feira" data-mes="Setembro">
+</div><div class="card" data-id="11" data-part="Sim" data-tab="feira" data-mes="Agosto">
+  <div class="card-left" style="border-left:4px solid #7c3aed">
+    <div class="card-date">31/Ago</div>
+    <div class="card-dot" style="background:#7c3aed"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <span class="pill pill-feira">Feira</span>
+      <span class="pill pill-sim">✓ Confirmado</span>
+    </div>
+    <div class="card-title">SEMANA FLUXO UFRJ</div>
+    <div class="card-sub">UFRJ · RJ · TBD</div>
+    <div class="card-footer">
+      <span class="meta">💰 R$ 118.000</span>
+      
+      
+      <div class="checklist-mini" onclick="openChecklist(11)" title="Checklist do evento">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="12" data-part="Sim" data-tab="feira" data-mes="Setembro">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">03/Set</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -324,20 +341,19 @@ tbody td{padding:9px 12px;vertical-align:middle}
       <span class="pill pill-feira">Feira</span>
       <span class="pill pill-sim">✓ Confirmado</span>
     </div>
-    <div class="card-title">Conecta</div>
-    <div class="card-sub">IBMEC · RJ · 09h</div>
+    <div class="card-title">CONECTA IBMEC</div>
+    <div class="card-sub">IBMEC · RJ · 17h</div>
     <div class="card-footer">
       <span class="meta">💰 —</span>
       <span class="meta">🎓 ~50 alunos</span>
       <span class="meta">👥 1 da PRIO</span>
-      <div class="checklist-mini" onclick="openChecklist(18)" title="Checklist do evento">
+      <div class="checklist-mini" onclick="openChecklist(12)" title="Checklist do evento">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
-    
   </div>
-</div><div class="card" data-id="1" data-part="Sim" data-tab="feira" data-mes="Setembro">
+</div><div class="card" data-id="13" data-part="Sim" data-tab="feira" data-mes="Setembro">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">22/Set</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -347,21 +363,20 @@ tbody td{padding:9px 12px;vertical-align:middle}
       <span class="pill pill-feira">Feira</span>
       <span class="pill pill-sim">✓ Confirmado</span>
     </div>
-    <div class="card-title">UFPE no Mercado</div>
-    <div class="card-sub">UFPE · PE · 09h</div>
+    <div class="card-title">FEIRA UFPE</div>
+    <div class="card-sub">UFPE · PE · TBD</div>
     <div class="card-footer">
-      <span class="meta">💰 R$ 13.000</span>
+      <span class="meta">💰 —</span>
       
-      <span class="meta">👥 3 da PRIO</span>
-      <div class="checklist-mini" onclick="openChecklist(1)" title="Checklist do evento">
+      
+      <div class="checklist-mini" onclick="openChecklist(13)" title="Checklist do evento">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
-    
   </div>
 </div></div>
-      <div id="tl-palestra" class="tl-panel hidden"><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="7" data-part="" data-tab="palestra" data-mes="Maio">
+      <div id="tl-palestra" class="tl-panel hidden"><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="6" data-part="" data-tab="palestra" data-mes="Maio">
   <div class="card-left" style="border-left:4px solid #0369a1">
     <div class="card-date">26/Mai</div>
     <div class="card-dot" style="background:#0369a1"></div>
@@ -371,43 +386,19 @@ tbody td{padding:9px 12px;vertical-align:middle}
       <span class="pill pill-palestra">Palestra</span>
       
     </div>
-    <div class="card-title">Speed Job</div>
+    <div class="card-title">SPEED JOB UFPel</div>
     <div class="card-sub">UFPel · RS · 17h</div>
     <div class="card-footer">
       <span class="meta">💰 —</span>
       
       <span class="meta">👥 1 da PRIO</span>
-      <div class="checklist-mini" onclick="openChecklist(7)" title="Checklist do evento">
+      <div class="checklist-mini" onclick="openChecklist(6)" title="Checklist do evento">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
-    
   </div>
-</div><div class="month-sep" data-month="Junho"><span class="month-label">Junho 2026</span><div class="month-line"></div></div><div class="card" data-id="15" data-part="Sim" data-tab="palestra" data-mes="Junho">
-  <div class="card-left" style="border-left:4px solid #c2410c">
-    <div class="card-date">01/Jun</div>
-    <div class="card-dot" style="background:#c2410c"></div>
-  </div>
-  <div class="card-body">
-    <div class="card-top">
-      <span class="pill pill-painel">Painel</span>
-      <span class="pill pill-sim">✓ Confirmado</span>
-    </div>
-    <div class="card-title">Feira Virtual Emprega</div>
-    <div class="card-sub">N/A · 14h</div>
-    <div class="card-footer">
-      <span class="meta">💰 —</span>
-      
-      <span class="meta">👥 1 da PRIO</span>
-      <div class="checklist-mini" onclick="openChecklist(15)" title="Checklist do evento">
-        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
-        <span class="cl-label">0/6</span>
-      </div>
-    </div>
-    
-  </div>
-</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="19" data-part="Sim" data-tab="palestra" data-mes="Agosto">
+</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="8" data-part="Sim" data-tab="palestra" data-mes="Agosto">
   <div class="card-left" style="border-left:4px solid #0369a1">
     <div class="card-date">11/Ago</div>
     <div class="card-dot" style="background:#0369a1"></div>
@@ -417,21 +408,19 @@ tbody td{padding:9px 12px;vertical-align:middle}
       <span class="pill pill-palestra">Palestra</span>
       <span class="pill pill-sim">✓ Confirmado</span>
     </div>
-    <div class="card-title">1st Industry
-Academia Partnership Workshop in Geosciences for Oil & Gas</div>
-    <div class="card-sub">UNICAMP · SP · 09h</div>
+    <div class="card-title">WORKSHOP GEOSCIENCES UNICAMP</div>
+    <div class="card-sub">UNICAMP · SP · TBD</div>
     <div class="card-footer">
       <span class="meta">💰 —</span>
-      <span class="meta">🎓 ~200 alunos</span>
-      <span class="meta">👥 1 da PRIO</span>
-      <div class="checklist-mini" onclick="openChecklist(19)" title="Checklist do evento">
+      
+      
+      <div class="checklist-mini" onclick="openChecklist(8)" title="Checklist do evento">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
-    
   </div>
-</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="16" data-part="Sim" data-tab="palestra" data-mes="Setembro">
+</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="14" data-part="Sim" data-tab="palestra" data-mes="Setembro">
   <div class="card-left" style="border-left:4px solid #0369a1">
     <div class="card-date">23/Set</div>
     <div class="card-dot" style="background:#0369a1"></div>
@@ -441,69 +430,22 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</div>
       <span class="pill pill-palestra">Palestra</span>
       <span class="pill pill-sim">✓ Confirmado</span>
     </div>
-    <div class="card-title">Semana Ayra</div>
+    <div class="card-title">SEMANA AYRA</div>
     <div class="card-sub">UFRJ · RJ · TBD</div>
     <div class="card-footer">
       <span class="meta">💰 —</span>
       <span class="meta">🎓 ~80 alunos</span>
       
-      <div class="checklist-mini" onclick="openChecklist(16)" title="Checklist do evento">
-        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
-        <span class="cl-label">0/6</span>
-      </div>
-    </div>
-    
-  </div>
-</div><div class="card" data-id="14" data-part="Em análise" data-tab="palestra" data-mes="Setembro">
-  <div class="card-left" style="border-left:4px solid #0369a1">
-    <div class="card-date">28/Set</div>
-    <div class="card-dot" style="background:#0369a1"></div>
-  </div>
-  <div class="card-body">
-    <div class="card-top">
-      <span class="pill pill-palestra">Palestra</span>
-      <span class="pill pill-warn">⏳ Em análise</span>
-    </div>
-    <div class="card-title">Evento Interação</div>
-    <div class="card-sub">UFF · RJ · 09h</div>
-    <div class="card-footer">
-      <span class="meta">💰 R$ 3.800</span>
-      <span class="meta">🎓 ~80 alunos</span>
-      <span class="meta">👥 1 da PRIO</span>
       <div class="checklist-mini" onclick="openChecklist(14)" title="Checklist do evento">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
-    
-  </div>
-</div><div class="card" data-id="10" data-part="Sim" data-tab="palestra" data-mes="">
-  <div class="card-left" style="border-left:4px solid #0369a1">
-    <div class="card-date">Maio/Junho</div>
-    <div class="card-dot" style="background:#0369a1"></div>
-  </div>
-  <div class="card-body">
-    <div class="card-top">
-      <span class="pill pill-palestra">Palestra</span>
-      <span class="pill pill-sim">✓ Confirmado</span>
-    </div>
-    <div class="card-title">Semana da Petrofísica</div>
-    <div class="card-sub">UFRJ · RJ · TBD</div>
-    <div class="card-footer">
-      <span class="meta">💰 —</span>
-      
-      <span class="meta">👥 1 da PRIO</span>
-      <div class="checklist-mini" onclick="openChecklist(10)" title="Checklist do evento">
-        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
-        <span class="cl-label">0/6</span>
-      </div>
-    </div>
-    
   </div>
 </div></div>
-      <div id="tl-todos" class="tl-panel hidden"><div class="month-sep" data-month="Abril"><span class="month-label">Abril 2026</span><div class="month-line"></div></div><div class="card" data-id="9" data-part="" data-tab="feira" data-mes="Abril">
+      <div id="tl-todos" class="tl-panel hidden"><div class="month-sep" data-month="Março"><span class="month-label">Março 2026</span><div class="month-line"></div></div><div class="card" data-id="1" data-part="" data-tab="feira" data-mes="Março">
   <div class="card-left" style="border-left:4px solid #7c3aed">
-    <div class="card-date">14/Abr</div>
+    <div class="card-date">26/Mar</div>
     <div class="card-dot" style="background:#7c3aed"></div>
   </div>
   <div class="card-body">
@@ -511,20 +453,41 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</div>
       <span class="pill pill-feira">Feira</span>
       
     </div>
-    <div class="card-title">NX - Networking Experience 2026</div>
-    <div class="card-sub">Mackenzie · SP · 08h</div>
+    <div class="card-title">Feira Técnica SENAI</div>
+    <div class="card-sub">TBD</div>
     <div class="card-footer">
-      <span class="meta">💰 R$ 8.000</span>
-      <span class="meta">🎓 ~1000 alunos</span>
-      <span class="meta">👥 1 da PRIO</span>
-      <div class="checklist-mini" onclick="openChecklist(9)" title="Checklist do evento">
+      <span class="meta">💰 —</span>
+      
+      
+      <div class="checklist-mini" onclick="openChecklist(1)" title="Checklist do evento">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
-    
   </div>
-</div><div class="card" data-id="11" data-part="Sim" data-tab="feira" data-mes="Abril">
+</div><div class="month-sep" data-month="Abril"><span class="month-label">Abril 2026</span><div class="month-line"></div></div><div class="card" data-id="2" data-part="Sim" data-tab="outro" data-mes="Abril">
+  <div class="card-left" style="border-left:4px solid #64748b">
+    <div class="card-date">11/Abr</div>
+    <div class="card-dot" style="background:#64748b"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <span class="pill pill-outro">Outro</span>
+      <span class="pill pill-sim">✓ Confirmado</span>
+    </div>
+    <div class="card-title">Petrogames UFRJ</div>
+    <div class="card-sub">UFRJ · RJ · TBD</div>
+    <div class="card-footer">
+      <span class="meta">💰 —</span>
+      
+      
+      <div class="checklist-mini" onclick="openChecklist(2)" title="Checklist do evento">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="card" data-id="3" data-part="Sim" data-tab="feira" data-mes="Abril">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">28/Abr</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -534,20 +497,41 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</div>
       <span class="pill pill-feira">Feira</span>
       <span class="pill pill-sim">✓ Confirmado</span>
     </div>
-    <div class="card-title">Conecta</div>
+    <div class="card-title">CONECTA IBMEC</div>
     <div class="card-sub">IBMEC · RJ · 17h</div>
     <div class="card-footer">
       <span class="meta">💰 —</span>
       <span class="meta">🎓 ~50 alunos</span>
       <span class="meta">👥 1 da PRIO</span>
-      <div class="checklist-mini" onclick="openChecklist(11)" title="Checklist do evento">
+      <div class="checklist-mini" onclick="openChecklist(3)" title="Checklist do evento">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
-    
   </div>
-</div><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="3" data-part="Sim" data-tab="feira" data-mes="Maio">
+</div><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="4" data-part="Sim" data-tab="outro" data-mes="Maio">
+  <div class="card-left" style="border-left:4px solid #64748b">
+    <div class="card-date">14/Mai</div>
+    <div class="card-dot" style="background:#64748b"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <span class="pill pill-outro">Outro</span>
+      <span class="pill pill-sim">✓ Confirmado</span>
+    </div>
+    <div class="card-title">Petrogames UFRJ</div>
+    <div class="card-sub">UFRJ · RJ · TBD</div>
+    <div class="card-footer">
+      <span class="meta">💰 —</span>
+      
+      
+      <div class="checklist-mini" onclick="openChecklist(4)" title="Checklist do evento">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="card" data-id="5" data-part="Sim" data-tab="feira" data-mes="Maio">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">21/Mai</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -557,112 +541,19 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</div>
       <span class="pill pill-feira">Feira</span>
       <span class="pill pill-sim">✓ Confirmado</span>
     </div>
-    <div class="card-title">Feira de Recrutamento e Carreira</div>
-    <div class="card-sub">USP · SP · 09h</div>
-    <div class="card-footer">
-      <span class="meta">💰 R$ 22.000</span>
-      
-      <span class="meta">👥 3 da PRIO</span>
-      <div class="checklist-mini" onclick="openChecklist(3)" title="Checklist do evento">
-        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
-        <span class="cl-label">0/6</span>
-      </div>
-    </div>
-    
-  </div>
-</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="17" data-part="" data-tab="feira" data-mes="Agosto">
-  <div class="card-left" style="border-left:4px solid #7c3aed">
-    <div class="card-date">12/Ago</div>
-    <div class="card-dot" style="background:#7c3aed"></div>
-  </div>
-  <div class="card-body">
-    <div class="card-top">
-      <span class="pill pill-feira">Feira</span>
-      
-    </div>
-    <div class="card-title">Feira de Carreiras</div>
-    <div class="card-sub">UNICAMP · SP · 10h</div>
+    <div class="card-title">FEIRA FEA USP</div>
+    <div class="card-sub">USP · SP · TBD</div>
     <div class="card-footer">
       <span class="meta">💰 —</span>
       
       
-      <div class="checklist-mini" onclick="openChecklist(17)" title="Checklist do evento">
+      <div class="checklist-mini" onclick="openChecklist(5)" title="Checklist do evento">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
-    
   </div>
-</div><div class="card" data-id="2" data-part="Sim" data-tab="feira" data-mes="Agosto">
-  <div class="card-left" style="border-left:4px solid #7c3aed">
-    <div class="card-date">15/Ago</div>
-    <div class="card-dot" style="background:#7c3aed"></div>
-  </div>
-  <div class="card-body">
-    <div class="card-top">
-      <span class="pill pill-feira">Feira</span>
-      <span class="pill pill-sim">✓ Confirmado</span>
-    </div>
-    <div class="card-title">Feira de Carreiras</div>
-    <div class="card-sub">ITA · SP · 10h</div>
-    <div class="card-footer">
-      <span class="meta">💰 —</span>
-      <span class="meta">🎓 ~2100 alunos</span>
-      
-      <div class="checklist-mini" onclick="openChecklist(2)" title="Checklist do evento">
-        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
-        <span class="cl-label">0/6</span>
-      </div>
-    </div>
-    
-  </div>
-</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="18" data-part="Sim" data-tab="feira" data-mes="Setembro">
-  <div class="card-left" style="border-left:4px solid #7c3aed">
-    <div class="card-date">03/Set</div>
-    <div class="card-dot" style="background:#7c3aed"></div>
-  </div>
-  <div class="card-body">
-    <div class="card-top">
-      <span class="pill pill-feira">Feira</span>
-      <span class="pill pill-sim">✓ Confirmado</span>
-    </div>
-    <div class="card-title">Conecta</div>
-    <div class="card-sub">IBMEC · RJ · 09h</div>
-    <div class="card-footer">
-      <span class="meta">💰 —</span>
-      <span class="meta">🎓 ~50 alunos</span>
-      <span class="meta">👥 1 da PRIO</span>
-      <div class="checklist-mini" onclick="openChecklist(18)" title="Checklist do evento">
-        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
-        <span class="cl-label">0/6</span>
-      </div>
-    </div>
-    
-  </div>
-</div><div class="card" data-id="1" data-part="Sim" data-tab="feira" data-mes="Setembro">
-  <div class="card-left" style="border-left:4px solid #7c3aed">
-    <div class="card-date">22/Set</div>
-    <div class="card-dot" style="background:#7c3aed"></div>
-  </div>
-  <div class="card-body">
-    <div class="card-top">
-      <span class="pill pill-feira">Feira</span>
-      <span class="pill pill-sim">✓ Confirmado</span>
-    </div>
-    <div class="card-title">UFPE no Mercado</div>
-    <div class="card-sub">UFPE · PE · 09h</div>
-    <div class="card-footer">
-      <span class="meta">💰 R$ 13.000</span>
-      
-      <span class="meta">👥 3 da PRIO</span>
-      <div class="checklist-mini" onclick="openChecklist(1)" title="Checklist do evento">
-        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
-        <span class="cl-label">0/6</span>
-      </div>
-    </div>
-    
-  </div>
-</div><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="7" data-part="" data-tab="palestra" data-mes="Maio">
+</div><div class="card" data-id="6" data-part="" data-tab="palestra" data-mes="Maio">
   <div class="card-left" style="border-left:4px solid #0369a1">
     <div class="card-date">26/Mai</div>
     <div class="card-dot" style="background:#0369a1"></div>
@@ -672,20 +563,19 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</div>
       <span class="pill pill-palestra">Palestra</span>
       
     </div>
-    <div class="card-title">Speed Job</div>
+    <div class="card-title">SPEED JOB UFPel</div>
     <div class="card-sub">UFPel · RS · 17h</div>
     <div class="card-footer">
       <span class="meta">💰 —</span>
       
       <span class="meta">👥 1 da PRIO</span>
-      <div class="checklist-mini" onclick="openChecklist(7)" title="Checklist do evento">
+      <div class="checklist-mini" onclick="openChecklist(6)" title="Checklist do evento">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
-    
   </div>
-</div><div class="month-sep" data-month="Junho"><span class="month-label">Junho 2026</span><div class="month-line"></div></div><div class="card" data-id="15" data-part="Sim" data-tab="palestra" data-mes="Junho">
+</div><div class="month-sep" data-month="Junho"><span class="month-label">Junho 2026</span><div class="month-line"></div></div><div class="card" data-id="7" data-part="Sim" data-tab="outro" data-mes="Junho">
   <div class="card-left" style="border-left:4px solid #c2410c">
     <div class="card-date">01/Jun</div>
     <div class="card-dot" style="background:#c2410c"></div>
@@ -695,20 +585,19 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</div>
       <span class="pill pill-painel">Painel</span>
       <span class="pill pill-sim">✓ Confirmado</span>
     </div>
-    <div class="card-title">Feira Virtual Emprega</div>
+    <div class="card-title">FEIRA VIRTUAL EMPREGA</div>
     <div class="card-sub">N/A · 14h</div>
     <div class="card-footer">
       <span class="meta">💰 —</span>
       
       <span class="meta">👥 1 da PRIO</span>
-      <div class="checklist-mini" onclick="openChecklist(15)" title="Checklist do evento">
+      <div class="checklist-mini" onclick="openChecklist(7)" title="Checklist do evento">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
-    
   </div>
-</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="19" data-part="Sim" data-tab="palestra" data-mes="Agosto">
+</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="8" data-part="Sim" data-tab="palestra" data-mes="Agosto">
   <div class="card-left" style="border-left:4px solid #0369a1">
     <div class="card-date">11/Ago</div>
     <div class="card-dot" style="background:#0369a1"></div>
@@ -718,21 +607,129 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</div>
       <span class="pill pill-palestra">Palestra</span>
       <span class="pill pill-sim">✓ Confirmado</span>
     </div>
-    <div class="card-title">1st Industry
-Academia Partnership Workshop in Geosciences for Oil & Gas</div>
-    <div class="card-sub">UNICAMP · SP · 09h</div>
+    <div class="card-title">WORKSHOP GEOSCIENCES UNICAMP</div>
+    <div class="card-sub">UNICAMP · SP · TBD</div>
     <div class="card-footer">
       <span class="meta">💰 —</span>
-      <span class="meta">🎓 ~200 alunos</span>
-      <span class="meta">👥 1 da PRIO</span>
-      <div class="checklist-mini" onclick="openChecklist(19)" title="Checklist do evento">
+      
+      
+      <div class="checklist-mini" onclick="openChecklist(8)" title="Checklist do evento">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
-    
   </div>
-</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="16" data-part="Sim" data-tab="palestra" data-mes="Setembro">
+</div><div class="card" data-id="9" data-part="Sim" data-tab="feira" data-mes="Agosto">
+  <div class="card-left" style="border-left:4px solid #7c3aed">
+    <div class="card-date">12/Ago</div>
+    <div class="card-dot" style="background:#7c3aed"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <span class="pill pill-feira">Feira</span>
+      <span class="pill pill-sim">✓ Confirmado</span>
+    </div>
+    <div class="card-title">FEIRA DE CARREIRAS INTEGRA UNICAMP</div>
+    <div class="card-sub">UNICAMP · SP · 10h</div>
+    <div class="card-footer">
+      <span class="meta">💰 —</span>
+      <span class="meta">🎓 ~2100 alunos</span>
+      
+      <div class="checklist-mini" onclick="openChecklist(9)" title="Checklist do evento">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="card" data-id="10" data-part="Sim" data-tab="feira" data-mes="Agosto">
+  <div class="card-left" style="border-left:4px solid #7c3aed">
+    <div class="card-date">15/Ago</div>
+    <div class="card-dot" style="background:#7c3aed"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <span class="pill pill-feira">Feira</span>
+      <span class="pill pill-sim">✓ Confirmado</span>
+    </div>
+    <div class="card-title">FEIRA DE CARREIRAS ITA</div>
+    <div class="card-sub">ITA · SP · 10h</div>
+    <div class="card-footer">
+      <span class="meta">💰 —</span>
+      <span class="meta">🎓 ~2100 alunos</span>
+      
+      <div class="checklist-mini" onclick="openChecklist(10)" title="Checklist do evento">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="card" data-id="11" data-part="Sim" data-tab="feira" data-mes="Agosto">
+  <div class="card-left" style="border-left:4px solid #7c3aed">
+    <div class="card-date">31/Ago</div>
+    <div class="card-dot" style="background:#7c3aed"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <span class="pill pill-feira">Feira</span>
+      <span class="pill pill-sim">✓ Confirmado</span>
+    </div>
+    <div class="card-title">SEMANA FLUXO UFRJ</div>
+    <div class="card-sub">UFRJ · RJ · TBD</div>
+    <div class="card-footer">
+      <span class="meta">💰 R$ 118.000</span>
+      
+      
+      <div class="checklist-mini" onclick="openChecklist(11)" title="Checklist do evento">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="12" data-part="Sim" data-tab="feira" data-mes="Setembro">
+  <div class="card-left" style="border-left:4px solid #7c3aed">
+    <div class="card-date">03/Set</div>
+    <div class="card-dot" style="background:#7c3aed"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <span class="pill pill-feira">Feira</span>
+      <span class="pill pill-sim">✓ Confirmado</span>
+    </div>
+    <div class="card-title">CONECTA IBMEC</div>
+    <div class="card-sub">IBMEC · RJ · 17h</div>
+    <div class="card-footer">
+      <span class="meta">💰 —</span>
+      <span class="meta">🎓 ~50 alunos</span>
+      <span class="meta">👥 1 da PRIO</span>
+      <div class="checklist-mini" onclick="openChecklist(12)" title="Checklist do evento">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="card" data-id="13" data-part="Sim" data-tab="feira" data-mes="Setembro">
+  <div class="card-left" style="border-left:4px solid #7c3aed">
+    <div class="card-date">22/Set</div>
+    <div class="card-dot" style="background:#7c3aed"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <span class="pill pill-feira">Feira</span>
+      <span class="pill pill-sim">✓ Confirmado</span>
+    </div>
+    <div class="card-title">FEIRA UFPE</div>
+    <div class="card-sub">UFPE · PE · TBD</div>
+    <div class="card-footer">
+      <span class="meta">💰 —</span>
+      
+      
+      <div class="checklist-mini" onclick="openChecklist(13)" title="Checklist do evento">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="card" data-id="14" data-part="Sim" data-tab="palestra" data-mes="Setembro">
   <div class="card-left" style="border-left:4px solid #0369a1">
     <div class="card-date">23/Set</div>
     <div class="card-dot" style="background:#0369a1"></div>
@@ -742,64 +739,39 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</div>
       <span class="pill pill-palestra">Palestra</span>
       <span class="pill pill-sim">✓ Confirmado</span>
     </div>
-    <div class="card-title">Semana Ayra</div>
+    <div class="card-title">SEMANA AYRA</div>
     <div class="card-sub">UFRJ · RJ · TBD</div>
     <div class="card-footer">
       <span class="meta">💰 —</span>
       <span class="meta">🎓 ~80 alunos</span>
       
-      <div class="checklist-mini" onclick="openChecklist(16)" title="Checklist do evento">
-        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
-        <span class="cl-label">0/6</span>
-      </div>
-    </div>
-    
-  </div>
-</div><div class="card" data-id="14" data-part="Em análise" data-tab="palestra" data-mes="Setembro">
-  <div class="card-left" style="border-left:4px solid #0369a1">
-    <div class="card-date">28/Set</div>
-    <div class="card-dot" style="background:#0369a1"></div>
-  </div>
-  <div class="card-body">
-    <div class="card-top">
-      <span class="pill pill-palestra">Palestra</span>
-      <span class="pill pill-warn">⏳ Em análise</span>
-    </div>
-    <div class="card-title">Evento Interação</div>
-    <div class="card-sub">UFF · RJ · 09h</div>
-    <div class="card-footer">
-      <span class="meta">💰 R$ 3.800</span>
-      <span class="meta">🎓 ~80 alunos</span>
-      <span class="meta">👥 1 da PRIO</span>
       <div class="checklist-mini" onclick="openChecklist(14)" title="Checklist do evento">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
-    
   </div>
-</div><div class="card" data-id="10" data-part="Sim" data-tab="palestra" data-mes="">
-  <div class="card-left" style="border-left:4px solid #0369a1">
-    <div class="card-date">Maio/Junho</div>
-    <div class="card-dot" style="background:#0369a1"></div>
+</div><div class="month-sep" data-month="Novembro"><span class="month-label">Novembro 2026</span><div class="month-line"></div></div><div class="card" data-id="15" data-part="" data-tab="outro" data-mes="Novembro">
+  <div class="card-left" style="border-left:4px solid #64748b">
+    <div class="card-date">06/Nov</div>
+    <div class="card-dot" style="background:#64748b"></div>
   </div>
   <div class="card-body">
     <div class="card-top">
-      <span class="pill pill-palestra">Palestra</span>
-      <span class="pill pill-sim">✓ Confirmado</span>
+      <span class="pill pill-outro">Outro</span>
+      
     </div>
-    <div class="card-title">Semana da Petrofísica</div>
-    <div class="card-sub">UFRJ · RJ · TBD</div>
+    <div class="card-title">MBA Brasil - EUA</div>
+    <div class="card-sub">TBD</div>
     <div class="card-footer">
       <span class="meta">💰 —</span>
       
-      <span class="meta">👥 1 da PRIO</span>
-      <div class="checklist-mini" onclick="openChecklist(10)" title="Checklist do evento">
+      
+      <div class="checklist-mini" onclick="openChecklist(15)" title="Checklist do evento">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
-    
   </div>
 </div></div>
       <div class="empty hidden" id="tl-empty">Nenhum evento encontrado.</div>
@@ -1925,7 +1897,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</div>
 </div>
 
 <script>
-const EV_DATA = [{"id": 9, "evento": "NX - Networking Experience 2026", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}}, {"id": 11, "evento": "Conecta", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}}, {"id": 3, "evento": "Feira de Recrutamento e Carreira", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}}, {"id": 7, "evento": "Speed Job", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}}, {"id": 15, "evento": "Feira Virtual Emprega", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}}, {"id": 19, "evento": "1st Industry\nAcademia Partnership Workshop in Geosciences for Oil & Gas", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}}, {"id": 17, "evento": "Feira de Carreiras", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}}, {"id": 2, "evento": "Feira de Carreiras", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}}, {"id": 18, "evento": "Conecta", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}}, {"id": 1, "evento": "UFPE no Mercado", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}}, {"id": 16, "evento": "Semana Ayra", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}}, {"id": 14, "evento": "Evento Intera\u00e7\u00e3o", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}}, {"id": 10, "evento": "Semana da Petrof\u00edsica", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}}];
+const EV_DATA = [{"id": 1, "evento": "Feira Técnica SENAI", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}}, {"id": 2, "evento": "Petrogames UFRJ", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}}, {"id": 3, "evento": "CONECTA IBMEC", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}}, {"id": 4, "evento": "Petrogames UFRJ", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}}, {"id": 5, "evento": "FEIRA FEA USP", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}}, {"id": 6, "evento": "SPEED JOB UFPel", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}}, {"id": 7, "evento": "FEIRA VIRTUAL EMPREGA", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}}, {"id": 8, "evento": "WORKSHOP GEOSCIENCES UNICAMP", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}}, {"id": 9, "evento": "FEIRA DE CARREIRAS INTEGRA UNICAMP", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}}, {"id": 10, "evento": "FEIRA DE CARREIRAS ITA", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}}, {"id": 11, "evento": "SEMANA FLUXO UFRJ", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}}, {"id": 12, "evento": "CONECTA IBMEC", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}}, {"id": 13, "evento": "FEIRA UFPE", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}}, {"id": 14, "evento": "SEMANA AYRA", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}}, {"id": 15, "evento": "MBA Brasil - EUA", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}}];
 const VIS_DATA = [{"faculdade": "UFS", "data": "2026-02-05", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false, "crachas": false}}, {"faculdade": "UERJ - FGV - UFRJ", "data": "2026-03-25", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false, "crachas": false}}, {"faculdade": "UNICAMP - USP - SPWLA UFRJ", "data": "2026-04-10", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false, "crachas": false}}, {"faculdade": null, "data": "2026-05-20", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false, "crachas": false}}, {"faculdade": null, "data": "2026-08-12", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false, "crachas": false}}, {"faculdade": null, "data": "2026-08-19", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false, "crachas": false}}, {"faculdade": null, "data": "2026-08-26", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false, "crachas": false}}, {"faculdade": null, "data": "2026-09-08", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false, "crachas": false}}, {"faculdade": null, "data": "2026-09-11", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false, "crachas": false}}, {"faculdade": null, "data": "2026-09-17", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false, "crachas": false}}, {"faculdade": "ROG.E (21 a 24 de setembro)", "data": "2026-09-22", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false, "crachas": false}}, {"faculdade": "IME", "data": "2026-09-25", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false, "crachas": false}}, {"faculdade": null, "data": "2026-10-01", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false, "crachas": false}}, {"faculdade": null, "data": "2026-10-13", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false, "crachas": false}}];
 let evData = JSON.parse(localStorage.getItem('prioEv2') || 'null') || EV_DATA;
 let visData = JSON.parse(localStorage.getItem('prioVis2') || 'null') || VIS_DATA;
