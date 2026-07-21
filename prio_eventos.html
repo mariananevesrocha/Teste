@@ -154,7 +154,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="nav-item" onclick="goto('contatos',this)"><span class="nav-icon">📋</span> Contatos <span class="nav-badge">72</span></div>
     <div class="nav-item" onclick="goto('brindes',this)"><span class="nav-icon">🎁</span> Brindes</div>
     <div class="nav-sep"></div>
-    <div class="nav-item" onclick="goto('declinados',this)"><span class="nav-icon">🚫</span> Declinados <span class="nav-badge">6</span></div>
+    <div class="nav-item" onclick="goto('declinados',this)"><span class="nav-icon">🚫</span> Eventos Declinados <span class="nav-badge">6</span></div>
   </nav>
 </aside>
 
@@ -162,6 +162,12 @@ tbody td{padding:9px 12px;vertical-align:middle}
   <div class="topbar" id="topbar-tl">
     <div class="topbar-title">Timeline de Eventos</div>
     <input type="text" id="search-tl" placeholder="🔍 Buscar evento...">
+    <select id="filter-part">
+      <option value="">Todas as participações</option>
+      <option value="Sim">✓ Confirmado</option>
+      <option value="Em análise">⏳ Em análise</option>
+      <option value="">Sem resposta</option>
+    </select>
     <select id="filter-est">
       <option value="">Todos os estados</option>
       <option>RJ</option><option>SP</option><option>PE</option><option>ES</option><option>RS</option>
@@ -193,7 +199,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
         <div class="stat-card"><div class="val">6</div><div class="lbl">Palestras</div></div>
         <div class="stat-card"><div class="val" id="st-conf">—</div><div class="lbl">Confirmados</div></div>
       </div>
-      <div id="tl-feira" class="tl-panel"><div class="month-sep" data-month="Abril"><span class="month-label">Abril 2026</span><div class="month-line"></div></div><div class="card" data-id="9" data-tab="feira" data-mes="Abril">
+      <div id="tl-feira" class="tl-panel"><div class="month-sep" data-month="Abril"><span class="month-label">Abril 2026</span><div class="month-line"></div></div><div class="card" data-id="9" data-part="" data-tab="feira" data-mes="Abril">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">14/Abr</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -216,7 +222,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
     </div>
     
   </div>
-</div><div class="card" data-id="11" data-tab="feira" data-mes="Abril">
+</div><div class="card" data-id="11" data-part="Sim" data-tab="feira" data-mes="Abril">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">28/Abr</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -239,7 +245,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
     </div>
     
   </div>
-</div><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="3" data-tab="feira" data-mes="Maio">
+</div><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="3" data-part="Sim" data-tab="feira" data-mes="Maio">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">21/Mai</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -262,7 +268,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
     </div>
     
   </div>
-</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="17" data-tab="feira" data-mes="Agosto">
+</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="17" data-part="" data-tab="feira" data-mes="Agosto">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">12/Ago</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -285,7 +291,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
     </div>
     
   </div>
-</div><div class="card" data-id="2" data-tab="feira" data-mes="Agosto">
+</div><div class="card" data-id="2" data-part="Sim" data-tab="feira" data-mes="Agosto">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">15/Ago</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -308,7 +314,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
     </div>
     
   </div>
-</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="18" data-tab="feira" data-mes="Setembro">
+</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="18" data-part="Sim" data-tab="feira" data-mes="Setembro">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">03/Set</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -331,7 +337,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
     </div>
     
   </div>
-</div><div class="card" data-id="1" data-tab="feira" data-mes="Setembro">
+</div><div class="card" data-id="1" data-part="Sim" data-tab="feira" data-mes="Setembro">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">22/Set</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -355,7 +361,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
     
   </div>
 </div></div>
-      <div id="tl-palestra" class="tl-panel hidden"><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="7" data-tab="palestra" data-mes="Maio">
+      <div id="tl-palestra" class="tl-panel hidden"><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="7" data-part="" data-tab="palestra" data-mes="Maio">
   <div class="card-left" style="border-left:4px solid #0369a1">
     <div class="card-date">26/Mai</div>
     <div class="card-dot" style="background:#0369a1"></div>
@@ -378,7 +384,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
     </div>
     
   </div>
-</div><div class="month-sep" data-month="Junho"><span class="month-label">Junho 2026</span><div class="month-line"></div></div><div class="card" data-id="15" data-tab="palestra" data-mes="Junho">
+</div><div class="month-sep" data-month="Junho"><span class="month-label">Junho 2026</span><div class="month-line"></div></div><div class="card" data-id="15" data-part="Sim" data-tab="palestra" data-mes="Junho">
   <div class="card-left" style="border-left:4px solid #c2410c">
     <div class="card-date">01/Jun</div>
     <div class="card-dot" style="background:#c2410c"></div>
@@ -401,7 +407,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
     </div>
     
   </div>
-</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="19" data-tab="palestra" data-mes="Agosto">
+</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="19" data-part="Sim" data-tab="palestra" data-mes="Agosto">
   <div class="card-left" style="border-left:4px solid #0369a1">
     <div class="card-date">11/Ago</div>
     <div class="card-dot" style="background:#0369a1"></div>
@@ -425,7 +431,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</div>
     </div>
     
   </div>
-</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="16" data-tab="palestra" data-mes="Setembro">
+</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="16" data-part="Sim" data-tab="palestra" data-mes="Setembro">
   <div class="card-left" style="border-left:4px solid #0369a1">
     <div class="card-date">23/Set</div>
     <div class="card-dot" style="background:#0369a1"></div>
@@ -448,7 +454,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</div>
     </div>
     
   </div>
-</div><div class="card" data-id="14" data-tab="palestra" data-mes="Setembro">
+</div><div class="card" data-id="14" data-part="Em análise" data-tab="palestra" data-mes="Setembro">
   <div class="card-left" style="border-left:4px solid #0369a1">
     <div class="card-date">28/Set</div>
     <div class="card-dot" style="background:#0369a1"></div>
@@ -471,7 +477,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</div>
     </div>
     
   </div>
-</div><div class="card" data-id="10" data-tab="palestra" data-mes="">
+</div><div class="card" data-id="10" data-part="Sim" data-tab="palestra" data-mes="">
   <div class="card-left" style="border-left:4px solid #0369a1">
     <div class="card-date">Maio/Junho</div>
     <div class="card-dot" style="background:#0369a1"></div>
@@ -495,7 +501,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</div>
     
   </div>
 </div></div>
-      <div id="tl-todos" class="tl-panel hidden"><div class="month-sep" data-month="Abril"><span class="month-label">Abril 2026</span><div class="month-line"></div></div><div class="card" data-id="9" data-tab="feira" data-mes="Abril">
+      <div id="tl-todos" class="tl-panel hidden"><div class="month-sep" data-month="Abril"><span class="month-label">Abril 2026</span><div class="month-line"></div></div><div class="card" data-id="9" data-part="" data-tab="feira" data-mes="Abril">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">14/Abr</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -518,7 +524,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</div>
     </div>
     
   </div>
-</div><div class="card" data-id="11" data-tab="feira" data-mes="Abril">
+</div><div class="card" data-id="11" data-part="Sim" data-tab="feira" data-mes="Abril">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">28/Abr</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -541,7 +547,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</div>
     </div>
     
   </div>
-</div><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="3" data-tab="feira" data-mes="Maio">
+</div><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="3" data-part="Sim" data-tab="feira" data-mes="Maio">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">21/Mai</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -564,7 +570,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</div>
     </div>
     
   </div>
-</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="17" data-tab="feira" data-mes="Agosto">
+</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="17" data-part="" data-tab="feira" data-mes="Agosto">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">12/Ago</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -587,7 +593,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</div>
     </div>
     
   </div>
-</div><div class="card" data-id="2" data-tab="feira" data-mes="Agosto">
+</div><div class="card" data-id="2" data-part="Sim" data-tab="feira" data-mes="Agosto">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">15/Ago</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -610,7 +616,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</div>
     </div>
     
   </div>
-</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="18" data-tab="feira" data-mes="Setembro">
+</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="18" data-part="Sim" data-tab="feira" data-mes="Setembro">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">03/Set</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -633,7 +639,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</div>
     </div>
     
   </div>
-</div><div class="card" data-id="1" data-tab="feira" data-mes="Setembro">
+</div><div class="card" data-id="1" data-part="Sim" data-tab="feira" data-mes="Setembro">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">22/Set</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -656,7 +662,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</div>
     </div>
     
   </div>
-</div><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="7" data-tab="palestra" data-mes="Maio">
+</div><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="7" data-part="" data-tab="palestra" data-mes="Maio">
   <div class="card-left" style="border-left:4px solid #0369a1">
     <div class="card-date">26/Mai</div>
     <div class="card-dot" style="background:#0369a1"></div>
@@ -679,7 +685,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</div>
     </div>
     
   </div>
-</div><div class="month-sep" data-month="Junho"><span class="month-label">Junho 2026</span><div class="month-line"></div></div><div class="card" data-id="15" data-tab="palestra" data-mes="Junho">
+</div><div class="month-sep" data-month="Junho"><span class="month-label">Junho 2026</span><div class="month-line"></div></div><div class="card" data-id="15" data-part="Sim" data-tab="palestra" data-mes="Junho">
   <div class="card-left" style="border-left:4px solid #c2410c">
     <div class="card-date">01/Jun</div>
     <div class="card-dot" style="background:#c2410c"></div>
@@ -702,7 +708,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</div>
     </div>
     
   </div>
-</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="19" data-tab="palestra" data-mes="Agosto">
+</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="19" data-part="Sim" data-tab="palestra" data-mes="Agosto">
   <div class="card-left" style="border-left:4px solid #0369a1">
     <div class="card-date">11/Ago</div>
     <div class="card-dot" style="background:#0369a1"></div>
@@ -726,7 +732,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</div>
     </div>
     
   </div>
-</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="16" data-tab="palestra" data-mes="Setembro">
+</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="16" data-part="Sim" data-tab="palestra" data-mes="Setembro">
   <div class="card-left" style="border-left:4px solid #0369a1">
     <div class="card-date">23/Set</div>
     <div class="card-dot" style="background:#0369a1"></div>
@@ -749,7 +755,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</div>
     </div>
     
   </div>
-</div><div class="card" data-id="14" data-tab="palestra" data-mes="Setembro">
+</div><div class="card" data-id="14" data-part="Em análise" data-tab="palestra" data-mes="Setembro">
   <div class="card-left" style="border-left:4px solid #0369a1">
     <div class="card-date">28/Set</div>
     <div class="card-dot" style="background:#0369a1"></div>
@@ -772,7 +778,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</div>
     </div>
     
   </div>
-</div><div class="card" data-id="10" data-tab="palestra" data-mes="">
+</div><div class="card" data-id="10" data-part="Sim" data-tab="palestra" data-mes="">
   <div class="card-left" style="border-left:4px solid #0369a1">
     <div class="card-date">Maio/Junho</div>
     <div class="card-dot" style="background:#0369a1"></div>
@@ -1925,7 +1931,7 @@ let evData = JSON.parse(localStorage.getItem('prioEv2') || 'null') || EV_DATA;
 let visData = JSON.parse(localStorage.getItem('prioVis2') || 'null') || VIS_DATA;
 
 const EV_CL = {contrato:'📄 Contrato assinado',pagamento:'💳 Pagamento iniciado',brinde:'🎁 Brindes confirmados',convidados:'👥 Convidados definidos',palestrante:'🎤 Palestrante confirmado',logistica_ok:'✈️ Logística ok'};
-const VIS_CL = {espaco_reservado:'🏛️ Espaço reservado',convites_enviados:'📨 Convites enviados',lista_presenca:'📝 Lista de presença preparada',coffee_break:'☕ Coffee break confirmado',palestrante_confirmado:'🎤 Palestrante interno confirmado',roteiro_definido:'📋 Roteiro da visita definido',crachas:'🪪 Crachás preparados'};
+const VIS_CL = {espaco_reservado:'🏛️ Espaço reservado',convites_enviados:'📨 Convites enviados',lista_presenca:'📝 Lista de presença preparada',coffee_break:'☕ Coffee break confirmado',palestrante_confirmado:'🎤 Palestrante interno confirmado',roteiro_definido:'📋 Roteiro da visita definido'};
 
 // NAV
 let curSection = 'timeline';
@@ -1968,12 +1974,15 @@ document.querySelectorAll('[data-tab]').forEach(t=>t.addEventListener('click',()
 function applyTL(){
   const q=document.getElementById('search-tl').value.toLowerCase();
   const est=document.getElementById('filter-est').value;
+  const part=document.getElementById('filter-part').value;
   let conf=0;
   allCards.forEach(c=>{
     const txt=c.textContent.toLowerCase();
-    const ok=(!q||txt.includes(q))&&(!est||txt.includes(est.toLowerCase()));
+    const cardPart=c.dataset.part||'';
+    const partOk=!part||(part==='Sim'&&cardPart==='Sim')||(part==='Em análise'&&cardPart==='Em análise');
+    const ok=(!q||txt.includes(q))&&(!est||txt.includes(est.toLowerCase()))&&partOk;
     c.classList.toggle('hidden',!ok);
-    if(ok&&txt.includes('✓ confirmado'))conf++;
+    if(ok&&cardPart==='Sim')conf++;
   });
   // month seps: check each panel
   document.querySelectorAll('.tl-panel').forEach(panel=>{
@@ -1986,6 +1995,7 @@ function applyTL(){
 
 document.getElementById('search-tl').addEventListener('input',applyTL);
 document.getElementById('filter-est').addEventListener('input',applyTL);
+document.getElementById('filter-part').addEventListener('input',applyTL);
 
 // VISITAS TABS
 let activeVTab='planejamento';
