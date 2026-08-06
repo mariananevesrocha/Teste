@@ -2086,6 +2086,7 @@ function goto(sec, el){
   if(titles[sec]) document.getElementById('topbar-title-other').textContent=titles[sec];
   if(isTL) applyTL();
   if(sec==='contatos') buildLocalFilter();
+  if(sec==='custos') setTimeout(renderCustos,0);
 }
 
 // ── VIEW TOGGLE (timeline / calendar) ────────────────────────────────────────
@@ -2387,13 +2388,6 @@ function renderCustos(){
     <td class="num" style="background:#f0fdf4;font-weight:800;color:#16a34a;padding:9px 12px">R$ ${totalReal.toLocaleString('pt-BR')}</td>
     <td class="num" style="${delta>=0?'color:#16a34a':'color:#dc2626'};font-weight:800;padding:9px 12px">${(delta>=0?'+':'')+delta.toLocaleString('pt-BR')}</td>
   </tr>`;
-}
-
-// Hook into goto to render custos on navigate
-const _origGoto = goto;
-function goto(sec, el){
-  _origGoto(sec, el);
-  if(sec==='custos') renderCustos();
 }
 
 // ═══════════════════════════════════════════════════════════════
