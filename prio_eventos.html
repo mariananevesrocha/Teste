@@ -209,6 +209,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="nav-item" onclick="goto('convites',this)"><span class="nav-icon">📨</span> Convites Recebidos <span class="nav-badge">21</span></div>
     <div class="nav-item" onclick="goto('contatos',this)"><span class="nav-icon">📋</span> Contatos <span class="nav-badge">72</span></div>
     <div class="nav-item" onclick="goto('brindes',this)"><span class="nav-icon">🎁</span> Brindes</div>
+    <div class="nav-item" onclick="goto('custos',this)"><span class="nav-icon">💰</span> Custos</div>
     <div class="nav-sep"></div>
     <div class="nav-item" onclick="goto('declinados',this)"><span class="nav-icon">🚫</span> Eventos Declinados <span class="nav-badge">6</span></div>
   </nav>
@@ -241,7 +242,8 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <button class="tab active" data-tab="todos">Todos <span class="cb" id="cb-todos">15</span></button>
     <button class="tab" data-tab="feira">Feiras <span class="cb" id="cb-feira">8</span></button>
     <button class="tab" data-tab="palestra">Palestras <span class="cb" id="cb-palestra">3</span></button>
-    <button class="tab" data-tab="outro">Outros <span class="cb" id="cb-outro">4</span></button>
+    <button class="tab" data-tab="outro">Outros <span class="cb" id="cb-outro">3</span></button>
+    <button class="tab" data-tab="internacional">Internacional <span class="cb" id="cb-internacional">1</span></button>
   </div>
   <div class="tabs-row hidden" id="tabs-cont">
     <button class="tab active" data-ctab="todos">Todos</button>
@@ -258,7 +260,8 @@ tbody td{padding:9px 12px;vertical-align:middle}
         <div class="stat-card dark"><div class="val" id="st-total">15</div><div class="lbl">Eventos ativos</div></div>
         <div class="stat-card"><div class="val">8</div><div class="lbl">Feiras</div></div>
         <div class="stat-card"><div class="val">3</div><div class="lbl">Palestras</div></div>
-        <div class="stat-card"><div class="val">4</div><div class="lbl">Outros</div></div>
+        <div class="stat-card"><div class="val">3</div><div class="lbl">Outros</div></div>
+        <div class="stat-card" style="border-left:4px solid #9d174d"><div class="val" style="color:#9d174d">1</div><div class="lbl">Internacionais</div></div>
         <div class="stat-card"><div class="val" id="st-conf">—</div><div class="lbl">Confirmados</div></div>
       </div>
 
@@ -504,13 +507,14 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Novembro"><span class="month-label">Novembro 2026</span><div class="month-line"></div></div><div class="card" data-id="15" data-part="" data-tab="outro" data-mes="Novembro" data-date="2026-11-06" data-est="">
+</div>
+        <div id="tl-internacional" class="tl-panel  hidden"><div class="month-sep" data-month="Novembro"><span class="month-label">Novembro 2026</span><div class="month-line"></div></div><div class="card" data-id="15" data-part="" data-tab="internacional" data-mes="Novembro" data-date="2026-11-06" data-est="">
   <div class="card-left" style="border-left:4px solid #64748b">
     <div class="card-date">06/Nov</div>
     <div class="card-dot" style="background:#64748b"></div>
   </div>
   <div class="card-body">
-    <div class="card-top"><span class="pill pill-outro">Outro</span> </div>
+    <div class="card-top"><span class="pill pill-internacional">Internacional</span> </div>
     <div class="card-title">MBA Brasil - EUA</div>
     <div class="card-sub">Internacional</div>
     <div class="card-footer">
@@ -521,7 +525,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
-</div></div>
+</div></div></div>
         <div id="tl-todos" class="tl-panel  hidden"><div class="month-sep" data-month="Março"><span class="month-label">Março 2026</span><div class="month-line"></div></div><div class="card" data-id="1" data-part="" data-tab="feira" data-mes="Março" data-date="2026-03-26" data-est="">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">26/Mar</div>
@@ -760,13 +764,13 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Novembro"><span class="month-label">Novembro 2026</span><div class="month-line"></div></div><div class="card" data-id="15" data-part="" data-tab="outro" data-mes="Novembro" data-date="2026-11-06" data-est="">
+</div><div class="month-sep" data-month="Novembro"><span class="month-label">Novembro 2026</span><div class="month-line"></div></div><div class="card" data-id="15" data-part="" data-tab="internacional" data-mes="Novembro" data-date="2026-11-06" data-est="">
   <div class="card-left" style="border-left:4px solid #64748b">
     <div class="card-date">06/Nov</div>
     <div class="card-dot" style="background:#64748b"></div>
   </div>
   <div class="card-body">
-    <div class="card-top"><span class="pill pill-outro">Outro</span> </div>
+    <div class="card-top"><span class="pill pill-internacional">Internacional</span> </div>
     <div class="card-title">MBA Brasil - EUA</div>
     <div class="card-sub">Internacional</div>
     <div class="card-footer">
@@ -1909,9 +1913,38 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </section>
 
+    <!-- CUSTOS -->
+    <section class="section" id="sec-custos">
+      <div class="stats" id="custos-stats">
+        <div class="stat-card dark"><div class="val" id="cs-prev">R$ 0</div><div class="lbl">Total Previsto</div></div>
+        <div class="stat-card" style="border-left:4px solid #16a34a"><div class="val green" id="cs-real">R$ 0</div><div class="lbl">Total Real</div></div>
+        <div class="stat-card" style="border-left:4px solid #dc2626"><div class="val" id="cs-delta" style="color:#dc2626">R$ 0</div><div class="lbl">Diferença (prev - real)</div></div>
+        <div class="stat-card"><div class="val" id="cs-zerados">0</div><div class="lbl">Sem custo cadastrado</div></div>
+      </div>
+      <p class="small muted" style="margin-bottom:12px">Custos cadastrados via checklist de cada evento. Clique em um evento para editar.</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Evento</th>
+              <th>Tipo</th>
+              <th>Data</th>
+              <th class="num">Contrato Prev.</th>
+              <th class="num">Logística Prev.</th>
+              <th class="num">Brindes Prev.</th>
+              <th class="num" style="background:#eff6ff">Total Prev.</th>
+              <th class="num" style="background:#f0fdf4">Total Real</th>
+              <th class="num">Δ</th>
+            </tr>
+          </thead>
+          <tbody id="custos-body"></tbody>
+          <tfoot id="custos-foot"></tfoot>
+        </table>
+      </div>
+    </section>
+
     <!-- DECLINADOS -->
     <section class="section" id="sec-declinados">
-      <section class="section" id="sec-declinados">
       <div class="stats">
         <div class="stat-card" style="border-left:4px solid #dc2626"><div class="val" style="color:#dc2626">6</div><div class="lbl">Eventos declinados</div></div>
       </div>
@@ -2017,7 +2050,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
 </div>
 
 <script>
-const EV_DATA = [{"id": 1, "evento": "Feira Técnica SENAI", "date": "2026-03-26", "tipo": "Feira", "est": "", "part": "", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 2, "evento": "Petrogames UFRJ", "date": "2026-04-11", "tipo": "Outro", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 3, "evento": "CONECTA IBMEC", "date": "2026-04-28", "tipo": "Feira", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 4, "evento": "Petrogames UFRJ", "date": "2026-05-14", "tipo": "Outro", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 5, "evento": "FEIRA FEA USP", "date": "2026-05-21", "tipo": "Feira", "est": "SP", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 6, "evento": "SPEED JOB UFPel", "date": "2026-05-26", "tipo": "Palestra", "est": "RS", "part": "", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 7, "evento": "FEIRA VIRTUAL EMPREGA", "date": "2026-06-01", "tipo": "Painel", "est": "", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 8, "evento": "WORKSHOP GEOSCIENCES UNICAMP", "date": "2026-08-11", "tipo": "Palestra", "est": "SP", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 9, "evento": "FEIRA DE CARREIRAS INTEGRA UNICAMP", "date": "2026-08-12", "tipo": "Feira", "est": "SP", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 10, "evento": "FEIRA DE CARREIRAS ITA", "date": "2026-08-15", "tipo": "Feira", "est": "SP", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 11, "evento": "SEMANA FLUXO UFRJ", "date": "2026-08-31", "tipo": "Feira", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 12, "evento": "CONECTA IBMEC", "date": "2026-09-03", "tipo": "Feira", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 13, "evento": "FEIRA UFPE", "date": "2026-09-22", "tipo": "Feira", "est": "PE", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 14, "evento": "SEMANA AYRA", "date": "2026-09-23", "tipo": "Palestra", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 15, "evento": "MBA Brasil - EUA", "date": "2026-11-06", "tipo": "Outro", "est": "", "part": "", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}];
+const EV_DATA = [{"id": 1, "evento": "Feira Técnica SENAI", "date": "2026-03-26", "tipo": "Feira", "est": "", "part": "", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 2, "evento": "Petrogames UFRJ", "date": "2026-04-11", "tipo": "Outro", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 3, "evento": "CONECTA IBMEC", "date": "2026-04-28", "tipo": "Feira", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 4, "evento": "Petrogames UFRJ", "date": "2026-05-14", "tipo": "Outro", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 5, "evento": "FEIRA FEA USP", "date": "2026-05-21", "tipo": "Feira", "est": "SP", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 6, "evento": "SPEED JOB UFPel", "date": "2026-05-26", "tipo": "Palestra", "est": "RS", "part": "", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 7, "evento": "FEIRA VIRTUAL EMPREGA", "date": "2026-06-01", "tipo": "Painel", "est": "", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 8, "evento": "WORKSHOP GEOSCIENCES UNICAMP", "date": "2026-08-11", "tipo": "Palestra", "est": "SP", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 9, "evento": "FEIRA DE CARREIRAS INTEGRA UNICAMP", "date": "2026-08-12", "tipo": "Feira", "est": "SP", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 10, "evento": "FEIRA DE CARREIRAS ITA", "date": "2026-08-15", "tipo": "Feira", "est": "SP", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 11, "evento": "SEMANA FLUXO UFRJ", "date": "2026-08-31", "tipo": "Feira", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 12, "evento": "CONECTA IBMEC", "date": "2026-09-03", "tipo": "Feira", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 13, "evento": "FEIRA UFPE", "date": "2026-09-22", "tipo": "Feira", "est": "PE", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 14, "evento": "SEMANA AYRA", "date": "2026-09-23", "tipo": "Palestra", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 15, "evento": "MBA Brasil - EUA", "date": "2026-11-06", "tipo": "Internacional", "est": "", "part": "", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}];
 const VIS_DATA = [{"faculdade": "UFS", "data": "2026-02-05", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": "UERJ - FGV - UFRJ", "data": "2026-03-25", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": "UNICAMP - USP - SPWLA UFRJ", "data": "2026-04-10", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-05-20", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-08-12", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-08-19", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-08-26", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-09-08", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-09-11", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-09-17", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": "ROG.E (21-24/Set)", "data": "2026-09-22", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": "IME", "data": "2026-09-25", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-10-01", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-10-13", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}];
 let evData  = JSON.parse(localStorage.getItem('prioEv3')  || 'null') || EV_DATA;
 let visData = JSON.parse(localStorage.getItem('prioVis3') || 'null') || VIS_DATA;
@@ -2049,7 +2082,7 @@ function goto(sec, el){
   document.getElementById('topbar-other').classList.toggle('hidden',isTL);
   document.getElementById('tabs-tl').classList.toggle('hidden',!isTL);
   document.getElementById('tabs-cont').classList.toggle('hidden',!isCont);
-  const titles={visitas:'Visitas PRIO',convites:'Convites Recebidos',contatos:'Contatos',brindes:'Brindes',declinados:'Eventos Declinados'};
+  const titles={visitas:'Visitas PRIO',convites:'Convites Recebidos',contatos:'Contatos',brindes:'Brindes',custos:'Custos por Evento',declinados:'Eventos Declinados'};
   if(titles[sec]) document.getElementById('topbar-title-other').textContent=titles[sec];
   if(isTL) applyTL();
   if(sec==='contatos') buildLocalFilter();
@@ -2072,7 +2105,7 @@ function setView(v){
 let activeTab = 'feira';
 const allCards  = Array.from(document.querySelectorAll('.card'));
 function showTLPanel(tab){
-  ['feira','palestra','outro','todos'].forEach(t=>document.getElementById('tl-'+t).classList.toggle('hidden',t!==tab));
+  ['feira','palestra','outro','internacional','todos'].forEach(t=>document.getElementById('tl-'+t).classList.toggle('hidden',t!==tab));
 }
 document.querySelectorAll('[data-tab]').forEach(t=>t.addEventListener('click',()=>{
   document.querySelectorAll('[data-tab]').forEach(x=>x.classList.remove('active'));
@@ -2298,6 +2331,97 @@ function exportReport(){
 
 // init
 applyTL();
+
+// ═══════════════════════════════════════════════════════════════
+// CUSTOS
+// ═══════════════════════════════════════════════════════════════
+const TIPO_PILL = {
+  Feira:'<span class="pill pill-feira">Feira</span>',
+  Palestra:'<span class="pill pill-palestra">Palestra</span>',
+  Painel:'<span class="pill pill-painel">Painel</span>',
+  Internacional:'<span class="pill pill-internacional">Internacional</span>',
+  Outro:'<span class="pill pill-outro">Outro</span>',
+};
+const MABR2 = ["","Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+
+function renderCustos(){
+  const data = JSON.parse(localStorage.getItem('prioEv3')||'null') || evData;
+  const fmt = n => n ? 'R$ '+n.toLocaleString('pt-BR') : '—';
+  const fmtN = n => n ? n.toLocaleString('pt-BR') : '—';
+  let totalPrev=0, totalReal=0, zerados=0;
+  let rows = '';
+  data.forEach(e => {
+    const cu = e.custo||{};
+    const prev = (cu.prev_contrato||0)+(cu.prev_logistica||0)+(cu.prev_brinde||0);
+    const real = (cu.real_contrato||0)+(cu.real_logistica||0)+(cu.real_brinde||0);
+    const delta = prev - real;
+    if(!prev && !real) zerados++;
+    totalPrev += prev; totalReal += real;
+    const [y,m,d] = e.date.split('-').map(Number);
+    const dateStr = `${String(d).padStart(2,'0')}/${MABR2[m]}`;
+    const deltaStyle = delta>0?'color:#16a34a':delta<0?'color:#dc2626':'color:var(--muted)';
+    rows += `<tr style="cursor:pointer" onclick="openChecklist(${e.id})">
+      <td class="fw">${e.evento}</td>
+      <td>${TIPO_PILL[e.tipo]||''}</td>
+      <td class="date-cell">${dateStr}</td>
+      <td class="num small">${fmtN(cu.prev_contrato||0)}</td>
+      <td class="num small">${fmtN(cu.prev_logistica||0)}</td>
+      <td class="num small">${fmtN(cu.prev_brinde||0)}</td>
+      <td class="num" style="background:#eff6ff;font-weight:700">${fmt(prev)}</td>
+      <td class="num" style="background:#f0fdf4;font-weight:700;color:#16a34a">${fmt(real)}</td>
+      <td class="num" style="${deltaStyle};font-weight:600">${delta!==0?(delta>0?'+':'')+delta.toLocaleString('pt-BR'):'—'}</td>
+    </tr>`;
+  });
+  document.getElementById('custos-body').innerHTML = rows;
+  const delta = totalPrev - totalReal;
+  document.getElementById('cs-prev').textContent = 'R$ '+totalPrev.toLocaleString('pt-BR');
+  document.getElementById('cs-real').textContent = 'R$ '+totalReal.toLocaleString('pt-BR');
+  document.getElementById('cs-delta').textContent = (delta>=0?'R$ ':'- R$ ')+Math.abs(delta).toLocaleString('pt-BR');
+  document.getElementById('cs-delta').style.color = delta>=0?'#16a34a':'#dc2626';
+  document.getElementById('cs-zerados').textContent = zerados;
+  // Footer totals
+  document.getElementById('custos-foot').innerHTML = `<tr style="border-top:2px solid var(--border);background:#f8fafc">
+    <td colspan="3" class="fw" style="padding:9px 12px">TOTAL</td>
+    <td class="num" colspan="3" style="padding:9px 12px"></td>
+    <td class="num" style="background:#eff6ff;font-weight:800;padding:9px 12px">R$ ${totalPrev.toLocaleString('pt-BR')}</td>
+    <td class="num" style="background:#f0fdf4;font-weight:800;color:#16a34a;padding:9px 12px">R$ ${totalReal.toLocaleString('pt-BR')}</td>
+    <td class="num" style="${delta>=0?'color:#16a34a':'color:#dc2626'};font-weight:800;padding:9px 12px">${(delta>=0?'+':'')+delta.toLocaleString('pt-BR')}</td>
+  </tr>`;
+}
+
+// Hook into goto to render custos on navigate
+const _origGoto = goto;
+function goto(sec, el){
+  _origGoto(sec, el);
+  if(sec==='custos') renderCustos();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// VISITAS — ordenar próximas primeiro
+// ═══════════════════════════════════════════════════════════════
+(function reorderVisitas(){
+  const today = new Date().toISOString().slice(0,10);
+  const tbody = document.querySelector('#sec-visitas tbody');
+  if(!tbody) return;
+  const rows = Array.from(tbody.querySelectorAll('tr[onclick]'));
+  const upcoming = rows.filter(r => {
+    const idx = +r.getAttribute('onclick').match(/\d+/)[0];
+    return VIS_ISO[idx] >= today;
+  });
+  const past = rows.filter(r => {
+    const idx = +r.getAttribute('onclick').match(/\d+/)[0];
+    return VIS_ISO[idx] < today;
+  });
+  // Clear and re-insert: upcoming first (no dimming), then separator, then past (dimmed)
+  tbody.innerHTML = '';
+  upcoming.forEach(r => tbody.appendChild(r));
+  if(past.length){
+    const sep = document.createElement('tr');
+    sep.innerHTML = `<td colspan="9" style="padding:10px 12px;background:#f8fafc;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;border-top:2px solid var(--border)">✓ Visitas realizadas (${past.length})</td>`;
+    tbody.appendChild(sep);
+    past.forEach(r => { r.style.opacity='.55'; tbody.appendChild(r); });
+  }
+})();
 
 // ═══════════════════════════════════════════════════════════════
 // MICROSOFT FORMS IMPORT
