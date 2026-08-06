@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Timeline Eventos Atração PRIO</title>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 <style>
 :root{--blue:#1d4ed8;--blue-d:#1e3a8a;--blue-l:#eff6ff;--blue-m:#dbeafe;--text:#111827;--muted:#6b7280;--border:#e5e7eb;--bg:#f3f4f6;--white:#fff;--radius:10px;--sidebar:230px}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -160,6 +161,34 @@ tbody td{padding:9px 12px;vertical-align:middle}
 .cal-filter-row label{font-size:12px;font-weight:600;color:var(--muted)}
 .cal-filter-row select{background:var(--white);border:1px solid var(--border);color:var(--text);padding:5px 10px;border-radius:6px;font-size:12px;outline:none}
 
+/* IMPORT FORMS */
+.import-bar{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;padding:12px 14px;background:var(--white);border:1px solid var(--border);border-radius:var(--radius)}
+.import-bar .lbl{font-size:13px;font-weight:600;color:var(--blue-d);flex:1}
+.import-bar .hint{font-size:12px;color:var(--muted)}
+.file-btn{position:relative;overflow:hidden;display:inline-flex}
+.file-btn input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0}
+.import-status{font-size:12px;color:#16a34a;font-weight:600;display:none}
+.import-status.show{display:inline}
+.part-badge{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 6px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;transition:all .15s}
+.part-badge.has-data{background:var(--blue-l);color:var(--blue);border:1px solid var(--blue-m)}
+.part-badge.no-data{background:var(--bg);color:var(--muted);border:1px solid var(--border)}
+.part-badge:hover{background:var(--blue);color:#fff}
+.map-modal .map-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.map-modal .map-row label{font-size:13px;font-weight:600;width:160px;flex-shrink:0;color:var(--text)}
+.map-modal .map-row select{flex:1;border:1px solid var(--border);border-radius:7px;padding:7px 10px;font-size:13px;outline:none;background:var(--white)}
+.map-modal .map-row select:focus{border-color:var(--blue)}
+.map-hint{font-size:12px;color:var(--muted);margin-bottom:16px;padding:8px 10px;background:var(--bg);border-radius:7px;line-height:1.6}
+.part-list{display:flex;flex-direction:column;gap:6px;max-height:55vh;overflow-y:auto}
+.part-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid var(--border);border-radius:8px;background:var(--white)}
+.part-item .part-nome{font-weight:600;font-size:13px;flex:1}
+.part-item .part-univ{font-size:12px;color:var(--muted)}
+.part-item .part-curso{font-size:11px;color:var(--blue);background:var(--blue-l);padding:2px 7px;border-radius:20px;white-space:nowrap}
+.part-item .part-area{font-size:11px;color:#166534;background:#dcfce7;padding:2px 7px;border-radius:20px;white-space:nowrap}
+.part-empty{text-align:center;padding:32px;color:var(--muted);font-size:13px}
+.part-search{width:100%;border:1px solid var(--border);border-radius:7px;padding:8px 11px;font-size:13px;outline:none;margin-bottom:12px}
+.part-search:focus{border-color:var(--blue)}
+.import-summary{padding:8px 12px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;font-size:12px;color:#166534;margin-bottom:14px;display:none}
+.import-summary.show{display:block}
 @media print{
   .sidebar,.topbar,.tabs-row,.checklist-mini,.btn,.view-toggle{display:none!important}
   .main{overflow:visible}.content{overflow:visible;padding:0}
@@ -783,13 +812,27 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <!-- VISITAS PRIO -->
     <section class="section" id="sec-visitas">
       <div class="stats">
-          <div class="stat-card dark"><div class="val">14</div><div class="lbl">Visitas planejadas</div></div>
-          <div class="stat-card"><div class="val">945</div><div class="lbl">Total convidados</div></div>
+        <div class="stat-card dark"><div class="val">14</div><div class="lbl">Visitas planejadas</div></div>
+        <div class="stat-card"><div class="val">945</div><div class="lbl">Total convidados</div></div>
+        <div class="stat-card"><div class="val" id="st-inscritos">0</div><div class="lbl">Inscritos (Forms)</div></div>
+      </div>
+      <div class="import-bar">
+        <div>
+          <div class="lbl">📥 Importar respostas do Microsoft Forms</div>
+          <div class="hint">Baixe o Excel das respostas no Forms → clique em Importar</div>
         </div>
-        <p class="small muted" style="margin-bottom:12px">Clique em uma visita para abrir o checklist.</p>
-        <div class="tbl-wrap">
-          <table>
-            <thead><tr><th>Data</th><th>Dia</th><th>Turno</th><th>Espaço</th><th>Tipo</th><th>Faculdade / Liga</th><th>Qtd</th><th>Checklist</th></tr></thead>
+        <div class="file-btn">
+          <button class="btn btn-primary btn-sm">📂 Importar Excel</button>
+          <input type="file" id="forms-file" accept=".xlsx,.xls" onchange="handleFormsFile(this)">
+        </div>
+        <span class="import-status" id="import-status">✓ Importado com sucesso</span>
+        <button class="btn btn-ghost btn-sm" onclick="clearImport()" title="Limpar dados importados">✕ Limpar</button>
+      </div>
+      <div class="import-summary" id="import-summary"></div>
+      <p class="small muted" style="margin-bottom:12px">Clique em uma visita para abrir o checklist · Clique no badge de participantes para ver a lista.</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Data</th><th>Dia</th><th>Turno</th><th>Espaço</th><th>Tipo</th><th>Faculdade / Liga</th><th>Qtd</th><th>Inscritos</th><th>Checklist</th></tr></thead>
             <tbody><tr style="cursor:pointer" onclick="openVisitaChecklist(0)">
   <td class="fw">05/Fev</td>
   <td>QUINTA</td>
@@ -2255,6 +2298,242 @@ function exportReport(){
 
 // init
 applyTL();
+
+// ═══════════════════════════════════════════════════════════════
+// MICROSOFT FORMS IMPORT
+// ═══════════════════════════════════════════════════════════════
+
+// Visit ISO dates — order matches table rows 0-13
+const VIS_ISO = ["2026-02-05","2026-03-25","2026-04-10","2026-05-20","2026-08-12","2026-08-19","2026-08-26","2026-09-08","2026-09-11","2026-09-17","2026-09-22","2026-09-25","2026-10-01","2026-10-13"];
+const VIS_DISPLAY = ["05/Fev","25/Mar","10/Abr","20/Mai","12/Ago","19/Ago","26/Ago","08/Set","11/Set","17/Set","22/Set","25/Set","01/Out","13/Out"];
+
+// Column mapping saved in localStorage
+// formsMap: {nome, universidade, curso, area, dataVisita, email}
+let formsMap    = JSON.parse(localStorage.getItem('prioFormsMap')  || 'null');
+let formsData   = JSON.parse(localStorage.getItem('prioFormsData') || 'null'); // [{nome,univ,curso,area,dataVisita,email}]
+let formsColHdr = JSON.parse(localStorage.getItem('prioFormsHdr')  || 'null'); // raw column headers from last import
+
+// Inject badge cells into visit table on page load
+(function injectBadgeCells(){
+  const rows = document.querySelectorAll('#sec-visitas tbody tr[onclick]');
+  rows.forEach((tr, idx) => {
+    tr.dataset.visIdx = idx;
+    // insert badge td before last td (checklist)
+    const tds = tr.querySelectorAll('td');
+    const last = tds[tds.length - 1];
+    const td = document.createElement('td');
+    td.id = 'badge-' + idx;
+    td.style.textAlign = 'center';
+    td.innerHTML = `<span class="part-badge no-data" onclick="event.stopPropagation();openParticipantes(${idx})">—</span>`;
+    tr.insertBefore(td, last);
+  });
+  if(formsData) refreshBadges();
+})();
+
+function refreshBadges(){
+  if(!formsData || !formsData.length) return;
+  let totalInscritos = 0;
+  VIS_ISO.forEach((iso, idx) => {
+    const parts = formsData.filter(r => matchesVisit(r.dataVisita, iso));
+    const n = parts.length;
+    totalInscritos += n;
+    const badgeEl = document.querySelector(`#badge-${idx} .part-badge`);
+    if(badgeEl){
+      badgeEl.textContent = n > 0 ? n : '—';
+      badgeEl.className = 'part-badge ' + (n > 0 ? 'has-data' : 'no-data');
+    }
+  });
+  const st = document.getElementById('st-inscritos');
+  if(st) st.textContent = totalInscritos;
+}
+
+// Try to match a free-text visit date to one of our ISO dates
+function matchesVisit(raw, iso){
+  if(!raw) return false;
+  raw = String(raw).toLowerCase().trim();
+  // iso = "2026-08-12" → try "12/08", "12/ago", "agosto", day match
+  const [y,m,d] = iso.split('-').map(Number);
+  const mAbr = ["","jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"][m];
+  const mFull= ["","janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"][m];
+  // date patterns
+  const patterns = [
+    iso,
+    `${d}/${String(m).padStart(2,'0')}`,
+    `${String(d).padStart(2,'0')}/${String(m).padStart(2,'0')}`,
+    `${d}/${mAbr}`,
+    `${String(d).padStart(2,'0')}/${mAbr}`,
+    mAbr, mFull,
+    VIS_DISPLAY[VIS_ISO.indexOf(iso)].toLowerCase(),
+    VIS_LABELS[VIS_ISO.indexOf(iso)] ? VIS_LABELS[VIS_ISO.indexOf(iso)].toLowerCase() : '',
+  ];
+  return patterns.some(p => p && raw.includes(p));
+}
+
+// ── Handle file upload ────────────────────────────────────────────
+function handleFormsFile(input){
+  const file = input.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const wb = XLSX.read(e.target.result, {type:'binary', cellDates:true});
+    const ws = wb.Sheets[wb.SheetNames[0]];
+    const rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:''});
+    if(!rows || rows.length < 2){ alert('Arquivo vazio ou inválido.'); return; }
+    const headers = rows[0].map(h => String(h).trim());
+    formsColHdr = headers;
+    localStorage.setItem('prioFormsHdr', JSON.stringify(headers));
+    if(!formsMap || !headersMatch(headers, formsMap)){
+      openMapModal(headers, rows);
+    } else {
+      processImport(rows, headers, formsMap);
+    }
+  };
+  reader.readAsBinaryString(file);
+  input.value = '';
+}
+
+function headersMatch(headers, map){
+  // check all mapped columns still exist
+  return Object.values(map).every(v => !v || headers.includes(v));
+}
+
+// ── Column mapping modal ──────────────────────────────────────────
+function openMapModal(headers, rawRows){
+  const opts = ['(não importar)', ...headers];
+  const fields = [
+    {key:'nome',       label:'Nome completo'},
+    {key:'universidade',label:'Universidade / Instituição'},
+    {key:'curso',      label:'Curso / Área de estudo'},
+    {key:'area',       label:'Área de interesse PRIO'},
+    {key:'dataVisita', label:'Data da visita'},
+    {key:'email',      label:'E-mail'},
+  ];
+  const saved = formsMap || {};
+  let html = `<div id="modal-map" class="modal-bg open" onclick="if(event.target===this)document.getElementById('modal-map').remove()">
+  <div class="modal map-modal" style="width:520px">
+    <div class="modal-title">🗂️ Mapear colunas do Forms</div>
+    <div class="map-hint">
+      O arquivo tem <b>${rawRows.length - 1} respostas</b> e <b>${headers.length} colunas</b>.
+      Indique qual coluna do Excel corresponde a cada campo. O mapeamento é salvo para futuras importações.
+    </div>`;
+  fields.forEach(f => {
+    const bestGuess = headers.find(h => h.toLowerCase().includes(f.key) || h.toLowerCase().includes(f.label.split('/')[0].toLowerCase().trim())) || '';
+    const cur = saved[f.key] || bestGuess;
+    html += `<div class="map-row"><label>${f.label}</label>
+      <select id="map-${f.key}">${opts.map(o=>`<option value="${o==='(não importar)'?'':o}"${o===cur?' selected':''}>${o}</option>`).join('')}</select>
+    </div>`;
+  });
+  html += `<div class="modal-footer" style="margin-top:16px">
+    <button class="btn btn-ghost" onclick="document.getElementById('modal-map').remove()">Cancelar</button>
+    <button class="btn btn-primary" onclick="applyMap(${JSON.stringify(rawRows).split('"').join("'")} )">Importar</button>
+  </div></div></div>`;
+  document.body.insertAdjacentHTML('beforeend', html);
+  // store rawRows reference for the onclick
+  window._pendingRows = rawRows;
+  document.querySelector('#modal-map .btn-primary').onclick = function(){
+    const map = {};
+    ['nome','universidade','curso','area','dataVisita','email'].forEach(k => {
+      map[k] = document.getElementById('map-'+k).value;
+    });
+    formsMap = map;
+    localStorage.setItem('prioFormsMap', JSON.stringify(map));
+    document.getElementById('modal-map').remove();
+    processImport(window._pendingRows, formsColHdr, map);
+  };
+}
+
+// ── Process and store import ──────────────────────────────────────
+function processImport(rows, headers, map){
+  const getCol = (row, col) => col ? String(row[headers.indexOf(col)] || '').trim() : '';
+  const data = rows.slice(1).map(row => ({
+    nome:        getCol(row, map.nome),
+    univ:        getCol(row, map.universidade),
+    curso:       getCol(row, map.curso),
+    area:        getCol(row, map.area),
+    dataVisita:  getCol(row, map.dataVisita),
+    email:       getCol(row, map.email),
+  })).filter(r => r.nome || r.univ);
+  formsData = data;
+  localStorage.setItem('prioFormsData', JSON.stringify(data));
+  refreshBadges();
+  // Show status
+  const st = document.getElementById('import-status');
+  if(st){ st.classList.add('show'); setTimeout(()=>st.classList.remove('show'), 3000); }
+  const sum = document.getElementById('import-summary');
+  if(sum){
+    const byVisit = VIS_ISO.map((iso,i)=>({date:VIS_DISPLAY[i],n:data.filter(r=>matchesVisit(r.dataVisita,iso)).length})).filter(x=>x.n>0);
+    sum.innerHTML = `✓ <b>${data.length} inscrições</b> importadas. Distribuição por visita: ` +
+      (byVisit.length ? byVisit.map(x=>`<b>${x.date}</b>: ${x.n}`).join(' · ') : 'nenhuma correspondência encontrada — verifique o campo "Data da visita".');
+    sum.classList.add('show');
+  }
+}
+
+// ── Open participants modal ───────────────────────────────────────
+function openParticipantes(idx){
+  const iso = VIS_ISO[idx];
+  const parts = formsData ? formsData.filter(r => matchesVisit(r.dataVisita, iso)) : [];
+  const lbl = VIS_LABELS[idx] || 'Visita ' + VIS_DISPLAY[idx];
+  let html = `<div id="modal-part" class="modal-bg open" onclick="if(event.target===this)closePartModal()">
+  <div class="modal" style="width:540px">
+    <div class="modal-title">👥 Participantes · ${lbl}</div>
+    <div class="modal-sub">${VIS_DISPLAY[idx]} 2026 · ${parts.length} inscrito(s)</div>`;
+  if(parts.length){
+    html += `<input class="part-search" type="text" placeholder="🔍 Buscar participante..." oninput="filterParts(this.value)">
+    <div class="part-list" id="part-list">`;
+    parts.forEach((p,i) => {
+      html += `<div class="part-item" data-idx="${i}">
+        <div style="flex:1">
+          <div class="part-nome">${p.nome||'—'}</div>
+          <div class="part-univ">${p.univ||''} ${p.email?'· '+p.email:''}</div>
+        </div>
+        ${p.curso?`<span class="part-curso">${p.curso}</span>`:''}
+        ${p.area?`<span class="part-area">${p.area}</span>`:''}
+      </div>`;
+    });
+    html += `</div>`;
+  } else {
+    html += `<div class="part-empty">
+      ${formsData ? '⚠️ Nenhum inscrito encontrado para esta data.<br><span style="font-size:11px">Verifique se o campo "Data da visita" no Forms usa <b>' + VIS_DISPLAY[idx] + '</b>.</span>'
+        : '📥 Importe o Excel do Forms para ver os participantes.'}
+    </div>`;
+  }
+  html += `<div class="modal-footer">
+    ${parts.length ? `<button class="btn btn-ghost btn-sm" onclick="exportParts(${idx})">⬇️ Exportar lista</button>` : '<span></span>'}
+    <button class="btn btn-primary" onclick="closePartModal()">Fechar</button>
+  </div></div></div>`;
+  document.body.insertAdjacentHTML('beforeend', html);
+  window._curPartIdx = idx;
+}
+
+function filterParts(q){
+  document.querySelectorAll('#part-list .part-item').forEach(el => {
+    el.style.display = el.textContent.toLowerCase().includes(q.toLowerCase()) ? '' : 'none';
+  });
+}
+
+function closePartModal(){ document.getElementById('modal-part')?.remove(); }
+
+function exportParts(idx){
+  const iso = VIS_ISO[idx];
+  const parts = formsData.filter(r => matchesVisit(r.dataVisita, iso));
+  let csv = 'Nome,Universidade,Curso,Área,Email\n';
+  parts.forEach(p => { csv += `"${p.nome}","${p.univ}","${p.curso}","${p.area}","${p.email}"\n`; });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8'}));
+  a.download = `participantes_${VIS_DISPLAY[idx].replace('/','')}_2026.csv`;
+  a.click();
+}
+
+function clearImport(){
+  if(!confirm('Limpar todos os dados importados do Forms?')) return;
+  formsData = null; formsMap = null; formsColHdr = null;
+  localStorage.removeItem('prioFormsData');
+  localStorage.removeItem('prioFormsMap');
+  localStorage.removeItem('prioFormsHdr');
+  document.querySelectorAll('.part-badge').forEach(b => { b.textContent='—'; b.className='part-badge no-data'; });
+  const st = document.getElementById('st-inscritos'); if(st) st.textContent='0';
+  const sum = document.getElementById('import-summary'); if(sum) sum.classList.remove('show');
+}
 </script>
 </body>
 </html>
