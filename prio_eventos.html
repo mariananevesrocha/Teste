@@ -189,6 +189,32 @@ tbody td{padding:9px 12px;vertical-align:middle}
 .part-search:focus{border-color:var(--blue)}
 .import-summary{padding:8px 12px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;font-size:12px;color:#166534;margin-bottom:14px;display:none}
 .import-summary.show{display:block}
+/* VISIT CARDS */
+.vis-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px;margin-bottom:20px}
+.vis-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px;position:relative;transition:box-shadow .15s,border-color .15s;cursor:pointer}
+.vis-card:hover{box-shadow:0 4px 16px rgba(29,78,216,.1);border-color:#bfdbfe}
+.vis-card.past{opacity:.6}
+.vis-card-badge{position:absolute;top:12px;right:12px;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:.05em}
+.vis-card-badge.upcoming{background:#fef9c3;color:#854d0e;border:1px solid #fef08a}
+.vis-card-badge.confirmado{background:#dcfce7;color:#166534;border:1px solid #bbf7d0}
+.vis-card-badge.confirmar{background:#fee2e2;color:#991b1b;border:1px solid #fecaca}
+.vis-card-badge.analise{background:#f1f5f9;color:#475569;border:1px solid var(--border)}
+.vis-card-badge.realizada{background:var(--bg);color:var(--muted);border:1px solid var(--border)}
+.vis-date-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.vis-date{font-size:22px;font-weight:800;color:var(--blue-d);line-height:1}
+.vis-date-meta{font-size:11px;color:var(--muted);line-height:1.5}
+.vis-modality{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;margin-left:auto}
+.vis-modality.presencial{background:#dcfce7;color:#166534;border:1px solid #bbf7d0}
+.vis-modality.online{background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd}
+.vis-title{font-size:14px;font-weight:700;margin-bottom:2px;padding-right:80px}
+.vis-liga{font-size:12px;color:var(--muted);margin-bottom:8px}
+.vis-chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.vis-meta-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;font-size:12px;color:var(--muted)}
+.vis-obs{font-size:12px;color:var(--muted);background:var(--bg);border-radius:6px;padding:6px 9px;margin-bottom:10px;line-height:1.5;border-left:3px solid var(--blue-m)}
+.vis-footer{display:flex;align-items:center;gap:8px}
+.vis-sep{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--blue);background:var(--blue-l);padding:4px 12px;border-radius:20px;border:1px solid var(--blue-m);white-space:nowrap}
+.vis-sep-line{flex:1;height:1px;background:var(--border)}
+.vis-sep-row{display:flex;align-items:center;gap:10px;margin:20px 0 12px}
 @media print{
   .sidebar,.topbar,.tabs-row,.checklist-mini,.btn,.view-toggle{display:none!important}
   .main{overflow:visible}.content{overflow:visible;padding:0}
@@ -206,7 +232,6 @@ tbody td{padding:9px 12px;vertical-align:middle}
   <nav>
     <div class="nav-item active" onclick="goto('timeline',this)"><span class="nav-icon">📅</span> Timeline / Calendário <span class="nav-badge" id="nb-tl">15</span></div>
     <div class="nav-item" onclick="goto('visitas',this)"><span class="nav-icon">🏢</span> Visitas PRIO <span class="nav-badge">14</span></div>
-    <div class="nav-item" onclick="goto('convites',this)"><span class="nav-icon">📨</span> Convites Recebidos <span class="nav-badge">21</span></div>
     <div class="nav-item" onclick="goto('contatos',this)"><span class="nav-icon">📋</span> Contatos <span class="nav-badge">72</span></div>
     <div class="nav-item" onclick="goto('brindes',this)"><span class="nav-icon">🎁</span> Brindes</div>
     <div class="nav-item" onclick="goto('custos',this)"><span class="nav-icon">💰</span> Custos</div>
@@ -223,11 +248,11 @@ tbody td{padding:9px 12px;vertical-align:middle}
       <button class="view-btn active" id="vbtn-tl" onclick="setView('timeline')">≡ Timeline</button>
       <button class="view-btn" id="vbtn-cal" onclick="setView('calendar')">▦ Calendário</button>
     </div>
+    <select id="filter-ano" onchange="applyTL()"><option value="2026">2026</option><option value="2025">2025</option><option value="">Todos os anos</option></select>
     <input type="text" id="search-tl" placeholder="🔍 Buscar...">
     <select id="filter-part">
-      <option value="">Todas as participações</option>
-      <option value="Sim">✓ Confirmado</option>
-      <option value="Em análise">⏳ Em análise</option>
+      <option value="Sim" selected>✓ Confirmado</option>
+      <option value="">Todos</option>
       <option value="none">— Sem resposta</option>
     </select>
     <select id="filter-est"><option value="">Todos os estados</option></select>
@@ -235,6 +260,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
   </div>
   <div class="topbar hidden" id="topbar-other">
     <div class="topbar-title" id="topbar-title-other"></div>
+    <select id="filter-ano-other" onchange="syncAno(this.value)"><option value="2026">2026</option><option value="2025">2025</option><option value="">Todos os anos</option></select>
     <button class="btn btn-ghost btn-sm" onclick="exportReport()">⬇️ Exportar</button>
   </div>
 
@@ -257,12 +283,11 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <!-- TIMELINE + CALENDAR -->
     <section class="section active" id="sec-timeline">
       <div class="stats">
-        <div class="stat-card dark"><div class="val" id="st-total">15</div><div class="lbl">Eventos ativos</div></div>
-        <div class="stat-card"><div class="val">8</div><div class="lbl">Feiras</div></div>
-        <div class="stat-card"><div class="val">3</div><div class="lbl">Palestras</div></div>
-        <div class="stat-card"><div class="val">3</div><div class="lbl">Outros</div></div>
-        <div class="stat-card" style="border-left:4px solid #9d174d"><div class="val" style="color:#9d174d">1</div><div class="lbl">Internacionais</div></div>
-        <div class="stat-card"><div class="val" id="st-conf">—</div><div class="lbl">Confirmados</div></div>
+        <div class="stat-card dark"><div class="val" id="st-conf-main">—</div><div class="lbl">Confirmados</div></div>
+        <div class="stat-card"><div class="val stat-tipo" data-tipo="feira">8</div><div class="lbl">Feiras</div></div>
+        <div class="stat-card"><div class="val stat-tipo" data-tipo="palestra">3</div><div class="lbl">Palestras</div></div>
+        <div class="stat-card"><div class="val stat-tipo" data-tipo="outro">3</div><div class="lbl">Outros</div></div>
+        <div class="stat-card" style="border-left:4px solid #9d174d"><div class="val stat-tipo" data-tipo="internacional" style="color:#9d174d">1</div><div class="lbl">Internacionais</div></div>
       </div>
 
       <!-- TIMELINE VIEW -->
@@ -814,10 +839,11 @@ tbody td{padding:9px 12px;vertical-align:middle}
     </section>
 
     <!-- VISITAS PRIO -->
-    <section class="section" id="sec-visitas">
+        <section class="section" id="sec-visitas">
       <div class="stats">
-        <div class="stat-card dark"><div class="val">14</div><div class="lbl">Visitas planejadas</div></div>
-        <div class="stat-card"><div class="val">945</div><div class="lbl">Total convidados</div></div>
+        <div class="stat-card dark"><div class="val" id="vis-total">17</div><div class="lbl">Visitas planejadas</div></div>
+        <div class="stat-card" style="border-left:4px solid #16a34a"><div class="val green" id="vis-conf">—</div><div class="lbl">Confirmadas</div></div>
+        <div class="stat-card"><div class="val" id="vis-upcoming">—</div><div class="lbl">Próximas</div></div>
         <div class="stat-card"><div class="val" id="st-inscritos">0</div><div class="lbl">Inscritos (Forms)</div></div>
       </div>
       <div class="import-bar">
@@ -833,544 +859,22 @@ tbody td{padding:9px 12px;vertical-align:middle}
         <button class="btn btn-ghost btn-sm" onclick="clearImport()" title="Limpar dados importados">✕ Limpar</button>
       </div>
       <div class="import-summary" id="import-summary"></div>
-      <p class="small muted" style="margin-bottom:12px">Clique em uma visita para abrir o checklist · Clique no badge de participantes para ver a lista.</p>
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr><th>Data</th><th>Dia</th><th>Turno</th><th>Espaço</th><th>Tipo</th><th>Faculdade / Liga</th><th>Qtd</th><th>Inscritos</th><th>Checklist</th></tr></thead>
-            <tbody><tr style="cursor:pointer" onclick="openVisitaChecklist(0)">
-  <td class="fw">05/Fev</td>
-  <td>QUINTA</td>
-  <td>TARDE</td>
-  <td>SALA TBMT</td>
-  <td><span class="tag-area">MISTO</span></td>
-  <td>UFS</td>
-  <td class="num">3</td>
-  <td>
-    <div style="display:flex;align-items:center;gap:8px">
-      <div style="width:70px;height:6px;background:var(--border);border-radius:3px;overflow:hidden">
-        <div style="width:0%;height:100%;background:var(--blue);border-radius:3px"></div>
-      </div>
-      <span class="small muted">0%</span>
-    </div>
-  </td>
-</tr><tr style="cursor:pointer" onclick="openVisitaChecklist(1)">
-  <td class="fw">25/Mar</td>
-  <td>QUARTA</td>
-  <td>TARDE</td>
-  <td>AUDITÓRIO</td>
-  <td><span class="tag-area">CORPORATIVO</span></td>
-  <td>UERJ - FGV - UFRJ</td>
-  <td class="num">38</td>
-  <td>
-    <div style="display:flex;align-items:center;gap:8px">
-      <div style="width:70px;height:6px;background:var(--border);border-radius:3px;overflow:hidden">
-        <div style="width:0%;height:100%;background:var(--blue);border-radius:3px"></div>
-      </div>
-      <span class="small muted">0%</span>
-    </div>
-  </td>
-</tr><tr style="cursor:pointer" onclick="openVisitaChecklist(2)">
-  <td class="fw">10/Abr</td>
-  <td>SEXTA</td>
-  <td>TARDE</td>
-  <td>ROOFTOP</td>
-  <td><span class="tag-area">G&G</span></td>
-  <td>UNICAMP - USP - SPWLA UFRJ</td>
-  <td class="num">24</td>
-  <td>
-    <div style="display:flex;align-items:center;gap:8px">
-      <div style="width:70px;height:6px;background:var(--border);border-radius:3px;overflow:hidden">
-        <div style="width:0%;height:100%;background:var(--blue);border-radius:3px"></div>
-      </div>
-      <span class="small muted">0%</span>
-    </div>
-  </td>
-</tr><tr style="cursor:pointer" onclick="openVisitaChecklist(3)">
-  <td class="fw">20/Mai</td>
-  <td>QUARTA</td>
-  <td>MANHÃ</td>
-  <td>AUDITÓRIO</td>
-  <td><span class="tag-area">ENGENHARIA</span></td>
-  <td>—</td>
-  <td class="num">80</td>
-  <td>
-    <div style="display:flex;align-items:center;gap:8px">
-      <div style="width:70px;height:6px;background:var(--border);border-radius:3px;overflow:hidden">
-        <div style="width:0%;height:100%;background:var(--blue);border-radius:3px"></div>
-      </div>
-      <span class="small muted">0%</span>
-    </div>
-  </td>
-</tr><tr style="cursor:pointer" onclick="openVisitaChecklist(4)">
-  <td class="fw">12/Ago</td>
-  <td>QUARTA</td>
-  <td>MANHÃ</td>
-  <td>AUDITÓRIO</td>
-  <td><span class="tag-area">CORPORATIVO</span></td>
-  <td>—</td>
-  <td class="num">80</td>
-  <td>
-    <div style="display:flex;align-items:center;gap:8px">
-      <div style="width:70px;height:6px;background:var(--border);border-radius:3px;overflow:hidden">
-        <div style="width:0%;height:100%;background:var(--blue);border-radius:3px"></div>
-      </div>
-      <span class="small muted">0%</span>
-    </div>
-  </td>
-</tr><tr style="cursor:pointer" onclick="openVisitaChecklist(5)">
-  <td class="fw">19/Ago</td>
-  <td>QUARTA</td>
-  <td>TARDE</td>
-  <td>AUDITÓRIO</td>
-  <td><span class="tag-area">—</span></td>
-  <td>—</td>
-  <td class="num">80</td>
-  <td>
-    <div style="display:flex;align-items:center;gap:8px">
-      <div style="width:70px;height:6px;background:var(--border);border-radius:3px;overflow:hidden">
-        <div style="width:0%;height:100%;background:var(--blue);border-radius:3px"></div>
-      </div>
-      <span class="small muted">0%</span>
-    </div>
-  </td>
-</tr><tr style="cursor:pointer" onclick="openVisitaChecklist(6)">
-  <td class="fw">26/Ago</td>
-  <td>QUARTA</td>
-  <td>TARDE</td>
-  <td>AUDITÓRIO</td>
-  <td><span class="tag-area">ENGENHARIA</span></td>
-  <td>—</td>
-  <td class="num">80</td>
-  <td>
-    <div style="display:flex;align-items:center;gap:8px">
-      <div style="width:70px;height:6px;background:var(--border);border-radius:3px;overflow:hidden">
-        <div style="width:0%;height:100%;background:var(--blue);border-radius:3px"></div>
-      </div>
-      <span class="small muted">0%</span>
-    </div>
-  </td>
-</tr><tr style="cursor:pointer" onclick="openVisitaChecklist(7)">
-  <td class="fw">08/Set</td>
-  <td>TERÇA</td>
-  <td>TARDE</td>
-  <td>AUDITÓRIO</td>
-  <td><span class="tag-area">CORPORATIVO</span></td>
-  <td>—</td>
-  <td class="num">80</td>
-  <td>
-    <div style="display:flex;align-items:center;gap:8px">
-      <div style="width:70px;height:6px;background:var(--border);border-radius:3px;overflow:hidden">
-        <div style="width:0%;height:100%;background:var(--blue);border-radius:3px"></div>
-      </div>
-      <span class="small muted">0%</span>
-    </div>
-  </td>
-</tr><tr style="cursor:pointer" onclick="openVisitaChecklist(8)">
-  <td class="fw">11/Set</td>
-  <td>SEXTA</td>
-  <td>TARDE</td>
-  <td>AUDITÓRIO</td>
-  <td><span class="tag-area">ENGENHARIA</span></td>
-  <td>—</td>
-  <td class="num">80</td>
-  <td>
-    <div style="display:flex;align-items:center;gap:8px">
-      <div style="width:70px;height:6px;background:var(--border);border-radius:3px;overflow:hidden">
-        <div style="width:0%;height:100%;background:var(--blue);border-radius:3px"></div>
-      </div>
-      <span class="small muted">0%</span>
-    </div>
-  </td>
-</tr><tr style="cursor:pointer" onclick="openVisitaChecklist(9)">
-  <td class="fw">17/Set</td>
-  <td>QUINTA</td>
-  <td>MANHÃ</td>
-  <td>AUDITÓRIO</td>
-  <td><span class="tag-area">—</span></td>
-  <td>—</td>
-  <td class="num">80</td>
-  <td>
-    <div style="display:flex;align-items:center;gap:8px">
-      <div style="width:70px;height:6px;background:var(--border);border-radius:3px;overflow:hidden">
-        <div style="width:0%;height:100%;background:var(--blue);border-radius:3px"></div>
-      </div>
-      <span class="small muted">0%</span>
-    </div>
-  </td>
-</tr><tr style="cursor:pointer" onclick="openVisitaChecklist(10)">
-  <td class="fw">22/Set</td>
-  <td>TERÇA</td>
-  <td>TARDE</td>
-  <td>AUDITÓRIO</td>
-  <td><span class="tag-area">MISTO</span></td>
-  <td>ROG.E (21 a 24 de setembro)</td>
-  <td class="num">80</td>
-  <td>
-    <div style="display:flex;align-items:center;gap:8px">
-      <div style="width:70px;height:6px;background:var(--border);border-radius:3px;overflow:hidden">
-        <div style="width:0%;height:100%;background:var(--blue);border-radius:3px"></div>
-      </div>
-      <span class="small muted">0%</span>
-    </div>
-  </td>
-</tr><tr style="cursor:pointer" onclick="openVisitaChecklist(11)">
-  <td class="fw">25/Set</td>
-  <td>SEXTA</td>
-  <td>TARDE</td>
-  <td>AUDITÓRIO</td>
-  <td><span class="tag-area">ENGENHARIA</span></td>
-  <td>IME</td>
-  <td class="num">80</td>
-  <td>
-    <div style="display:flex;align-items:center;gap:8px">
-      <div style="width:70px;height:6px;background:var(--border);border-radius:3px;overflow:hidden">
-        <div style="width:0%;height:100%;background:var(--blue);border-radius:3px"></div>
-      </div>
-      <span class="small muted">0%</span>
-    </div>
-  </td>
-</tr><tr style="cursor:pointer" onclick="openVisitaChecklist(12)">
-  <td class="fw">01/Out</td>
-  <td>QUINTA</td>
-  <td>MANHÃ</td>
-  <td>AUDITÓRIO</td>
-  <td><span class="tag-area">G&G</span></td>
-  <td>—</td>
-  <td class="num">80</td>
-  <td>
-    <div style="display:flex;align-items:center;gap:8px">
-      <div style="width:70px;height:6px;background:var(--border);border-radius:3px;overflow:hidden">
-        <div style="width:0%;height:100%;background:var(--blue);border-radius:3px"></div>
-      </div>
-      <span class="small muted">0%</span>
-    </div>
-  </td>
-</tr><tr style="cursor:pointer" onclick="openVisitaChecklist(13)">
-  <td class="fw">13/Out</td>
-  <td>TERÇA</td>
-  <td>TARDE</td>
-  <td>AUDITÓRIO</td>
-  <td><span class="tag-area">ENGENHARIA</span></td>
-  <td>—</td>
-  <td class="num">80</td>
-  <td>
-    <div style="display:flex;align-items:center;gap:8px">
-      <div style="width:70px;height:6px;background:var(--border);border-radius:3px;overflow:hidden">
-        <div style="width:0%;height:100%;background:var(--blue);border-radius:3px"></div>
-      </div>
-      <span class="small muted">0%</span>
-    </div>
-  </td>
-</tr></tbody>
-          </table>
-        </div>
-        <div class="section-header" style="margin-top:20px"><h3>Próximas datas agendadas</h3></div>
-        <div class="tbl-wrap">
-          <table>
-            <thead><tr><th>Data</th><th>Modalidade</th><th>Turno</th><th>Universidades</th><th>Liga / Org.</th><th>Área</th><th>Qtd Esp.</th><th>Palestrantes</th><th>Status</th></tr></thead>
-            <tbody><tr>
-  <td class="fw">04/Ago</td>
-  <td><span class="pill pill-warn" style="font-size:11px">Online</span></td>
-  <td>Manhã</td>
-  <td class="fw">PUC SP</td>
-  <td class="small">PUC FINANCE</td>
-  <td><span class="tag-area">Corporativo</span></td>
-  <td class="num">—</td>
-  <td class="small">Tiktin + Jansen</td>
-  <td class="small muted">PUC Finance confirmou viabilidade.</td>
-</tr><tr>
-  <td class="fw">05/Ago</td>
-  <td><span class="pill pill-warn" style="font-size:11px">Online</span></td>
-  <td>Noite</td>
-  <td class="fw">UENF</td>
-  <td class="small">EENGE</td>
-  <td><span class="tag-area">Engenharia de Produção, Materiais, Metalúrgica, Civil</span></td>
-  <td class="num">?</td>
-  <td class="small">Lucas Ribas</td>
-  <td class="small muted">Falar com o Lucas</td>
-</tr><tr>
-  <td class="fw">12/Ago</td>
-  <td><span class="pill pill-warn" style="font-size:11px">Online</span></td>
-  <td>Tarde</td>
-  <td class="fw">Unicamp</td>
-  <td class="small">Liga Empreendedora</td>
-  <td><span class="tag-area">Engenharias</span></td>
-  <td class="num">—</td>
-  <td class="small">Humberto B. + Grigoletto</td>
-  <td class="small muted">Liga confirmou viabilidade da vaga.</td>
-</tr><tr>
-  <td class="fw">12/Ago</td>
-  <td><span class="pill pill-sim" style="font-size:11px">Presencial</span></td>
-  <td>Manhã</td>
-  <td class="fw">UFRJ</td>
-  <td class="small">Petrobowl</td>
-  <td><span class="tag-area">Engenharias</span></td>
-  <td class="num">14 alunos</td>
-  <td class="small">—</td>
-  <td class="small muted">Petrobowl confirmou viabilidade. Falar com os gestores</td>
-</tr><tr>
-  <td class="fw">19/Ago</td>
-  <td><span class="pill pill-sim" style="font-size:11px">Presencial</span></td>
-  <td>Tarde</td>
-  <td class="fw">UFRJ + UFF</td>
-  <td class="small">SPE + Geosociety  (GSS UFF) + AAPG + Ligpetro</td>
-  <td><span class="tag-area">G&G</span></td>
-  <td class="num">20 alunos + ? + ? + ?</td>
-  <td class="small">—</td>
-  <td class="small muted">Geosociety confirmou viabilidade.</td>
-</tr><tr>
-  <td class="fw">26/Ago</td>
-  <td><span class="pill pill-sim" style="font-size:11px">Presencial</span></td>
-  <td>Tarde</td>
-  <td class="fw">FGV + IBMEC</td>
-  <td class="small">FGValley + IBMEC Carreiras</td>
-  <td><span class="tag-area">Corporativo</span></td>
-  <td class="num">? + 30 alunos</td>
-  <td class="small">—</td>
-  <td class="small muted">IBMEC confirmou viabilidade. FGValley vai confirmar até sexta.</td>
-</tr><tr>
-  <td class="fw">08/Set</td>
-  <td><span class="pill pill-sim" style="font-size:11px">Presencial</span></td>
-  <td>Tarde</td>
-  <td class="fw">UFRJ  + UNIRIO + UERJ + PUC + FGV + IBMEC</td>
-  <td class="small">Liga Acadêmica de Estudos Regulatórios + LADME + LITIS JR.+ PETROLIGA</td>
-  <td><span class="tag-area">Corporativo</span></td>
-  <td class="num">43 alunos + 15 alunos + 20 alunos</td>
-  <td class="small">Julia Heymann + Geraldo</td>
-  <td class="small muted">Ladme e Litis Jr. Confirmaram viabilidade.</td>
-</tr><tr>
-  <td class="fw">11/Set</td>
-  <td><span class="pill pill-sim" style="font-size:11px">Presencial</span></td>
-  <td>Tarde</td>
-  <td class="fw">UFRJ</td>
-  <td class="small">Fluxo Consultoria</td>
-  <td><span class="tag-area">Engenharia</span></td>
-  <td class="num">—</td>
-  <td class="small">—</td>
-  <td class="small muted">Fluxo está perguntando qual agenda prevista.</td>
-</tr><tr>
-  <td class="fw">17/Set</td>
-  <td><span class="pill pill-sim" style="font-size:11px">Presencial</span></td>
-  <td>Manhã</td>
-  <td class="fw">UFRRJ + UFF + UFRJ</td>
-  <td class="small">AAPG UFRRJ  + Capitulo UFF e UFRJ</td>
-  <td><span class="tag-area">G&G</span></td>
-  <td class="num">—</td>
-  <td class="small">—</td>
-  <td class="small muted">—</td>
-</tr><tr>
-  <td class="fw">22/Set</td>
-  <td><span class="pill pill-sim" style="font-size:11px">Presencial</span></td>
-  <td>Tarde</td>
-  <td class="fw">UDESC + UFPEL</td>
-  <td class="small">Petro Jr. + DAKA</td>
-  <td><span class="tag-area">Engenharia de Petróleo</span></td>
-  <td class="num">40 alunos + 14 alunos</td>
-  <td class="small">—</td>
-  <td class="small muted">DAKA e Petro Jr. confirmaram viabilidade.</td>
-</tr><tr>
-  <td class="fw">25/Set</td>
-  <td><span class="pill pill-sim" style="font-size:11px">Presencial</span></td>
-  <td>Tarde</td>
-  <td class="fw">—</td>
-  <td class="small">—</td>
-  <td><span class="tag-area">—</span></td>
-  <td class="num">—</td>
-  <td class="small">—</td>
-  <td class="small muted">—</td>
-</tr><tr>
-  <td class="fw">01/Out</td>
-  <td><span class="pill pill-sim" style="font-size:11px">Presencial</span></td>
-  <td>Manhã</td>
-  <td class="fw">—</td>
-  <td class="small">—</td>
-  <td><span class="tag-area">—</span></td>
-  <td class="num">—</td>
-  <td class="small">—</td>
-  <td class="small muted">—</td>
-</tr><tr>
-  <td class="fw">13/Out</td>
-  <td><span class="pill pill-sim" style="font-size:11px">Presencial</span></td>
-  <td>Tarde</td>
-  <td class="fw">—</td>
-  <td class="small">—</td>
-  <td><span class="tag-area">—</span></td>
-  <td class="num">—</td>
-  <td class="small">—</td>
-  <td class="small muted">—</td>
-</tr></tbody>
-          </table>
-        </div>
-    </section>
-
-    <!-- CONVITES RECEBIDOS -->
-    <section class="section" id="sec-convites">
-      <div class="stats">
-        <div class="stat-card dark"><div class="val">21</div><div class="lbl">Convites recebidos</div></div>
-        <div class="stat-card"><div class="val">15</div><div class="lbl">Aceitos / Em análise</div></div>
-        <div class="stat-card" style="border-left:4px solid #dc2626"><div class="val" style="color:#dc2626">6</div><div class="lbl">Declinados</div></div>
-      </div>
       <div class="search-bar">
-        <input type="text" id="search-conv" placeholder="🔍 Buscar convite...">
-        <select id="filter-conv-status" onchange="filterConvites()">
+        <input type="text" id="search-vis" placeholder="🔍 Buscar visita..." oninput="renderVisCards()">
+        <select id="filter-vis-tipo" onchange="renderVisCards()">
+          <option value="">Todos os tipos</option>
+          <option>G&amp;G</option><option>Engenharia</option><option>Corporativo</option><option>Misto</option><option>Engenharia de Petróleo</option>
+        </select>
+        <select id="filter-vis-status" onchange="renderVisCards()">
           <option value="">Todos os status</option>
-          <option value="Ativo">Aceitos</option>
-          <option value="Declinado">Declinados</option>
+          <option>Confirmado</option><option>A confirmar</option><option>Em análise</option>
+        </select>
+        <select id="filter-vis-mod" onchange="renderVisCards()">
+          <option value="">Presencial + Online</option>
+          <option>Presencial</option><option>Online</option>
         </select>
       </div>
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr><th>Evento</th><th>Organização</th><th>Tipo</th><th>Data</th><th>Status</th><th>Observações</th></tr></thead>
-          <tbody id="conv-body"><tr data-status="Declinado">
-  <td class="fw">Palestras de Férias</td>
-  <td class="small">UFRJ · RJ</td>
-  <td><span class="pill pill-palestra">Palestra</span></td>
-  <td class="date-cell">01/Fev</td>
-  <td><span class="pill pill-nao" style="font-size:11px">Declinado</span></td>
-  <td class="small muted">Time de Petrofísicos sem disponibilidade</td>
-</tr><tr data-status="Declinado">
-  <td class="fw">Feira de Carreira Politécnica-UFRJ</td>
-  <td class="small">UFRJ · RJ</td>
-  <td><span class="pill pill-feira">Feira</span></td>
-  <td class="date-cell">10/Mar</td>
-  <td><span class="pill pill-nao" style="font-size:11px">Declinado</span></td>
-  <td class="small muted">Semana Fluxo é prioridade; custo do espaço alto</td>
-</tr><tr data-status="Declinado">
-  <td class="fw">PETROUFES</td>
-  <td class="small">UFES · ES</td>
-  <td><span class="pill pill-palestra">Palestra</span></td>
-  <td class="date-cell">25/Mar</td>
-  <td><span class="pill pill-nao" style="font-size:11px">Declinado</span></td>
-  <td class="small muted">—</td>
-</tr><tr data-status="Ativo">
-  <td class="fw">Feira Técnica SENAI</td>
-  <td class="small">SENAI</td>
-  <td><span class="pill pill-feira">Feira</span></td>
-  <td class="date-cell">26/Mar</td>
-  <td><span class="pill pill-sim" style="font-size:11px">Ativo</span></td>
-  <td class="small muted">—</td>
-</tr><tr data-status="Ativo">
-  <td class="fw">Petrogames UFRJ</td>
-  <td class="small">UFRJ · RJ</td>
-  <td><span class="pill pill-outro">Outro</span></td>
-  <td class="date-cell">11/Abr</td>
-  <td><span class="pill pill-sim" style="font-size:11px">Ativo</span></td>
-  <td class="small muted">—</td>
-</tr><tr data-status="Ativo">
-  <td class="fw">CONECTA IBMEC</td>
-  <td class="small">IBMEC · RJ</td>
-  <td><span class="pill pill-feira">Feira</span></td>
-  <td class="date-cell">28/Abr</td>
-  <td><span class="pill pill-sim" style="font-size:11px">Ativo</span></td>
-  <td class="small muted">—</td>
-</tr><tr data-status="Ativo">
-  <td class="fw">Petrogames UFRJ</td>
-  <td class="small">UFRJ · RJ</td>
-  <td><span class="pill pill-outro">Outro</span></td>
-  <td class="date-cell">14/Mai</td>
-  <td><span class="pill pill-sim" style="font-size:11px">Ativo</span></td>
-  <td class="small muted">—</td>
-</tr><tr data-status="Ativo">
-  <td class="fw">FEIRA FEA USP</td>
-  <td class="small">USP · SP</td>
-  <td><span class="pill pill-feira">Feira</span></td>
-  <td class="date-cell">21/Mai</td>
-  <td><span class="pill pill-sim" style="font-size:11px">Ativo</span></td>
-  <td class="small muted">—</td>
-</tr><tr data-status="Declinado">
-  <td class="fw">SEMATRON</td>
-  <td class="small">USP · SP</td>
-  <td><span class="pill pill-palestra">Palestra</span></td>
-  <td class="date-cell">25/Mai</td>
-  <td><span class="pill pill-nao" style="font-size:11px">Declinado</span></td>
-  <td class="small muted">Focado em automação, não alinhado PRIO; custo logístico alto</td>
-</tr><tr data-status="Ativo">
-  <td class="fw">SPEED JOB UFPel</td>
-  <td class="small">UFPel · RS</td>
-  <td><span class="pill pill-palestra">Palestra</span></td>
-  <td class="date-cell">26/Mai</td>
-  <td><span class="pill pill-sim" style="font-size:11px">Ativo</span></td>
-  <td class="small muted">—</td>
-</tr><tr data-status="Ativo">
-  <td class="fw">FEIRA VIRTUAL EMPREGA</td>
-  <td class="small">Online</td>
-  <td><span class="pill pill-painel">Painel</span></td>
-  <td class="date-cell">01/Jun</td>
-  <td><span class="pill pill-sim" style="font-size:11px">Ativo</span></td>
-  <td class="small muted">—</td>
-</tr><tr data-status="Ativo">
-  <td class="fw">WORKSHOP GEOSCIENCES UNICAMP</td>
-  <td class="small">UNICAMP · SP</td>
-  <td><span class="pill pill-palestra">Palestra</span></td>
-  <td class="date-cell">11/Ago</td>
-  <td><span class="pill pill-sim" style="font-size:11px">Ativo</span></td>
-  <td class="small muted">—</td>
-</tr><tr data-status="Ativo">
-  <td class="fw">FEIRA DE CARREIRAS INTEGRA UNICAMP</td>
-  <td class="small">UNICAMP · SP</td>
-  <td><span class="pill pill-feira">Feira</span></td>
-  <td class="date-cell">12/Ago</td>
-  <td><span class="pill pill-sim" style="font-size:11px">Ativo</span></td>
-  <td class="small muted">—</td>
-</tr><tr data-status="Ativo">
-  <td class="fw">FEIRA DE CARREIRAS ITA</td>
-  <td class="small">ITA · SP</td>
-  <td><span class="pill pill-feira">Feira</span></td>
-  <td class="date-cell">15/Ago</td>
-  <td><span class="pill pill-sim" style="font-size:11px">Ativo</span></td>
-  <td class="small muted">—</td>
-</tr><tr data-status="Ativo">
-  <td class="fw">SEMANA FLUXO UFRJ</td>
-  <td class="small">UFRJ · RJ</td>
-  <td><span class="pill pill-feira">Feira</span></td>
-  <td class="date-cell">31/Ago</td>
-  <td><span class="pill pill-sim" style="font-size:11px">Ativo</span></td>
-  <td class="small muted">—</td>
-</tr><tr data-status="Declinado">
-  <td class="fw">27º Encontro Eng. de Produção</td>
-  <td class="small">UENF · RJ</td>
-  <td><span class="pill pill-palestra">Palestra</span></td>
-  <td class="date-cell">31/Ago</td>
-  <td><span class="pill pill-nao" style="font-size:11px">Declinado</span></td>
-  <td class="small muted">Na semana da Fluxo</td>
-</tr><tr data-status="Ativo">
-  <td class="fw">CONECTA IBMEC</td>
-  <td class="small">IBMEC · RJ</td>
-  <td><span class="pill pill-feira">Feira</span></td>
-  <td class="date-cell">03/Set</td>
-  <td><span class="pill pill-sim" style="font-size:11px">Ativo</span></td>
-  <td class="small muted">—</td>
-</tr><tr data-status="Ativo">
-  <td class="fw">FEIRA UFPE</td>
-  <td class="small">UFPE · PE</td>
-  <td><span class="pill pill-feira">Feira</span></td>
-  <td class="date-cell">22/Set</td>
-  <td><span class="pill pill-sim" style="font-size:11px">Ativo</span></td>
-  <td class="small muted">—</td>
-</tr><tr data-status="Ativo">
-  <td class="fw">SEMANA AYRA</td>
-  <td class="small">UFRJ · RJ</td>
-  <td><span class="pill pill-palestra">Palestra</span></td>
-  <td class="date-cell">23/Set</td>
-  <td><span class="pill pill-sim" style="font-size:11px">Ativo</span></td>
-  <td class="small muted">—</td>
-</tr><tr data-status="Declinado">
-  <td class="fw">XIV Workshop de Petróleo SPE</td>
-  <td class="small">USP · SP</td>
-  <td><span class="pill pill-palestra">Palestra</span></td>
-  <td class="date-cell">01/Nov</td>
-  <td><span class="pill pill-nao" style="font-size:11px">Declinado</span></td>
-  <td class="small muted">Custo alto para poucos estudantes</td>
-</tr><tr data-status="Ativo">
-  <td class="fw">MBA Brasil - EUA</td>
-  <td class="small">Internacional</td>
-  <td><span class="pill pill-outro">Outro</span></td>
-  <td class="date-cell">06/Nov</td>
-  <td><span class="pill pill-sim" style="font-size:11px">Ativo</span></td>
-  <td class="small muted">—</td>
-</tr></tbody>
-        </table>
-      </div>
+      <div id="vis-cards-container"></div>
     </section>
 
     <!-- CONTATOS -->
@@ -2051,6 +1555,42 @@ tbody td{padding:9px 12px;vertical-align:middle}
 
 <script>
 const EV_DATA = [{"id": 1, "evento": "Feira Técnica SENAI", "date": "2026-03-26", "tipo": "Feira", "est": "", "part": "", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 2, "evento": "Petrogames UFRJ", "date": "2026-04-11", "tipo": "Outro", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 3, "evento": "CONECTA IBMEC", "date": "2026-04-28", "tipo": "Feira", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 4, "evento": "Petrogames UFRJ", "date": "2026-05-14", "tipo": "Outro", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 5, "evento": "FEIRA FEA USP", "date": "2026-05-21", "tipo": "Feira", "est": "SP", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 6, "evento": "SPEED JOB UFPel", "date": "2026-05-26", "tipo": "Palestra", "est": "RS", "part": "", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 7, "evento": "FEIRA VIRTUAL EMPREGA", "date": "2026-06-01", "tipo": "Painel", "est": "", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 8, "evento": "WORKSHOP GEOSCIENCES UNICAMP", "date": "2026-08-11", "tipo": "Palestra", "est": "SP", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 9, "evento": "FEIRA DE CARREIRAS INTEGRA UNICAMP", "date": "2026-08-12", "tipo": "Feira", "est": "SP", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 10, "evento": "FEIRA DE CARREIRAS ITA", "date": "2026-08-15", "tipo": "Feira", "est": "SP", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 11, "evento": "SEMANA FLUXO UFRJ", "date": "2026-08-31", "tipo": "Feira", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 12, "evento": "CONECTA IBMEC", "date": "2026-09-03", "tipo": "Feira", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 13, "evento": "FEIRA UFPE", "date": "2026-09-22", "tipo": "Feira", "est": "PE", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 14, "evento": "SEMANA AYRA", "date": "2026-09-23", "tipo": "Palestra", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 15, "evento": "MBA Brasil - EUA", "date": "2026-11-06", "tipo": "Internacional", "est": "", "part": "", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}];
+const VIS_CARDS = [
+  {idx:0, date:'2026-02-05', dia:'Qui', turno:'Tarde', espaco:'Sala TBMT', modalidade:'Presencial', tipo:'Misto',
+   univ:'UFS', liga:'—', area:'—', qtd:'3', palestrante:'—', status:'Realizada', obs:'—'},
+  {idx:1, date:'2026-03-25', dia:'Qua', turno:'Tarde', espaco:'Auditório', modalidade:'Presencial', tipo:'Corporativo',
+   univ:'UERJ / FGV / UFRJ', liga:'—', area:'—', qtd:'38', palestrante:'—', status:'Realizada', obs:'—'},
+  {idx:2, date:'2026-04-10', dia:'Sex', turno:'Tarde', espaco:'Rooftop', modalidade:'Presencial', tipo:'G&G',
+   univ:'UNICAMP / USP / SPWLA UFRJ', liga:'—', area:'—', qtd:'24', palestrante:'—', status:'Realizada', obs:'—'},
+  {idx:3, date:'2026-05-20', dia:'Seg', turno:'Tarde', espaco:'Auditório', modalidade:'Presencial', tipo:'Misto',
+   univ:'—', liga:'—', area:'—', qtd:'—', palestrante:'—', status:'Realizada', obs:'—'},
+  {idx:4, date:'2026-08-04', dia:'—', turno:'Manhã', espaco:'Online', modalidade:'Online', tipo:'Corporativo',
+   univ:'PUC SP', liga:'PUC Finance', area:'Corporativo', qtd:'—', palestrante:'Tiktin + Jansen', status:'A confirmar', obs:'PUC Finance confirmou viabilidade.'},
+  {idx:5, date:'2026-08-05', dia:'—', turno:'Noite', espaco:'Online', modalidade:'Online', tipo:'Engenharia',
+   univ:'UENF', liga:'EENGE', area:'Eng. Produção / Materiais / Metalúrgica / Civil', qtd:'—', palestrante:'Lucas Ribas', status:'A confirmar', obs:'Falar com o Lucas'},
+  {idx:6, date:'2026-08-12', dia:'—', turno:'Tarde', espaco:'Online', modalidade:'Online', tipo:'Engenharia',
+   univ:'Unicamp', liga:'Liga Empreendedora', area:'Engenharias', qtd:'—', palestrante:'Humberto B. + Grigoletto', status:'Confirmado', obs:'Liga confirmou viabilidade da vaga.'},
+  {idx:7, date:'2026-08-12', dia:'—', turno:'Manhã', espaco:'PRIO', modalidade:'Presencial', tipo:'Engenharia',
+   univ:'UFRJ', liga:'Petrobowl', area:'Engenharias', qtd:'14', palestrante:'—', status:'Confirmado', obs:'Petrobowl confirmou. Falar com os gestores.'},
+  {idx:8, date:'2026-08-19', dia:'—', turno:'Tarde', espaco:'PRIO', modalidade:'Presencial', tipo:'G&G',
+   univ:'UFRJ + UFF', liga:'SPE · Geosociety · AAPG · Ligpetro', area:'G&G', qtd:'20+', palestrante:'—', status:'Confirmado', obs:'Geosociety confirmou viabilidade.'},
+  {idx:9, date:'2026-08-26', dia:'—', turno:'Tarde', espaco:'PRIO', modalidade:'Presencial', tipo:'Corporativo',
+   univ:'FGV + IBMEC', liga:'FGValley · IBMEC Carreiras', area:'Corporativo', qtd:'30+', palestrante:'—', status:'A confirmar', obs:'IBMEC confirmou. FGValley vai confirmar até sexta.'},
+  {idx:10, date:'2026-09-08', dia:'—', turno:'Tarde', espaco:'PRIO', modalidade:'Presencial', tipo:'Corporativo',
+   univ:'UFRJ · UNIRIO · UERJ · PUC · FGV · IBMEC', liga:'Liga Acad. Regulatórios · LADME · LITIS Jr. · PETROLIGA', area:'Corporativo', qtd:'78+', palestrante:'Julia Heymann + Geraldo', status:'Confirmado', obs:'Ladme e Litis Jr. confirmaram viabilidade.'},
+  {idx:11, date:'2026-09-11', dia:'—', turno:'Tarde', espaco:'PRIO', modalidade:'Presencial', tipo:'Engenharia',
+   univ:'UFRJ', liga:'Fluxo Consultoria', area:'Engenharia de Produção', qtd:'—', palestrante:'—', status:'A confirmar', obs:'Fluxo está perguntando qual agenda prevista.'},
+  {idx:12, date:'2026-09-17', dia:'—', turno:'Manhã', espaco:'PRIO', modalidade:'Presencial', tipo:'G&G',
+   univ:'UFRRJ + UFF + UFRJ', liga:'AAPG UFRRJ · Cap. UFF e UFRJ', area:'G&G', qtd:'—', palestrante:'—', status:'Em análise', obs:'—'},
+  {idx:13, date:'2026-09-22', dia:'—', turno:'Tarde', espaco:'PRIO', modalidade:'Presencial', tipo:'Engenharia de Petróleo',
+   univ:'UDESC + UFPEL', liga:'Petro Jr. · DAKA', area:'Eng. de Petróleo', qtd:'54', palestrante:'—', status:'Confirmado', obs:'DAKA e Petro Jr. confirmaram viabilidade.'},
+  {idx:14, date:'2026-09-25', dia:'—', turno:'Tarde', espaco:'PRIO', modalidade:'Presencial', tipo:'—',
+   univ:'IME', liga:'—', area:'—', qtd:'—', palestrante:'—', status:'Em análise', obs:'—'},
+  {idx:15, date:'2026-10-01', dia:'—', turno:'Manhã', espaco:'PRIO', modalidade:'Presencial', tipo:'—',
+   univ:'—', liga:'ROG.E (21-24/Set)', area:'—', qtd:'—', palestrante:'—', status:'Em análise', obs:'—'},
+  {idx:16, date:'2026-10-13', dia:'—', turno:'Tarde', espaco:'PRIO', modalidade:'Presencial', tipo:'—',
+   univ:'—', liga:'—', area:'—', qtd:'—', palestrante:'—', status:'Em análise', obs:'—'},
+];
 const VIS_DATA = [{"faculdade": "UFS", "data": "2026-02-05", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": "UERJ - FGV - UFRJ", "data": "2026-03-25", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": "UNICAMP - USP - SPWLA UFRJ", "data": "2026-04-10", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-05-20", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-08-12", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-08-19", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-08-26", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-09-08", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-09-11", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-09-17", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": "ROG.E (21-24/Set)", "data": "2026-09-22", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": "IME", "data": "2026-09-25", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-10-01", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-10-13", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}];
 let evData  = JSON.parse(localStorage.getItem('prioEv3')  || 'null') || EV_DATA;
 let visData = JSON.parse(localStorage.getItem('prioVis3') || 'null') || VIS_DATA;
@@ -2082,7 +1622,7 @@ function goto(sec, el){
   document.getElementById('topbar-other').classList.toggle('hidden',isTL);
   document.getElementById('tabs-tl').classList.toggle('hidden',!isTL);
   document.getElementById('tabs-cont').classList.toggle('hidden',!isCont);
-  const titles={visitas:'Visitas PRIO',convites:'Convites Recebidos',contatos:'Contatos',brindes:'Brindes',custos:'Custos por Evento',declinados:'Eventos Declinados'};
+  const titles={visitas:'Visitas PRIO',contatos:'Contatos',brindes:'Brindes',custos:'Custos por Evento',declinados:'Eventos Declinados'};
   if(titles[sec]) document.getElementById('topbar-title-other').textContent=titles[sec];
   if(isTL) applyTL();
   if(sec==='contatos') buildLocalFilter();
@@ -2121,26 +1661,52 @@ function applyTL(){
   const q    = document.getElementById('search-tl').value.toLowerCase();
   const est  = document.getElementById('filter-est').value;
   const part = document.getElementById('filter-part').value;
+  const ano  = document.getElementById('filter-ano').value;
   const seenIds = new Set();
-  let conf = 0;
+  const counts = {feira:0,palestra:0,outro:0,internacional:0,todos:0,conf:0};
   allCards.forEach(c=>{
-    const txt = c.textContent.toLowerCase();
-    const cp  = c.dataset.part||'';
-    const ce  = c.dataset.est||'';
+    const txt  = c.textContent.toLowerCase();
+    const cp   = c.dataset.part||'';
+    const ce   = c.dataset.est||'';
+    const ctab = c.dataset.tab||'';
+    const cdate= c.dataset.date||'';
+    const cano = cdate.slice(0,4);
     let partOk = true;
     if(part==='Sim') partOk = cp==='Sim';
-    else if(part==='Em análise') partOk = cp==='Em análise';
     else if(part==='none') partOk = cp==='';
-    const ok = (!q||txt.includes(q))&&(!est||ce===est)&&partOk;
+    const anoOk = !ano || cano===ano;
+    const ok = (!q||txt.includes(q))&&(!est||ce===est)&&partOk&&anoOk;
     c.classList.toggle('hidden',!ok);
-    if(ok&&cp==='Sim'&&!seenIds.has(c.dataset.id)){seenIds.add(c.dataset.id);conf++;}
+    if(ok&&!seenIds.has(c.dataset.id)){
+      seenIds.add(c.dataset.id);
+      counts.todos++;
+      if(ctab==='feira') counts.feira++;
+      else if(ctab==='palestra') counts.palestra++;
+      else if(ctab==='internacional') counts.internacional++;
+      else counts.outro++;
+      if(cp==='Sim') counts.conf++;
+    }
   });
   document.querySelectorAll('.tl-panel').forEach(panel=>{
     const visM=new Set();
     panel.querySelectorAll('.card:not(.hidden)').forEach(c=>{if(c.dataset.mes)visM.add(c.dataset.mes)});
     panel.querySelectorAll('.month-sep').forEach(m=>m.classList.toggle('hidden',!visM.has(m.dataset.month)));
   });
-  document.getElementById('st-conf').textContent = conf;
+  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  set('st-conf-main', counts.conf);
+  set('cb-todos',     counts.todos);
+  set('cb-feira',     counts.feira);
+  set('cb-palestra',  counts.palestra);
+  set('cb-outro',     counts.outro);
+  set('cb-internacional', counts.internacional);
+  // update type stat cards (não são cb-, são os cards fixos)
+  document.querySelectorAll('.stat-tipo').forEach(el=>{
+    el.textContent = counts[el.dataset.tipo]||0;
+  });
+}
+function syncAno(v){
+  document.getElementById('filter-ano').value=v;
+  applyTL();
 }
 document.getElementById('search-tl').addEventListener('input',applyTL);
 document.getElementById('filter-est').addEventListener('input',applyTL);
@@ -2332,6 +1898,128 @@ function exportReport(){
 
 // init
 applyTL();
+
+// ═══════════════════════════════════════════════════════════════
+// VISITAS CARD GRID
+// ═══════════════════════════════════════════════════════════════
+const MABR3 = ["","Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+const DIAS_ABR = {1:"Seg",2:"Ter",3:"Qua",4:"Qui",5:"Sex",6:"Sáb",0:"Dom"};
+
+function renderVisCards(){
+  const today = new Date().toISOString().slice(0,10);
+  const q     = (document.getElementById('search-vis')?.value||'').toLowerCase();
+  const fTipo = document.getElementById('filter-vis-tipo')?.value||'';
+  const fStat = document.getElementById('filter-vis-status')?.value||'';
+  const fMod  = document.getElementById('filter-vis-mod')?.value||'';
+
+  const filtered = VIS_CARDS.filter(v => {
+    if(fTipo && v.tipo !== fTipo) return false;
+    if(fStat && v.status !== fStat) return false;
+    if(fMod && v.modalidade !== fMod) return false;
+    if(q && !(v.univ+v.liga+v.area+v.palestrante+v.obs+v.date).toLowerCase().includes(q)) return false;
+    return true;
+  });
+
+  const upcoming = filtered.filter(v => v.date >= today).sort((a,b)=>a.date.localeCompare(b.date));
+  const past     = filtered.filter(v => v.date < today).sort((a,b)=>b.date.localeCompare(a.date));
+
+  // stats
+  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  set('vis-total',   VIS_CARDS.length);
+  set('vis-conf',    VIS_CARDS.filter(v=>v.status==='Confirmado').length);
+  set('vis-upcoming',upcoming.length);
+
+  let html = '';
+  if(upcoming.length){
+    html += '<div class="vis-sep-row"><span class="vis-sep">▶ Próximas</span><div class="vis-sep-line"></div></div>';
+    html += '<div class="vis-grid">' + upcoming.map(buildCard).join('') + '</div>';
+  }
+  if(past.length){
+    html += '<div class="vis-sep-row"><span class="vis-sep" style="background:var(--bg);color:var(--muted);border-color:var(--border)">✓ Realizadas</span><div class="vis-sep-line"></div></div>';
+    html += '<div class="vis-grid">' + past.map(v=>buildCard(v,true)).join('') + '</div>';
+  }
+  if(!filtered.length) html = '<div class="empty">Nenhuma visita encontrada para os filtros selecionados.</div>';
+  document.getElementById('vis-cards-container').innerHTML = html;
+  // Re-apply badge inject for Forms
+  if(typeof refreshBadges === 'function') refreshBadges();
+}
+
+function buildCard(v, isPast=false){
+  const [y,m,d] = v.date.split('-').map(Number);
+  const jsDate = new Date(y, m-1, d);
+  const diaSemana = v.dia !== '—' ? v.dia : (DIAS_ABR[jsDate.getDay()]||'');
+  const dateStr = `${String(d).padStart(2,'0')}/${MABR3[m]}`;
+
+  const statusBadge = {
+    'Confirmado':  ['confirmado','Confirmado'],
+    'A confirmar': ['confirmar','A confirmar'],
+    'Em análise':  ['analise','Em análise'],
+    'Realizada':   ['realizada','Realizada'],
+  }[v.status]||['analise',v.status];
+  const badgeCls = isPast ? 'realizada' : (v.date === new Date().toISOString().slice(0,10) ? 'upcoming' : statusBadge[0]);
+  const badgeLbl = isPast ? 'Realizada' : statusBadge[1];
+
+  const modCls = v.modalidade === 'Online' ? 'online' : 'presencial';
+  const modIcon = v.modalidade === 'Online' ? '🌐' : '🏛';
+
+  // checklist from VIS_DATA (by date match)
+  const vd = visData ? visData.find(x=>x.data===v.date) : null;
+  let clDone=0, clTotal=6;
+  if(vd) { const vals = Object.values(vd.checklist_visita||{}); clDone=vals.filter(Boolean).length; clTotal=vals.length||6; }
+  const clPct = Math.round(clDone/clTotal*100);
+  const clColor = clPct===100?'#16a34a':clPct>0?'var(--blue)':'var(--border)';
+
+  // Forms participants by date
+  const partCount = typeof formsData !== 'undefined' && formsData
+    ? formsData.filter(r => typeof matchesVisit === 'function' && matchesVisit(r.dataVisita, v.date)).length
+    : 0;
+
+  return `<div class="vis-card${isPast?' past':''}" onclick="openVisCardChecklist('${v.date}')">
+  <span class="vis-card-badge ${badgeCls}">${badgeLbl}</span>
+  <div class="vis-date-row">
+    <div>
+      <div class="vis-date">${dateStr}</div>
+      <div class="vis-date-meta">${diaSemana ? diaSemana+' · ' : ''}${v.turno}${v.espaco&&v.espaco!=='—'?' · '+v.espaco:''}</div>
+    </div>
+    <span class="vis-modality ${modCls}">${modIcon} ${v.modalidade}</span>
+  </div>
+  <div class="vis-title">${v.univ}</div>
+  <div class="vis-liga">${v.liga!=='—'?v.liga:''}</div>
+  <div class="vis-chips">
+    ${v.tipo&&v.tipo!=='—'?`<span class="tag-area">${v.tipo}</span>`:''}
+    ${v.palestrante&&v.palestrante!=='—'?`<span style="font-size:11px;color:var(--muted)">🎤 ${v.palestrante}</span>`:''}
+  </div>
+  ${v.obs&&v.obs!=='—'?`<div class="vis-obs">${v.obs}</div>`:''}
+  <div class="vis-footer">
+    <div style="display:flex;align-items:center;gap:5px;flex:1">
+      <div style="width:80px;height:5px;background:var(--border);border-radius:3px;overflow:hidden">
+        <div style="width:${clPct}%;height:100%;background:${clColor};border-radius:3px;transition:width .3s"></div>
+      </div>
+      <span class="small muted">${clDone}/${clTotal} checklist</span>
+    </div>
+    ${v.qtd&&v.qtd!=='—'?`<span class="small muted">👥 ${v.qtd} esp.</span>`:''}
+    ${partCount>0?`<span class="small" style="color:var(--blue);font-weight:600">📋 ${partCount} inscritos</span>`:''}
+  </div>
+</div>`;
+}
+
+function openVisCardChecklist(date){
+  // Find matching vis in VIS_DATA
+  const idx = VIS_ISO.indexOf(date);
+  if(idx >= 0) openVisitaChecklist(idx);
+  // Also try VIS_CARDS idx for extra dates
+}
+
+// Hook into goto for visitas
+const _gotoVis_orig = goto;
+// render on navigate
+(function patchGoto(){
+  const origGoto = window.goto;
+  window.goto = function(sec, el){
+    origGoto(sec, el);
+    if(sec==='visitas') setTimeout(renderVisCards, 0);
+  };
+})();
 
 // ═══════════════════════════════════════════════════════════════
 // CUSTOS
