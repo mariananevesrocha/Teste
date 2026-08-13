@@ -5,14 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Timeline Eventos Atração PRIO</title>
 <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js">
-function openCard(id) {
-  const card = document.querySelector(`[data-id="\${id}"]`);
-  if(card) {
-    const title = card.querySelector('.card-title')?.textContent || 'Evento';
-    const info = card.textContent;
-    alert(`${title}\n\n${info}`);
-  }
-}
 </script>
 <style>
 :root{--blue:#1d4ed8;--blue-d:#1e3a8a;--blue-l:#eff6ff;--blue-m:#dbeafe;--text:#111827;--muted:#6b7280;--border:#e5e7eb;--bg:#f3f4f6;--white:#fff;--radius:10px;--sidebar:230px}
@@ -32,7 +24,7 @@ nav{padding:10px 0;flex:1;overflow-y:auto}
 .nav-sep{height:1px;background:rgba(255,255,255,.08);margin:8px 0}
 
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden}
-.topbar{background:var(--white);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;gap:10px;height:54px;flex-shrink:0;flex-wrap:wrap}
+.topbar{background:var(--white);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;gap:10px;height:54px;flex-shrink:0;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden}
 .topbar-title{font-size:15px;font-weight:700;color:var(--blue-d);flex:1;white-space:nowrap}
 .topbar input,.topbar select{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:5px 10px;border-radius:6px;font-size:13px;outline:none}
 .topbar input{width:175px}
@@ -100,7 +92,7 @@ tbody tr{border-bottom:1px solid var(--border);transition:background .12s}
 tbody tr:last-child{border-bottom:none}
 tbody tr:hover{background:var(--blue-l)}
 tbody td{padding:9px 12px;vertical-align:middle}
-.fw{font-weight:600}.muted{color:var(--muted)}.small{font-size:12px}.num{text-align:right;font-variant-numeric:tabular-nums}
+.fw{font-weight:600}.muted{color:var(--muted)}.small{font-size:12px}.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 .used{color:#16a34a;font-weight:600}.blue{color:var(--blue)}.green{color:#16a34a}
 .date-cell{white-space:nowrap}.action-cell{color:#b45309}
 .tag-grupo{display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:600;background:var(--blue-l);color:var(--blue)}
@@ -198,6 +190,12 @@ tbody td{padding:9px 12px;vertical-align:middle}
 .part-search:focus{border-color:var(--blue)}
 .import-summary{padding:8px 12px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;font-size:12px;color:#166534;margin-bottom:14px;display:none}
 .import-summary.show{display:block}
+.card.vis-past{opacity:.62}.card.vis-past:hover{opacity:1}
+.cost-bar{height:7px;background:var(--border);border-radius:4px;overflow:hidden;min-width:70px}
+.cost-bar>span{display:block;height:100%;border-radius:4px}
+.cost-hd{font-size:12px;font-weight:700;color:var(--blue-d);text-transform:uppercase;letter-spacing:.06em;margin:22px 0 10px}
+#conv-body td:first-child{min-width:190px}
+#plan-body td:first-child{min-width:180px}
 /* VISIT CARDS */
 .vis-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px;margin-bottom:20px}
 .vis-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px;position:relative;transition:box-shadow .15s,border-color .15s;cursor:pointer}
@@ -229,34 +227,6 @@ tbody td{padding:9px 12px;vertical-align:middle}
   .main{overflow:visible}.content{overflow:visible;padding:0}
   .section{display:block!important}.card{page-break-inside:avoid}
 }
-
-.vis-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:10px;border-left:4px solid #16a34a}
-.vis-card .vis-date{font-size:12px;color:var(--muted);margin-bottom:6px}
-.vis-card .vis-inst{font-size:14px;margin-bottom:8px}
-.vis-card .vis-meta{font-size:12px;line-height:1.6;margin-bottom:8px}
-.vis-card .vis-meta div{margin:2px 0}
-.vis-card .vis-status{font-size:11px;font-weight:600;color:#16a34a;padding-top:6px;border-top:1px solid var(--border);margin-top:6px}
-
-.card{cursor:pointer}
-.card:hover{box-shadow:0 4px 16px rgba(29,78,216,.12);border-color:#60a5fa}
-.vis-section{margin-bottom:20px}
-.vis-section h3{font-size:13px;font-weight:700;color:var(--blue-d);margin-bottom:10px;text-transform:uppercase}
-.vis-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
-.vis-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:12px;border-left:4px solid #16a34a}
-.vis-card .vis-top{font-size:12px;color:var(--muted);margin-bottom:6px}
-.vis-card .vis-inst{font-weight:700;font-size:13px;margin-bottom:6px}
-.vis-card .vis-info{font-size:12px;line-height:1.6;color:var(--text)}
-.vis-card .vis-info div{margin:3px 0}
-.cost-table{overflow-x:auto}
-.cost-table table{width:100%;border-collapse:collapse;font-size:12px}
-.cost-table thead{background:#f8fafc;border-bottom:1px solid var(--border)}
-.cost-table th{padding:8px;text-align:left;font-weight:600}
-.cost-table td{padding:8px;border-bottom:1px solid var(--border)}
-.cost-table .num{text-align:right;font-family:monospace}
-.cost-table .positive{color:#16a34a}
-.cost-table .negative{color:#dc2626}
-.empty{color:var(--muted);font-style:italic;padding:20px 0;text-align:center}
-
 </style>
 </head>
 <body>
@@ -268,7 +238,8 @@ tbody td{padding:9px 12px;vertical-align:middle}
   </div>
   <nav>
     <div class="nav-item active" onclick="goto('timeline',this)"><span class="nav-icon">📅</span> Timeline / Calendário <span class="nav-badge" id="nb-tl">15</span></div>
-    <div class="nav-item" onclick="goto('visitas',this)"><span class="nav-icon">🏢</span> Visitas PRIO <span class="nav-badge">14</span></div>
+    <div class="nav-item" onclick="goto('visitas',this)"><span class="nav-icon">🏢</span> Visitas PRIO <span class="nav-badge" id="nav-badge-vis">—</span></div>
+    <div class="nav-item" onclick="goto('convites',this)"><span class="nav-icon">✉️</span> Convites Recebidos <span class="nav-badge">25</span></div>
     <div class="nav-item" onclick="goto('contatos',this)"><span class="nav-icon">📋</span> Contatos <span class="nav-badge">72</span></div>
     <div class="nav-item" onclick="goto('brindes',this)"><span class="nav-icon">🎁</span> Brindes</div>
     <div class="nav-item" onclick="goto('custos',this)"><span class="nav-icon">💰</span> Custos</div>
@@ -329,7 +300,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
 
       <!-- TIMELINE VIEW -->
       <div id="view-timeline">
-        <div id="tl-feira" class="tl-panel"><div class="month-sep" data-month="Março"><span class="month-label">Março 2026</span><div class="month-line"></div></div><div class="card" data-id="1" data-part="" data-tab="feira" data-mes="Março" data-date="2026-03-26" data-est="" onclick="openCard(1)">
+        <div id="tl-feira" class="tl-panel"><div class="month-sep" data-month="Março"><span class="month-label">Março 2026</span><div class="month-line"></div></div><div class="card" data-id="1" data-part="" data-tab="feira" data-mes="Março" data-date="2026-03-26" data-est="" onclick="openChecklist(1)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">26/Mar</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -340,13 +311,13 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">SENAI</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="1">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(1)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(1)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Abril"><span class="month-label">Abril 2026</span><div class="month-line"></div></div><div class="card" data-id="3" data-part="Sim" data-tab="feira" data-mes="Abril" data-date="2026-04-28" data-est="RJ" onclick="openCard(3)">
+</div><div class="month-sep" data-month="Abril"><span class="month-label">Abril 2026</span><div class="month-line"></div></div><div class="card" data-id="3" data-part="Sim" data-tab="feira" data-mes="Abril" data-date="2026-04-28" data-est="RJ" onclick="openChecklist(3)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">28/Abr</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -357,13 +328,13 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">IBMEC · RJ</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="3">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(3)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(3)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="5" data-part="Sim" data-tab="feira" data-mes="Maio" data-date="2026-05-21" data-est="SP" onclick="openCard(5)">
+</div><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="5" data-part="Sim" data-tab="feira" data-mes="Maio" data-date="2026-05-21" data-est="SP" onclick="openChecklist(5)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">21/Mai</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -374,13 +345,13 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">USP · SP</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="5">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(5)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(5)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="9" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-12" data-est="SP" onclick="openCard(9)">
+</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="9" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-12" data-est="SP" onclick="openChecklist(9)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">12/Ago</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -391,13 +362,13 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">UNICAMP · SP</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="9">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(9)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(9)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
-</div><div class="card" data-id="10" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-15" data-est="SP" onclick="openCard(10)">
+</div><div class="card" data-id="10" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-15" data-est="SP" onclick="openChecklist(10)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">15/Ago</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -408,13 +379,13 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">ITA · SP</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="10">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(10)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(10)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
-</div><div class="card" data-id="11" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-31" data-est="RJ" onclick="openCard(11)">
+</div><div class="card" data-id="11" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-31" data-est="RJ" onclick="openChecklist(11)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">31/Ago</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -425,13 +396,13 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">UFRJ · RJ</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="11">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(11)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(11)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="12" data-part="Sim" data-tab="feira" data-mes="Setembro" data-date="2026-09-03" data-est="RJ" onclick="openCard(12)">
+</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="12" data-part="Sim" data-tab="feira" data-mes="Setembro" data-date="2026-09-03" data-est="RJ" onclick="openChecklist(12)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">03/Set</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -442,13 +413,13 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">IBMEC · RJ</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="12">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(12)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(12)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
-</div><div class="card" data-id="13" data-part="Sim" data-tab="feira" data-mes="Setembro" data-date="2026-09-22" data-est="PE" onclick="openCard(13)">
+</div><div class="card" data-id="13" data-part="Sim" data-tab="feira" data-mes="Setembro" data-date="2026-09-22" data-est="PE" onclick="openChecklist(13)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">22/Set</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -459,14 +430,14 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">UFPE · PE</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="13">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(13)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(13)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
 </div></div>
-        <div id="tl-palestra" class="tl-panel  hidden"><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="6" data-part="" data-tab="palestra" data-mes="Maio" data-date="2026-05-26" data-est="RS" onclick="openCard(6)">
+        <div id="tl-palestra" class="tl-panel  hidden"><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="6" data-part="" data-tab="palestra" data-mes="Maio" data-date="2026-05-26" data-est="RS" onclick="openChecklist(6)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #0369a1">
     <div class="card-date">26/Mai</div>
     <div class="card-dot" style="background:#0369a1"></div>
@@ -477,13 +448,13 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">UFPel · RS</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="6">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(6)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(6)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="8" data-part="Sim" data-tab="palestra" data-mes="Agosto" data-date="2026-08-11" data-est="SP" onclick="openCard(8)">
+</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="8" data-part="Sim" data-tab="palestra" data-mes="Agosto" data-date="2026-08-11" data-est="SP" onclick="openChecklist(8)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #0369a1">
     <div class="card-date">11/Ago</div>
     <div class="card-dot" style="background:#0369a1"></div>
@@ -494,13 +465,13 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">UNICAMP · SP</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="8">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(8)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(8)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="14" data-part="Sim" data-tab="palestra" data-mes="Setembro" data-date="2026-09-23" data-est="RJ" onclick="openCard(14)">
+</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="14" data-part="Sim" data-tab="palestra" data-mes="Setembro" data-date="2026-09-23" data-est="RJ" onclick="openChecklist(14)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #0369a1">
     <div class="card-date">23/Set</div>
     <div class="card-dot" style="background:#0369a1"></div>
@@ -511,14 +482,14 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">UFRJ · RJ</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="14">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(14)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(14)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
 </div></div>
-        <div id="tl-outro" class="tl-panel  hidden"><div class="month-sep" data-month="Abril"><span class="month-label">Abril 2026</span><div class="month-line"></div></div><div class="card" data-id="2" data-part="Sim" data-tab="outro" data-mes="Abril" data-date="2026-04-11" data-est="RJ" onclick="openCard(2)">
+        <div id="tl-outro" class="tl-panel  hidden"><div class="month-sep" data-month="Abril"><span class="month-label">Abril 2026</span><div class="month-line"></div></div><div class="card" data-id="2" data-part="Sim" data-tab="outro" data-mes="Abril" data-date="2026-04-11" data-est="RJ" onclick="openChecklist(2)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #64748b">
     <div class="card-date">11/Abr</div>
     <div class="card-dot" style="background:#64748b"></div>
@@ -529,13 +500,13 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">UFRJ · RJ</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="2">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(2)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(2)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="4" data-part="Sim" data-tab="outro" data-mes="Maio" data-date="2026-05-14" data-est="RJ" onclick="openCard(4)">
+</div><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="4" data-part="Sim" data-tab="outro" data-mes="Maio" data-date="2026-05-14" data-est="RJ" onclick="openChecklist(4)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #64748b">
     <div class="card-date">14/Mai</div>
     <div class="card-dot" style="background:#64748b"></div>
@@ -546,13 +517,13 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">UFRJ · RJ</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="4">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(4)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(4)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Junho"><span class="month-label">Junho 2026</span><div class="month-line"></div></div><div class="card" data-id="7" data-part="Sim" data-tab="outro" data-mes="Junho" data-date="2026-06-01" data-est="" onclick="openCard(7)">
+</div><div class="month-sep" data-month="Junho"><span class="month-label">Junho 2026</span><div class="month-line"></div></div><div class="card" data-id="7" data-part="Sim" data-tab="outro" data-mes="Junho" data-date="2026-06-01" data-est="" onclick="openChecklist(7)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #c2410c">
     <div class="card-date">01/Jun</div>
     <div class="card-dot" style="background:#c2410c"></div>
@@ -563,14 +534,14 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">Online</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="7">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(7)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(7)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
 </div>
-        <div id="tl-internacional" class="tl-panel  hidden"><div class="month-sep" data-month="Novembro"><span class="month-label">Novembro 2026</span><div class="month-line"></div></div><div class="card" data-id="15" data-part="" data-tab="internacional" data-mes="Novembro" data-date="2026-11-06" data-est="" onclick="openCard(15)">
+        <div id="tl-internacional" class="tl-panel  hidden"><div class="month-sep" data-month="Novembro"><span class="month-label">Novembro 2026</span><div class="month-line"></div></div><div class="card" data-id="15" data-part="" data-tab="internacional" data-mes="Novembro" data-date="2026-11-06" data-est="" onclick="openChecklist(15)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #64748b">
     <div class="card-date">06/Nov</div>
     <div class="card-dot" style="background:#64748b"></div>
@@ -581,14 +552,14 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">Internacional</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="15">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(15)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(15)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
 </div></div></div>
-        <div id="tl-todos" class="tl-panel  hidden"><div class="month-sep" data-month="Março"><span class="month-label">Março 2026</span><div class="month-line"></div></div><div class="card" data-id="1" data-part="" data-tab="feira" data-mes="Março" data-date="2026-03-26" data-est="" onclick="openCard(1)">
+        <div id="tl-todos" class="tl-panel  hidden"><div class="month-sep" data-month="Março"><span class="month-label">Março 2026</span><div class="month-line"></div></div><div class="card" data-id="1" data-part="" data-tab="feira" data-mes="Março" data-date="2026-03-26" data-est="" onclick="openChecklist(1)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">26/Mar</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -599,13 +570,13 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">SENAI</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="1">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(1)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(1)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Abril"><span class="month-label">Abril 2026</span><div class="month-line"></div></div><div class="card" data-id="2" data-part="Sim" data-tab="outro" data-mes="Abril" data-date="2026-04-11" data-est="RJ" onclick="openCard(2)">
+</div><div class="month-sep" data-month="Abril"><span class="month-label">Abril 2026</span><div class="month-line"></div></div><div class="card" data-id="2" data-part="Sim" data-tab="outro" data-mes="Abril" data-date="2026-04-11" data-est="RJ" onclick="openChecklist(2)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #64748b">
     <div class="card-date">11/Abr</div>
     <div class="card-dot" style="background:#64748b"></div>
@@ -616,13 +587,13 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">UFRJ · RJ</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="2">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(2)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(2)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
-</div><div class="card" data-id="3" data-part="Sim" data-tab="feira" data-mes="Abril" data-date="2026-04-28" data-est="RJ" onclick="openCard(3)">
+</div><div class="card" data-id="3" data-part="Sim" data-tab="feira" data-mes="Abril" data-date="2026-04-28" data-est="RJ" onclick="openChecklist(3)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">28/Abr</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -633,13 +604,13 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">IBMEC · RJ</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="3">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(3)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(3)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="4" data-part="Sim" data-tab="outro" data-mes="Maio" data-date="2026-05-14" data-est="RJ" onclick="openCard(4)">
+</div><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="4" data-part="Sim" data-tab="outro" data-mes="Maio" data-date="2026-05-14" data-est="RJ" onclick="openChecklist(4)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #64748b">
     <div class="card-date">14/Mai</div>
     <div class="card-dot" style="background:#64748b"></div>
@@ -650,13 +621,13 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">UFRJ · RJ</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="4">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(4)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(4)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
-</div><div class="card" data-id="5" data-part="Sim" data-tab="feira" data-mes="Maio" data-date="2026-05-21" data-est="SP" onclick="openCard(5)">
+</div><div class="card" data-id="5" data-part="Sim" data-tab="feira" data-mes="Maio" data-date="2026-05-21" data-est="SP" onclick="openChecklist(5)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">21/Mai</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -667,13 +638,13 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">USP · SP</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="5">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(5)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(5)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
-</div><div class="card" data-id="6" data-part="" data-tab="palestra" data-mes="Maio" data-date="2026-05-26" data-est="RS" onclick="openCard(6)">
+</div><div class="card" data-id="6" data-part="" data-tab="palestra" data-mes="Maio" data-date="2026-05-26" data-est="RS" onclick="openChecklist(6)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #0369a1">
     <div class="card-date">26/Mai</div>
     <div class="card-dot" style="background:#0369a1"></div>
@@ -684,13 +655,13 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">UFPel · RS</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="6">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(6)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(6)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Junho"><span class="month-label">Junho 2026</span><div class="month-line"></div></div><div class="card" data-id="7" data-part="Sim" data-tab="outro" data-mes="Junho" data-date="2026-06-01" data-est="" onclick="openCard(7)">
+</div><div class="month-sep" data-month="Junho"><span class="month-label">Junho 2026</span><div class="month-line"></div></div><div class="card" data-id="7" data-part="Sim" data-tab="outro" data-mes="Junho" data-date="2026-06-01" data-est="" onclick="openChecklist(7)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #c2410c">
     <div class="card-date">01/Jun</div>
     <div class="card-dot" style="background:#c2410c"></div>
@@ -701,13 +672,13 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">Online</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="7">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(7)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(7)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="8" data-part="Sim" data-tab="palestra" data-mes="Agosto" data-date="2026-08-11" data-est="SP" onclick="openCard(8)">
+</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="8" data-part="Sim" data-tab="palestra" data-mes="Agosto" data-date="2026-08-11" data-est="SP" onclick="openChecklist(8)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #0369a1">
     <div class="card-date">11/Ago</div>
     <div class="card-dot" style="background:#0369a1"></div>
@@ -718,13 +689,13 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">UNICAMP · SP</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="8">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(8)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(8)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
-</div><div class="card" data-id="9" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-12" data-est="SP" onclick="openCard(9)">
+</div><div class="card" data-id="9" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-12" data-est="SP" onclick="openChecklist(9)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">12/Ago</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -735,13 +706,13 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">UNICAMP · SP</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="9">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(9)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(9)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
-</div><div class="card" data-id="10" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-15" data-est="SP" onclick="openCard(10)">
+</div><div class="card" data-id="10" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-15" data-est="SP" onclick="openChecklist(10)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">15/Ago</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -752,13 +723,13 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">ITA · SP</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="10">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(10)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(10)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
-</div><div class="card" data-id="11" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-31" data-est="RJ" onclick="openCard(11)">
+</div><div class="card" data-id="11" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-31" data-est="RJ" onclick="openChecklist(11)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">31/Ago</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -769,13 +740,13 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">UFRJ · RJ</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="11">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(11)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(11)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="12" data-part="Sim" data-tab="feira" data-mes="Setembro" data-date="2026-09-03" data-est="RJ" onclick="openCard(12)">
+</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="12" data-part="Sim" data-tab="feira" data-mes="Setembro" data-date="2026-09-03" data-est="RJ" onclick="openChecklist(12)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">03/Set</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -786,13 +757,13 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">IBMEC · RJ</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="12">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(12)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(12)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
-</div><div class="card" data-id="13" data-part="Sim" data-tab="feira" data-mes="Setembro" data-date="2026-09-22" data-est="PE" onclick="openCard(13)">
+</div><div class="card" data-id="13" data-part="Sim" data-tab="feira" data-mes="Setembro" data-date="2026-09-22" data-est="PE" onclick="openChecklist(13)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">22/Set</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -803,13 +774,13 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">UFPE · PE</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="13">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(13)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(13)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
-</div><div class="card" data-id="14" data-part="Sim" data-tab="palestra" data-mes="Setembro" data-date="2026-09-23" data-est="RJ" onclick="openCard(14)">
+</div><div class="card" data-id="14" data-part="Sim" data-tab="palestra" data-mes="Setembro" data-date="2026-09-23" data-est="RJ" onclick="openChecklist(14)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #0369a1">
     <div class="card-date">23/Set</div>
     <div class="card-dot" style="background:#0369a1"></div>
@@ -820,13 +791,13 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">UFRJ · RJ</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="14">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(14)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(14)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Novembro"><span class="month-label">Novembro 2026</span><div class="month-line"></div></div><div class="card" data-id="15" data-part="" data-tab="internacional" data-mes="Novembro" data-date="2026-11-06" data-est="" onclick="openCard(15)">
+</div><div class="month-sep" data-month="Novembro"><span class="month-label">Novembro 2026</span><div class="month-line"></div></div><div class="card" data-id="15" data-part="" data-tab="internacional" data-mes="Novembro" data-date="2026-11-06" data-est="" onclick="openChecklist(15)" style="cursor:pointer">
   <div class="card-left" style="border-left:4px solid #64748b">
     <div class="card-date">06/Nov</div>
     <div class="card-dot" style="background:#64748b"></div>
@@ -837,7 +808,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <div class="card-sub">Internacional</div>
     <div class="card-footer">
       <span class="meta cost-prev" data-id="15">💰 —</span>
-      <div class="checklist-mini" onclick="openChecklist(15)" title="Checklist">
+      <div class="checklist-mini" onclick="event.stopPropagation();openChecklist(15)" title="Checklist">
         <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
         <span class="cl-label">0/6</span>
       </div>
@@ -878,9 +849,10 @@ tbody td{padding:9px 12px;vertical-align:middle}
     <!-- VISITAS PRIO -->
         <section class="section" id="sec-visitas">
       <div class="stats">
-        <div class="stat-card dark"><div class="val" id="vis-total">15</div><div class="lbl">Visitas planejadas</div></div>
-        <div class="stat-card" style="border-left:4px solid #16a34a"><div class="val green" id="vis-conf">—</div><div class="lbl">Confirmadas</div></div>
-        <div class="stat-card"><div class="val" id="vis-upcoming">9>—</div><div class="lbl">Próximas</div></div>
+        <div class="stat-card dark"><div class="val" id="vis-total">—</div><div class="lbl">Visitas 2026</div></div>
+        <div class="stat-card" style="border-left:4px solid #059669"><div class="val green" id="vis-upcoming">—</div><div class="lbl">Próximas</div></div>
+        <div class="stat-card"><div class="val" id="vis-conf">—</div><div class="lbl">Realizadas</div></div>
+        <div class="stat-card"><div class="val" id="vis-pessoas">—</div><div class="lbl">Pessoas impactadas</div></div>
         <div class="stat-card"><div class="val" id="st-inscritos">0</div><div class="lbl">Inscritos (Forms)</div></div>
       </div>
       <div class="import-bar">
@@ -896,366 +868,345 @@ tbody td{padding:9px 12px;vertical-align:middle}
         <button class="btn btn-ghost btn-sm" onclick="clearImport()" title="Limpar dados importados">✕ Limpar</button>
       </div>
       <div class="import-summary" id="import-summary"></div>
-      <div id="vis-cards-container"><div class="vis-section"><h3>📌 Próximas Visitas</h3><div class="vis-list"><div class="vis-card">
-  <div class="vis-top">
-    <strong>2026-08-19</strong> | RJ | 🏢 Presencial
-  </div>
-  <div class="vis-inst">UFR - UFF - UERJ</div>
-  <div class="vis-info">
-    <div><strong>Curso:</strong> G&G</div>
-    <div><strong>Local:</strong> Auditório</div>
-    <div><strong>Impactados:</strong> 0</div>
-    <div><strong>Palestrantes:</strong> Caroline Santos • Manoel Farias</div>
-  </div>
-</div><div class="vis-card">
-  <div class="vis-top">
-    <strong>2026-08-26</strong> | RJ | 🏢 Presencial
-  </div>
-  <div class="vis-inst">ESPM - IBMEC</div>
-  <div class="vis-info">
-    <div><strong>Curso:</strong> Corporativo</div>
-    <div><strong>Local:</strong> Auditório</div>
-    <div><strong>Impactados:</strong> 0</div>
-    <div><strong>Palestrantes:</strong> Caroline Santos • Erika Scheiner • Edson Mosquera</div>
-  </div>
-</div><div class="vis-card">
-  <div class="vis-top">
-    <strong>2026-09-08</strong> | RJ | 🏢 Presencial
-  </div>
-  <div class="vis-inst">UFRJ - UNIRIO - UERJ - PUC - FGV - IBMEC</div>
-  <div class="vis-info">
-    <div><strong>Curso:</strong> Corporativo</div>
-    <div><strong>Local:</strong> Auditório</div>
-    <div><strong>Impactados:</strong> 0</div>
-    <div><strong>Palestrantes:</strong> —</div>
-  </div>
-</div><div class="vis-card">
-  <div class="vis-top">
-    <strong>2026-09-11</strong> | RJ | 🏢 Presencial
-  </div>
-  <div class="vis-inst">UFRJ</div>
-  <div class="vis-info">
-    <div><strong>Curso:</strong> Engenharia</div>
-    <div><strong>Local:</strong> Auditório</div>
-    <div><strong>Impactados:</strong> 0</div>
-    <div><strong>Palestrantes:</strong> —</div>
-  </div>
-</div><div class="vis-card">
-  <div class="vis-top">
-    <strong>2026-09-17</strong> | RJ | 🏢 Presencial
-  </div>
-  <div class="vis-inst">UFRRJ - UFF - UFRJ</div>
-  <div class="vis-info">
-    <div><strong>Curso:</strong> G&G</div>
-    <div><strong>Local:</strong> Auditório</div>
-    <div><strong>Impactados:</strong> 0</div>
-    <div><strong>Palestrantes:</strong> —</div>
-  </div>
-</div><div class="vis-card">
-  <div class="vis-top">
-    <strong>2026-09-22</strong> | — | 🏢 Presencial
-  </div>
-  <div class="vis-inst">ROG.E</div>
-  <div class="vis-info">
-    <div><strong>Curso:</strong> Misto</div>
-    <div><strong>Local:</strong> Auditório</div>
-    <div><strong>Impactados:</strong> 0</div>
-    <div><strong>Palestrantes:</strong> —</div>
-  </div>
-</div><div class="vis-card">
-  <div class="vis-top">
-    <strong>2026-09-25</strong> | — | 🏢 Presencial
-  </div>
-  <div class="vis-inst">IME</div>
-  <div class="vis-info">
-    <div><strong>Curso:</strong> Engenharia</div>
-    <div><strong>Local:</strong> Auditório</div>
-    <div><strong>Impactados:</strong> 0</div>
-    <div><strong>Palestrantes:</strong> —</div>
-  </div>
-</div><div class="vis-card">
-  <div class="vis-top">
-    <strong>2026-10-01</strong> | — | 🏢 Presencial
-  </div>
-  <div class="vis-inst"></div>
-  <div class="vis-info">
-    <div><strong>Curso:</strong> G&G</div>
-    <div><strong>Local:</strong> Auditório</div>
-    <div><strong>Impactados:</strong> 0</div>
-    <div><strong>Palestrantes:</strong> —</div>
-  </div>
-</div><div class="vis-card">
-  <div class="vis-top">
-    <strong>2026-10-13</strong> | — | 🏢 Presencial
-  </div>
-  <div class="vis-inst"></div>
-  <div class="vis-info">
-    <div><strong>Curso:</strong> Engenharia</div>
-    <div><strong>Local:</strong> Auditório</div>
-    <div><strong>Impactados:</strong> 0</div>
-    <div><strong>Palestrantes:</strong> —</div>
-  </div>
-</div></div></div><div class="vis-section"><h3>✓ Visitas Realizadas</h3><div class="vis-list"><div class="vis-card">
-  <div class="vis-top">
-    <strong>2026-08-12</strong> | RJ | 🏢 Presencial
-  </div>
-  <div class="vis-inst">UFRJ - UFF</div>
-  <div class="vis-info">
-    <div><strong>Curso:</strong> Engenharia</div>
-    <div><strong>Local:</strong> Auditório</div>
-    <div><strong>Impactados:</strong> 35</div>
-    <div><strong>Palestrantes:</strong> Caroline Santos • Matheus Vieira • Humberto Bovolenta</div>
-  </div>
-</div><div class="vis-card">
-  <div class="vis-top">
-    <strong>2026-08-07</strong> | EUA | 🌐 Online
-  </div>
-  <div class="vis-inst">Texas A&M</div>
-  <div class="vis-info">
-    <div><strong>Curso:</strong> Corporativo</div>
-    <div><strong>Local:</strong> Auditório</div>
-    <div><strong>Impactados:</strong> 41</div>
-    <div><strong>Palestrantes:</strong> Fernanda Cabral • Gustavo Hooper • Milton Rangel</div>
-  </div>
-</div><div class="vis-card">
-  <div class="vis-top">
-    <strong>2026-05-21</strong> | RJ | 🏢 Presencial
-  </div>
-  <div class="vis-inst">UNIRIO - CEFET - UFRJ</div>
-  <div class="vis-info">
-    <div><strong>Curso:</strong> Engenharia</div>
-    <div><strong>Local:</strong> Auditório</div>
-    <div><strong>Impactados:</strong> 31</div>
-    <div><strong>Palestrantes:</strong> Ana Luiza Abbiate</div>
-  </div>
-</div><div class="vis-card">
-  <div class="vis-top">
-    <strong>2026-04-10</strong> | RJ | 🏢 Presencial
-  </div>
-  <div class="vis-inst">UNICAMP - USP - UFRJ</div>
-  <div class="vis-info">
-    <div><strong>Curso:</strong> G&G</div>
-    <div><strong>Local:</strong> Rooftop</div>
-    <div><strong>Impactados:</strong> 24</div>
-    <div><strong>Palestrantes:</strong> Caroline Santos • Humberto Bovolenta • Marina Luiza Jordão</div>
-  </div>
-</div><div class="vis-card">
-  <div class="vis-top">
-    <strong>2026-03-25</strong> | RJ | 🏢 Presencial
-  </div>
-  <div class="vis-inst">UERJ - FGV - UFRJ</div>
-  <div class="vis-info">
-    <div><strong>Curso:</strong> Corporativo</div>
-    <div><strong>Local:</strong> Auditório</div>
-    <div><strong>Impactados:</strong> 38</div>
-    <div><strong>Palestrantes:</strong> Caroline Santos • Gustavo Hooper • Diego Figueiredo</div>
-  </div>
-</div><div class="vis-card">
-  <div class="vis-top">
-    <strong>2026-02-05</strong> | SE | 🏢 Presencial
-  </div>
-  <div class="vis-inst">UFS</div>
-  <div class="vis-info">
-    <div><strong>Curso:</strong> Misto</div>
-    <div><strong>Local:</strong> Sala TBMT</div>
-    <div><strong>Impactados:</strong> 3</div>
-    <div><strong>Palestrantes:</strong> Caroline Santos • Gabriel Ramos • Davis de Godoy</div>
-  </div>
-</div></div></div></div>
-  <div class="vis-inst"><strong>UFS</strong></div>
-  <div class="vis-meta">
-    <div><strong>Estado:</strong> SE</div>
-    <div><strong>Formato:</strong> 🏢 Presencial</div>
-    <div><strong>Curso:</strong> Misto</div>
-    <div><strong>Local:</strong> Sala TBMT</div>
-    <div><strong>Impactados:</strong> 3</div>
-    <div><strong>Palestrantes:</strong> Caroline Santos • Gabriel Ramos • Davis de Godoy</div>
-  </div>
-  <div class="vis-status">✓ Realizada</div>
-</div>
-<div class="vis-card" data-date="2026-03-25" data-inst="UERJ - FGV - UFRJ" data-tipo="Corporativo" data-formato="presencial">
-  <div class="vis-date">📅 2026-03-25</div>
-  <div class="vis-inst"><strong>UERJ - FGV - UFRJ</strong></div>
-  <div class="vis-meta">
-    <div><strong>Estado:</strong> RJ</div>
-    <div><strong>Formato:</strong> 🏢 Presencial</div>
-    <div><strong>Curso:</strong> Corporativo</div>
-    <div><strong>Local:</strong> Auditório</div>
-    <div><strong>Impactados:</strong> 38</div>
-    <div><strong>Palestrantes:</strong> Caroline Santos • Gustavo Hooper • Diego Figueiredo</div>
-  </div>
-  <div class="vis-status">✓ Realizada</div>
-</div>
-<div class="vis-card" data-date="2026-04-10" data-inst="UNICAMP - USP - UFRJ" data-tipo="G&G" data-formato="presencial">
-  <div class="vis-date">📅 2026-04-10</div>
-  <div class="vis-inst"><strong>UNICAMP - USP - UFRJ</strong></div>
-  <div class="vis-meta">
-    <div><strong>Estado:</strong> RJ</div>
-    <div><strong>Formato:</strong> 🏢 Presencial</div>
-    <div><strong>Curso:</strong> G&G</div>
-    <div><strong>Local:</strong> Rooftop</div>
-    <div><strong>Impactados:</strong> 24</div>
-    <div><strong>Palestrantes:</strong> Caroline Santos • Humberto Bovolenta • Marina Luiza Jordão</div>
-  </div>
-  <div class="vis-status">✓ Realizada</div>
-</div>
-<div class="vis-card" data-date="2026-05-21" data-inst="UNIRIO - CEFET - UFRJ" data-tipo="Engenharia" data-formato="presencial">
-  <div class="vis-date">📅 2026-05-21</div>
-  <div class="vis-inst"><strong>UNIRIO - CEFET - UFRJ</strong></div>
-  <div class="vis-meta">
-    <div><strong>Estado:</strong> RJ</div>
-    <div><strong>Formato:</strong> 🏢 Presencial</div>
-    <div><strong>Curso:</strong> Engenharia</div>
-    <div><strong>Local:</strong> Auditório</div>
-    <div><strong>Impactados:</strong> 31</div>
-    <div><strong>Palestrantes:</strong> Ana Luiza Abbiate</div>
-  </div>
-  <div class="vis-status">✓ Realizada</div>
-</div>
-<div class="vis-card" data-date="2026-08-07" data-inst="Texas A&M" data-tipo="Corporativo" data-formato="online">
-  <div class="vis-date">📅 2026-08-07</div>
-  <div class="vis-inst"><strong>Texas A&M</strong></div>
-  <div class="vis-meta">
-    <div><strong>Estado:</strong> EUA</div>
-    <div><strong>Formato:</strong> 🌐 Online</div>
-    <div><strong>Curso:</strong> Corporativo</div>
-    <div><strong>Local:</strong> Auditório</div>
-    <div><strong>Impactados:</strong> 41</div>
-    <div><strong>Palestrantes:</strong> Fernanda Cabral • Gustavo Hooper • Milton Rangel</div>
-  </div>
-  <div class="vis-status">✓ Realizada</div>
-</div>
-<div class="vis-card" data-date="2026-08-12" data-inst="UFRJ - UFF" data-tipo="Engenharia" data-formato="presencial">
-  <div class="vis-date">📅 2026-08-12</div>
-  <div class="vis-inst"><strong>UFRJ - UFF</strong></div>
-  <div class="vis-meta">
-    <div><strong>Estado:</strong> RJ</div>
-    <div><strong>Formato:</strong> 🏢 Presencial</div>
-    <div><strong>Curso:</strong> Engenharia</div>
-    <div><strong>Local:</strong> Auditório</div>
-    <div><strong>Impactados:</strong> 35</div>
-    <div><strong>Palestrantes:</strong> Caroline Santos • Matheus Vieira • Humberto Bovolenta</div>
-  </div>
-  <div class="vis-status">✓ Realizada</div>
-</div>
-<div class="vis-card" data-date="2026-08-19" data-inst="UFR - UFF - UERJ" data-tipo="G&G" data-formato="presencial">
-  <div class="vis-date">📅 2026-08-19</div>
-  <div class="vis-inst"><strong>UFR - UFF - UERJ</strong></div>
-  <div class="vis-meta">
-    <div><strong>Estado:</strong> RJ</div>
-    <div><strong>Formato:</strong> 🏢 Presencial</div>
-    <div><strong>Curso:</strong> G&G</div>
-    <div><strong>Local:</strong> Auditório</div>
-    <div><strong>Impactados:</strong> 0</div>
-    <div><strong>Palestrantes:</strong> Caroline Santos • Manoel Farias</div>
-  </div>
-  <div class="vis-status">📌 Próxima</div>
-</div>
-<div class="vis-card" data-date="2026-08-26" data-inst="ESPM - IBMEC" data-tipo="Corporativo" data-formato="presencial">
-  <div class="vis-date">📅 2026-08-26</div>
-  <div class="vis-inst"><strong>ESPM - IBMEC</strong></div>
-  <div class="vis-meta">
-    <div><strong>Estado:</strong> RJ</div>
-    <div><strong>Formato:</strong> 🏢 Presencial</div>
-    <div><strong>Curso:</strong> Corporativo</div>
-    <div><strong>Local:</strong> Auditório</div>
-    <div><strong>Impactados:</strong> 0</div>
-    <div><strong>Palestrantes:</strong> Caroline Santos • Erika Scheiner • Edson Mosquera</div>
-  </div>
-  <div class="vis-status">📌 Próxima</div>
-</div>
-<div class="vis-card" data-date="2026-09-08" data-inst="UFRJ - UNIRIO - UERJ - PUC - FGV - IBMEC" data-tipo="Corporativo" data-formato="presencial">
-  <div class="vis-date">📅 2026-09-08</div>
-  <div class="vis-inst"><strong>UFRJ - UNIRIO - UERJ - PUC - FGV - IBMEC</strong></div>
-  <div class="vis-meta">
-    <div><strong>Estado:</strong> RJ</div>
-    <div><strong>Formato:</strong> 🏢 Presencial</div>
-    <div><strong>Curso:</strong> Corporativo</div>
-    <div><strong>Local:</strong> Auditório</div>
-    <div><strong>Impactados:</strong> 0</div>
-    <div><strong>Palestrantes:</strong> —</div>
-  </div>
-  <div class="vis-status">📌 Próxima</div>
-</div>
-<div class="vis-card" data-date="2026-09-11" data-inst="UFRJ" data-tipo="Engenharia" data-formato="presencial">
-  <div class="vis-date">📅 2026-09-11</div>
-  <div class="vis-inst"><strong>UFRJ</strong></div>
-  <div class="vis-meta">
-    <div><strong>Estado:</strong> RJ</div>
-    <div><strong>Formato:</strong> 🏢 Presencial</div>
-    <div><strong>Curso:</strong> Engenharia</div>
-    <div><strong>Local:</strong> Auditório</div>
-    <div><strong>Impactados:</strong> 0</div>
-    <div><strong>Palestrantes:</strong> —</div>
-  </div>
-  <div class="vis-status">📌 Próxima</div>
-</div>
-<div class="vis-card" data-date="2026-09-17" data-inst="UFRRJ - UFF - UFRJ" data-tipo="G&G" data-formato="presencial">
-  <div class="vis-date">📅 2026-09-17</div>
-  <div class="vis-inst"><strong>UFRRJ - UFF - UFRJ</strong></div>
-  <div class="vis-meta">
-    <div><strong>Estado:</strong> RJ</div>
-    <div><strong>Formato:</strong> 🏢 Presencial</div>
-    <div><strong>Curso:</strong> G&G</div>
-    <div><strong>Local:</strong> Auditório</div>
-    <div><strong>Impactados:</strong> 0</div>
-    <div><strong>Palestrantes:</strong> —</div>
-  </div>
-  <div class="vis-status">📌 Próxima</div>
-</div>
-<div class="vis-card" data-date="2026-09-22" data-inst="ROG.E" data-tipo="Misto" data-formato="presencial">
-  <div class="vis-date">📅 2026-09-22</div>
-  <div class="vis-inst"><strong>ROG.E</strong></div>
-  <div class="vis-meta">
-    <div><strong>Estado:</strong> —</div>
-    <div><strong>Formato:</strong> 🏢 Presencial</div>
-    <div><strong>Curso:</strong> Misto</div>
-    <div><strong>Local:</strong> Auditório</div>
-    <div><strong>Impactados:</strong> 0</div>
-    <div><strong>Palestrantes:</strong> —</div>
-  </div>
-  <div class="vis-status">📌 Próxima</div>
-</div>
-<div class="vis-card" data-date="2026-09-25" data-inst="IME" data-tipo="Engenharia" data-formato="presencial">
-  <div class="vis-date">📅 2026-09-25</div>
-  <div class="vis-inst"><strong>IME</strong></div>
-  <div class="vis-meta">
-    <div><strong>Estado:</strong> —</div>
-    <div><strong>Formato:</strong> 🏢 Presencial</div>
-    <div><strong>Curso:</strong> Engenharia</div>
-    <div><strong>Local:</strong> Auditório</div>
-    <div><strong>Impactados:</strong> 0</div>
-    <div><strong>Palestrantes:</strong> —</div>
-  </div>
-  <div class="vis-status">📌 Próxima</div>
-</div>
-<div class="vis-card" data-date="2026-10-01" data-inst="" data-tipo="G&G" data-formato="presencial">
-  <div class="vis-date">📅 2026-10-01</div>
-  <div class="vis-inst"><strong></strong></div>
-  <div class="vis-meta">
-    <div><strong>Estado:</strong> —</div>
-    <div><strong>Formato:</strong> 🏢 Presencial</div>
-    <div><strong>Curso:</strong> G&G</div>
-    <div><strong>Local:</strong> Auditório</div>
-    <div><strong>Impactados:</strong> 0</div>
-    <div><strong>Palestrantes:</strong> —</div>
-  </div>
-  <div class="vis-status">📌 Próxima</div>
-</div>
-<div class="vis-card" data-date="2026-10-13" data-inst="" data-tipo="Engenharia" data-formato="presencial">
-  <div class="vis-date">📅 2026-10-13</div>
-  <div class="vis-inst"><strong></strong></div>
-  <div class="vis-meta">
-    <div><strong>Estado:</strong> —</div>
-    <div><strong>Formato:</strong> 🏢 Presencial</div>
-    <div><strong>Curso:</strong> Engenharia</div>
-    <div><strong>Local:</strong> Auditório</div>
-    <div><strong>Impactados:</strong> 0</div>
-    <div><strong>Palestrantes:</strong> —</div>
-  </div>
-  <div class="vis-status">📌 Próxima</div>
-</div>
-</div>
+      <div class="search-bar">
+        <input type="text" id="search-vis" placeholder="🔍 Buscar universidade, curso, palestrante..." oninput="renderVisCards()">
+        <select id="filter-vis-tipo" onchange="renderVisCards()"><option value="">Todos os cursos</option></select>
+        <select id="filter-vis-est" onchange="renderVisCards()"><option value="">Todos os estados</option></select>
+        <select id="filter-vis-mod" onchange="renderVisCards()">
+          <option value="">Presencial + Online</option>
+          <option>Presencial</option><option>Online</option>
+        </select>
+        <select id="filter-vis-status" onchange="renderVisCards()">
+          <option value="">Todos os status</option>
+          <option>Confirmado</option><option>A confirmar</option><option>Em análise</option><option>Realizada</option>
+        </select>
+        <div class="view-toggle" style="margin-left:auto">
+          <button class="view-btn active" id="vbtn-vis-tl" onclick="setVisView('timeline')">≡ Timeline</button>
+          <button class="view-btn" id="vbtn-vis-cal" onclick="setVisView('calendar')">▦ Calendário</button>
+        </div>
+      </div>
+      <div id="vis-view-timeline">
+        <div id="vis-cards-container"></div>
+      </div>
+      <div id="vis-view-calendar" class="hidden">
+        <div class="cal-legend">
+          <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#059669"></div>Presencial</div>
+          <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#0369a1"></div>Online</div>
+          <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#94a3b8"></div>Já realizada</div>
+        </div>
+        <div class="cal-nav">
+          <button onclick="visCalPrev()">‹</button>
+          <h3 id="vis-cal-title"></h3>
+          <button onclick="visCalNext()">›</button>
+        </div>
+        <div class="cal-grid" id="vis-cal-grid"></div>
+      </div>
+    </section>
+
+    <!-- CONVITES RECEBIDOS -->
+    <section class="section" id="sec-convites">
+      <div class="stats">
+        <div class="stat-card dark"><div class="val">25</div><div class="lbl">Convites recebidos</div></div>
+        <div class="stat-card" style="border-left:4px solid #16a34a"><div class="val green">10</div><div class="lbl">Aceitos</div></div>
+        <div class="stat-card" style="border-left:4px solid #dc2626"><div class="val" style="color:#dc2626">11</div><div class="lbl">Recusados</div></div>
+        <div class="stat-card"><div class="val">1</div><div class="lbl">Em análise</div></div>
+        <div class="stat-card"><div class="val">3</div><div class="lbl">Pendentes</div></div>
+      </div>
+      <p class="small muted" style="margin-bottom:12px">Todos os convites que a PRIO recebeu em 2026 — com a decisão e o motivo de cada recusa.</p>
+      <div class="search-bar">
+        <input type="text" id="search-conv" placeholder="🔍 Buscar convite..." oninput="filterConvites()">
+        <select id="filter-conv-part" onchange="filterConvites()">
+          <option value="">Todas as decisões</option>
+          <option>Sim</option><option>Não</option><option>Em análise</option><option>Pendente</option>
+        </select>
+        <select id="filter-conv-tipo" onchange="filterConvites()">
+          <option value="">Todos os tipos</option><option>Feira</option><option>Palestra</option><option>Painel</option>
+        </select>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Evento</th><th>Faculdade / Org.</th><th>UF</th><th>Tipo</th><th>Data</th>
+            <th class="num">Custo</th><th class="num">Público esp.</th><th>Decisão</th><th>Motivo / observação</th></tr></thead>
+          <tbody id="conv-body">
+<tr data-part="Não" data-uf="RJ" data-tipo="Feira">
+  <td class="fw">Feira de Carreira da Politécnica-UFRJ</td>
+  <td>UFRJ</td>
+  <td>RJ</td>
+  <td><span class="pill pill-feira">Feira</span></td>
+  <td class="date-cell">10/Mar</td>
+  <td class="num">R$ 90.000</td>
+  <td class="num">5000</td>
+  <td><span class="pill pill-nao">✕ Recusado</span></td>
+  <td class="muted small">Participação na Semana Fluxo é prioridade (já conhecemos e somos conhecidos por isso); Custo do espaço é alto; Evento acontece no início do ano</td>
+</tr>
+<tr data-part="Não" data-uf="ES" data-tipo="Palestra">
+  <td class="fw">PETROUFES</td>
+  <td>UFES</td>
+  <td>ES</td>
+  <td><span class="pill pill-palestra">Palestra</span></td>
+  <td class="date-cell">25/Mar</td>
+  <td class="num">R$ 4.605</td>
+  <td class="num">100</td>
+  <td><span class="pill pill-nao">✕ Recusado</span></td>
+  <td class="muted small">—</td>
+</tr>
+<tr data-part="Pendente" data-uf="SP" data-tipo="Feira">
+  <td class="fw">NX - Networking Experience 2026</td>
+  <td>Mackenzie</td>
+  <td>SP</td>
+  <td><span class="pill pill-feira">Feira</span></td>
+  <td class="date-cell">14/Abr</td>
+  <td class="num">R$ 13.800</td>
+  <td class="num">1000</td>
+  <td><span class="pill pill-outro">— Pendente</span></td>
+  <td class="muted small">—</td>
+</tr>
+<tr data-part="Sim" data-uf="RJ" data-tipo="Feira">
+  <td class="fw">Conecta</td>
+  <td>IBMEC</td>
+  <td>RJ</td>
+  <td><span class="pill pill-feira">Feira</span></td>
+  <td class="date-cell">28/Abr</td>
+  <td class="num">R$ 100</td>
+  <td class="num">50</td>
+  <td><span class="pill pill-sim">✓ Aceito</span></td>
+  <td class="muted small">—</td>
+</tr>
+<tr data-part="Sim" data-uf="SP" data-tipo="Feira">
+  <td class="fw">Feira de Recrutamento e Carreira</td>
+  <td>USP</td>
+  <td>SP</td>
+  <td><span class="pill pill-feira">Feira</span></td>
+  <td class="date-cell">21/Mai</td>
+  <td class="num">R$ 46.000</td>
+  <td class="num">—</td>
+  <td><span class="pill pill-sim">✓ Aceito</span></td>
+  <td class="muted small">—</td>
+</tr>
+<tr data-part="Não" data-uf="SP" data-tipo="Palestra">
+  <td class="fw">SEMATRON (Semana de Engenharia Mecatrônica)</td>
+  <td>USP</td>
+  <td>SP</td>
+  <td><span class="pill pill-palestra">Palestra</span></td>
+  <td class="date-cell">25/Mai</td>
+  <td class="num">R$ 8.800</td>
+  <td class="num">200</td>
+  <td><span class="pill pill-nao">✕ Recusado</span></td>
+  <td class="muted small">Focado apenas para automação, com temas não alinhados com a PRIO; Logística para São Carlos/SP vai ser caro x quantidade de alunos atingidos</td>
+</tr>
+<tr data-part="Pendente" data-uf="RS" data-tipo="Palestra">
+  <td class="fw">Speed Job</td>
+  <td>UFPel</td>
+  <td>RS</td>
+  <td><span class="pill pill-palestra">Palestra</span></td>
+  <td class="date-cell">26/Mai</td>
+  <td class="num">—</td>
+  <td class="num">—</td>
+  <td><span class="pill pill-outro">— Pendente</span></td>
+  <td class="muted small">—</td>
+</tr>
+<tr data-part="Sim" data-uf="" data-tipo="Painel">
+  <td class="fw">Feira Virtual Emprega</td>
+  <td>N/A</td>
+  <td>—</td>
+  <td><span class="pill pill-painel">Painel</span></td>
+  <td class="date-cell">01/Jun</td>
+  <td class="num">—</td>
+  <td class="num">—</td>
+  <td><span class="pill pill-sim">✓ Aceito</span></td>
+  <td class="muted small">—</td>
+</tr>
+<tr data-part="Não" data-uf="SP" data-tipo="Feira">
+  <td class="fw">Conferência de Carreira</td>
+  <td>Na prática</td>
+  <td>SP</td>
+  <td><span class="pill pill-feira">Feira</span></td>
+  <td class="date-cell">10/Ago</td>
+  <td class="num">R$ 64.800</td>
+  <td class="num">500</td>
+  <td><span class="pill pill-nao">✕ Recusado</span></td>
+  <td class="muted small">Proposta muito interessante, fazem um filtro de acordo com a necessidade da empresa (inclusive com teste cultural), durante 1 dia inteiro temos a oportunidade de falar com os alunos. Investimento muito alto, e o evento estava muito próximo de acontecer.</td>
+</tr>
+<tr data-part="Sim" data-uf="SP" data-tipo="Palestra">
+  <td class="fw">1st Industry
+Academia Partnership Workshop in Geosciences for Oil & Gas</td>
+  <td>UNICAMP</td>
+  <td>SP</td>
+  <td><span class="pill pill-palestra">Palestra</span></td>
+  <td class="date-cell">11/Ago</td>
+  <td class="num">—</td>
+  <td class="num">200</td>
+  <td><span class="pill pill-sim">✓ Aceito</span></td>
+  <td class="muted small">—</td>
+</tr>
+<tr data-part="Pendente" data-uf="SP" data-tipo="Feira">
+  <td class="fw">Feira de Carreiras</td>
+  <td>UNICAMP</td>
+  <td>SP</td>
+  <td><span class="pill pill-feira">Feira</span></td>
+  <td class="date-cell">12/Ago</td>
+  <td class="num">—</td>
+  <td class="num">—</td>
+  <td><span class="pill pill-outro">— Pendente</span></td>
+  <td class="muted small">—</td>
+</tr>
+<tr data-part="Sim" data-uf="SP" data-tipo="Feira">
+  <td class="fw">Feira de Carreiras</td>
+  <td>ITA</td>
+  <td>SP</td>
+  <td><span class="pill pill-feira">Feira</span></td>
+  <td class="date-cell">15/Ago</td>
+  <td class="num">—</td>
+  <td class="num">2100</td>
+  <td><span class="pill pill-sim">✓ Aceito</span></td>
+  <td class="muted small">—</td>
+</tr>
+<tr data-part="Sim" data-uf="SP" data-tipo="Feira">
+  <td class="fw">XXIX SEMEC</td>
+  <td>UNICAMP</td>
+  <td>SP</td>
+  <td><span class="pill pill-feira">Feira</span></td>
+  <td class="date-cell">17/Ago</td>
+  <td class="num">R$ 15.100</td>
+  <td class="num">650</td>
+  <td><span class="pill pill-sim">✓ Aceito</span></td>
+  <td class="muted small">—</td>
+</tr>
+<tr data-part="Não" data-uf="SP" data-tipo="Feira">
+  <td class="fw">Workshop Integrativo WI</td>
+  <td>USP</td>
+  <td>SP</td>
+  <td><span class="pill pill-feira">Feira</span></td>
+  <td class="date-cell">19/Ago</td>
+  <td class="num">R$ 33.100</td>
+  <td class="num">4000</td>
+  <td><span class="pill pill-nao">✕ Recusado</span></td>
+  <td class="muted small">Não temos orçamento, mas está no radar para 2027</td>
+</tr>
+<tr data-part="Não" data-uf="SP" data-tipo="Feira">
+  <td class="fw">21° Feira de Carreiras</td>
+  <td>USP</td>
+  <td>SP</td>
+  <td><span class="pill pill-feira">Feira</span></td>
+  <td class="date-cell">19/Ago</td>
+  <td class="num">—</td>
+  <td class="num">1000</td>
+  <td><span class="pill pill-nao">✕ Recusado</span></td>
+  <td class="muted small">O convite foi feito muito próximo do evento, além da maioria dos cursos não serem de interesse da PRIO</td>
+</tr>
+<tr data-part="Não" data-uf="RJ" data-tipo="Palestra">
+  <td class="fw">27º Encontro da Engenharia de Produção</td>
+  <td>UENF</td>
+  <td>RJ</td>
+  <td><span class="pill pill-palestra">Palestra</span></td>
+  <td class="date-cell">31/Ago</td>
+  <td class="num">R$ 3.000</td>
+  <td class="num">150</td>
+  <td><span class="pill pill-nao">✕ Recusado</span></td>
+  <td class="muted small">1 hora ou 1 hora e meia; Ideal fazer terça ou quinta (10h ou 14h). Na semana da Fluxo</td>
+</tr>
+<tr data-part="Não" data-uf="SP" data-tipo="Palestra">
+  <td class="fw">XV SEGEP CAEP</td>
+  <td>USP</td>
+  <td>SP</td>
+  <td><span class="pill pill-palestra">Palestra</span></td>
+  <td class="date-cell">31/Ago</td>
+  <td class="num">R$ 6.000</td>
+  <td class="num">400</td>
+  <td><span class="pill pill-nao">✕ Recusado</span></td>
+  <td class="muted small">Evento vai acontecer na mesma semana da Fluxo, não temos equipe suficiente para dar conta dos dois eventos</td>
+</tr>
+<tr data-part="Sim" data-uf="RJ" data-tipo="Feira">
+  <td class="fw">Conecta</td>
+  <td>IBMEC</td>
+  <td>RJ</td>
+  <td><span class="pill pill-feira">Feira</span></td>
+  <td class="date-cell">03/Set</td>
+  <td class="num">R$ 100</td>
+  <td class="num">50</td>
+  <td><span class="pill pill-sim">✓ Aceito</span></td>
+  <td class="muted small">—</td>
+</tr>
+<tr data-part="Sim" data-uf="PE" data-tipo="Feira">
+  <td class="fw">UFPE no Mercado</td>
+  <td>UFPE</td>
+  <td>PE</td>
+  <td><span class="pill pill-feira">Feira</span></td>
+  <td class="date-cell">22/Set</td>
+  <td class="num">R$ 13.000</td>
+  <td class="num">—</td>
+  <td><span class="pill pill-sim">✓ Aceito</span></td>
+  <td class="muted small">—</td>
+</tr>
+<tr data-part="Sim" data-uf="RJ" data-tipo="Palestra">
+  <td class="fw">Semana Ayra</td>
+  <td>UFRJ</td>
+  <td>RJ</td>
+  <td><span class="pill pill-palestra">Palestra</span></td>
+  <td class="date-cell">23/Set</td>
+  <td class="num">—</td>
+  <td class="num">80</td>
+  <td><span class="pill pill-sim">✓ Aceito</span></td>
+  <td class="muted small">—</td>
+</tr>
+<tr data-part="Não" data-uf="RJ" data-tipo="Palestra">
+  <td class="fw">SPEtro XVI UFRJ</td>
+  <td>UFRJ</td>
+  <td>RJ</td>
+  <td><span class="pill pill-palestra">Palestra</span></td>
+  <td class="date-cell">23/Set</td>
+  <td class="num">R$ 44.100</td>
+  <td class="num">2000</td>
+  <td><span class="pill pill-nao">✕ Recusado</span></td>
+  <td class="muted small">Não retornaram o meu contato via e-mail</td>
+</tr>
+<tr data-part="Em análise" data-uf="RJ" data-tipo="Palestra">
+  <td class="fw">Evento Interação</td>
+  <td>UFF</td>
+  <td>RJ</td>
+  <td><span class="pill pill-palestra">Palestra</span></td>
+  <td class="date-cell">28/Set</td>
+  <td class="num">R$ 3.950</td>
+  <td class="num">80</td>
+  <td><span class="pill pill-warn">◌ Em análise</span></td>
+  <td class="muted small">—</td>
+</tr>
+<tr data-part="Não" data-uf="SP" data-tipo="Palestra">
+  <td class="fw">XIV Workshop de Petróleo da SPE</td>
+  <td>USP</td>
+  <td>SP</td>
+  <td><span class="pill pill-palestra">Palestra</span></td>
+  <td class="date-cell">Novembro</td>
+  <td class="num">R$ 2.800</td>
+  <td class="num">50</td>
+  <td><span class="pill pill-nao">✕ Recusado</span></td>
+  <td class="muted small">Custo alto para poucos estudantes</td>
+</tr>
+<tr data-part="Sim" data-uf="RJ" data-tipo="Palestra">
+  <td class="fw">Semana da Petrofísica</td>
+  <td>UFRJ</td>
+  <td>RJ</td>
+  <td><span class="pill pill-palestra">Palestra</span></td>
+  <td class="date-cell">Maio/Junho</td>
+  <td class="num">—</td>
+  <td class="num">—</td>
+  <td><span class="pill pill-sim">✓ Aceito</span></td>
+  <td class="muted small">—</td>
+</tr>
+<tr data-part="Não" data-uf="RJ" data-tipo="Palestra">
+  <td class="fw">Palestras de Férias</td>
+  <td>UFRJ</td>
+  <td>RJ</td>
+  <td><span class="pill pill-palestra">Palestra</span></td>
+  <td class="date-cell">Fevereiro/Março</td>
+  <td class="num">—</td>
+  <td class="num">—</td>
+  <td><span class="pill pill-nao">✕ Recusado</span></td>
+  <td class="muted small">Time de Petrofísicos da PRIO não possuiam disponibilidade</td>
+</tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <!-- CONTATOS -->
@@ -1799,8 +1750,91 @@ tbody td{padding:9px 12px;vertical-align:middle}
     </section>
 
     <!-- CUSTOS -->
-    <section class="section" id="sec-custos"><div class="stats"><div class="stat-card"><div class="val">R$ 350k</div><div class="lbl">Orçamento Total</div></div><div class="stat-card"><div class="val">R$ 319k</div><div class="lbl">Utilizado</div></div></div><div class="cost-table"><table><thead><tr><th>Evento</th><th>Orçado</th><th>Real</th><th>Desvio</th></tr></thead><tbody><tr><td>1ST INDUSTRY
-ACADEMIA PARTNERSHIP WORKSHOP IN GEOSCIENCES FOR OIL & GAS</td><td class="num">R$ 0</td><td class="num">R$ 0</td><td class="num positive">—</td></tr><tr><td>21° FEIRA DE CARREIRAS</td><td class="num">R$ 0</td><td class="num">R$ 0</td><td class="num positive">—</td></tr><tr><td>27º ENCONTRO DA ENGENHARIA DE PRODUÇÃO</td><td class="num">R$ 0</td><td class="num">R$ 3,000</td><td class="num negative">+3000</td></tr><tr><td>CONECTA</td><td class="num">R$ 0</td><td class="num">R$ 100</td><td class="num negative">+100</td></tr><tr><td>CONFERÊNCIA DE CARREIRA</td><td class="num">R$ 0</td><td class="num">R$ 64,800</td><td class="num negative">+64800</td></tr><tr><td>EVENTO INTERAÇÃO</td><td class="num">R$ 0</td><td class="num">R$ 3,950</td><td class="num negative">+3950</td></tr><tr><td>FEIRA DE CARREIRA DA POLITÉCNICA-UFRJ</td><td class="num">R$ 0</td><td class="num">R$ 90,000</td><td class="num negative">+90000</td></tr><tr><td>FEIRA DE CARREIRAS</td><td class="num">R$ 0</td><td class="num">R$ 0</td><td class="num positive">—</td></tr><tr><td>FEIRA DE RECRUTAMENTO E CARREIRA</td><td class="num">R$ 0</td><td class="num">R$ 46,000</td><td class="num negative">+46000</td></tr><tr><td>FEIRA VIRTUAL EMPREGA</td><td class="num">R$ 0</td><td class="num">R$ 0</td><td class="num positive">—</td></tr><tr><td>NX - NETWORKING EXPERIENCE 2026</td><td class="num">R$ 0</td><td class="num">R$ 13,800</td><td class="num negative">+13800</td></tr><tr><td>PALESTRAS DE FÉRIAS</td><td class="num">R$ 0</td><td class="num">R$ 0</td><td class="num positive">—</td></tr><tr><td>PETROUFES</td><td class="num">R$ 0</td><td class="num">R$ 4,605</td><td class="num negative">+4605</td></tr><tr><td>SEMANA AYRA</td><td class="num">R$ 0</td><td class="num">R$ 0</td><td class="num positive">—</td></tr><tr><td>SEMANA DA PETROFÍSICA</td><td class="num">R$ 0</td><td class="num">R$ 0</td><td class="num positive">—</td></tr><tr><td>SEMATRON (SEMANA DE ENGENHARIA MECATRÔNICA)</td><td class="num">R$ 0</td><td class="num">R$ 8,800</td><td class="num negative">+8800</td></tr><tr><td>SPEED JOB</td><td class="num">R$ 0</td><td class="num">R$ 0</td><td class="num positive">—</td></tr><tr><td>SPETRO XVI UFRJ</td><td class="num">R$ 0</td><td class="num">R$ 44,100</td><td class="num negative">+44100</td></tr><tr><td>UFPE NO MERCADO</td><td class="num">R$ 0</td><td class="num">R$ 13,000</td><td class="num negative">+13000</td></tr><tr><td>WORKSHOP INTEGRATIVO WI</td><td class="num">R$ 0</td><td class="num">R$ 33,100</td><td class="num negative">+33100</td></tr><tr><td>XIV WORKSHOP DE PETRÓLEO DA SPE</td><td class="num">R$ 0</td><td class="num">R$ 2,800</td><td class="num negative">+2800</td></tr><tr><td>XV SEGEP CAEP</td><td class="num">R$ 0</td><td class="num">R$ 6,000</td><td class="num negative">+6000</td></tr><tr><td>XXIX SEMEC</td><td class="num">R$ 0</td><td class="num">R$ 15,100</td><td class="num negative">+15100</td></tr></tbody></table></div></section>
+    <section class="section" id="sec-custos">
+            <div class="cost-hd" style="margin-top:0">📊 Orçamento 2026 — previsto × real (planilha)</div>
+      <div class="stats" style="margin-bottom:14px">
+        <div class="stat-card dark"><div class="val" id="orc-total">—</div><div class="lbl">Orçamento 2026</div></div>
+        <div class="stat-card" style="border-left:4px solid var(--blue)"><div class="val" id="orc-prev">—</div><div class="lbl">Previsto (comprometido)</div></div>
+        <div class="stat-card" style="border-left:4px solid #16a34a"><div class="val green" id="orc-real">—</div><div class="lbl">Real (executado)</div></div>
+        <div class="stat-card"><div class="val" id="orc-saldo">—</div><div class="lbl">Saldo do orçamento</div></div>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr>
+            <th>Evento / Apoio</th><th>Composição</th>
+            <th class="num" style="background:#eff6ff">Orçado</th>
+            <th class="num" style="background:#f0fdf4">Real</th>
+            <th class="num">Δ</th><th style="width:110px">Execução</th>
+          </tr></thead>
+          <tbody id="plan-body"></tbody>
+          <tfoot id="plan-foot"></tfoot>
+        </table>
+      </div>
+
+      <div class="cost-hd">Por natureza de gasto</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Tipo</th><th class="num" style="background:#eff6ff">Orçado</th><th class="num" style="background:#f0fdf4">Real</th><th class="num">Δ</th><th style="width:110px">Execução</th></tr></thead>
+          <tbody id="plan-tipo-body"></tbody>
+        </table>
+      </div>
+
+<div class="cost-hd" style="margin-top:0">💰 Custo por evento — orçado × real</div>
+      <div class="stats" id="custos-stats">
+        <div class="stat-card dark"><div class="val" id="cs-prev">R$ 0</div><div class="lbl">Total Previsto</div></div>
+        <div class="stat-card" style="border-left:4px solid #16a34a"><div class="val green" id="cs-real">R$ 0</div><div class="lbl">Total Real</div></div>
+        <div class="stat-card" style="border-left:4px solid #dc2626"><div class="val" id="cs-delta" style="color:#dc2626">R$ 0</div><div class="lbl">Diferença (prev - real)</div></div>
+        <div class="stat-card"><div class="val" id="cs-zerados">0</div><div class="lbl">Sem custo cadastrado</div></div>
+      </div>
+      <p class="small muted" style="margin-bottom:12px">Custos cadastrados via checklist de cada evento. Clique em um evento para editar.</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Evento</th>
+              <th>Tipo</th>
+              <th>Data</th>
+              <th class="num">Contrato Prev.</th>
+              <th class="num">Logística Prev.</th>
+              <th class="num">Brindes Prev.</th>
+              <th class="num" style="background:#eff6ff">Total Prev.</th>
+              <th class="num" style="background:#f0fdf4">Total Real</th>
+              <th class="num">Δ</th>
+            </tr>
+          </thead>
+          <tbody id="custos-body"></tbody>
+          <tfoot id="custos-foot"></tfoot>
+        </table>
+      </div>
+
+      <div class="cost-hd">📊 Previsto × Real — planilha orçamentária 2026</div>
+      <div class="stats" style="margin-bottom:14px">
+        <div class="stat-card dark"><div class="val" id="orc-total">—</div><div class="lbl">Orçamento 2026</div></div>
+        <div class="stat-card" style="border-left:4px solid var(--blue)"><div class="val" id="orc-prev">—</div><div class="lbl">Previsto (comprometido)</div></div>
+        <div class="stat-card" style="border-left:4px solid #16a34a"><div class="val green" id="orc-real">—</div><div class="lbl">Real (executado)</div></div>
+        <div class="stat-card"><div class="val" id="orc-saldo">—</div><div class="lbl">Saldo do orçamento</div></div>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr>
+            <th>Evento / Apoio</th><th>Composição</th>
+            <th class="num" style="background:#eff6ff">Orçado</th>
+            <th class="num" style="background:#f0fdf4">Real</th>
+            <th class="num">Δ</th><th style="width:110px">Execução</th>
+          </tr></thead>
+          <tbody id="plan-body"></tbody>
+          <tfoot id="plan-foot"></tfoot>
+        </table>
+      </div>
+
+      <div class="cost-hd">Por natureza de gasto</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Tipo</th><th class="num" style="background:#eff6ff">Orçado</th><th class="num" style="background:#f0fdf4">Real</th><th class="num">Δ</th><th style="width:110px">Execução</th></tr></thead>
+          <tbody id="plan-tipo-body"></tbody>
+        </table>
+      </div>
+    </section>
 
     <!-- DECLINADOS -->
     <section class="section" id="sec-declinados">
@@ -1909,46 +1943,226 @@ ACADEMIA PARTNERSHIP WORKSHOP IN GEOSCIENCES FOR OIL & GAS</td><td class="num">R
 </div>
 
 <script>
-const EV_DATA = [{"id": 1, "evento": "Feira Técnica SENAI", "date": "2026-03-26", "tipo": "Feira", "est": "", "part": "", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 2, "evento": "Petrogames UFRJ", "date": "2026-04-11", "tipo": "Outro", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 3, "evento": "CONECTA IBMEC", "date": "2026-04-28", "tipo": "Feira", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 4, "evento": "Petrogames UFRJ", "date": "2026-05-14", "tipo": "Outro", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 5, "evento": "FEIRA FEA USP", "date": "2026-05-21", "tipo": "Feira", "est": "SP", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 6, "evento": "SPEED JOB UFPel", "date": "2026-05-26", "tipo": "Palestra", "est": "RS", "part": "", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 7, "evento": "FEIRA VIRTUAL EMPREGA", "date": "2026-06-01", "tipo": "Painel", "est": "", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 8, "evento": "WORKSHOP GEOSCIENCES UNICAMP", "date": "2026-08-11", "tipo": "Palestra", "est": "SP", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 9, "evento": "FEIRA DE CARREIRAS INTEGRA UNICAMP", "date": "2026-08-12", "tipo": "Feira", "est": "SP", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 10, "evento": "FEIRA DE CARREIRAS ITA", "date": "2026-08-15", "tipo": "Feira", "est": "SP", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 11, "evento": "SEMANA FLUXO UFRJ", "date": "2026-08-31", "tipo": "Feira", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 12, "evento": "CONECTA IBMEC", "date": "2026-09-03", "tipo": "Feira", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 13, "evento": "FEIRA UFPE", "date": "2026-09-22", "tipo": "Feira", "est": "PE", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 14, "evento": "SEMANA AYRA", "date": "2026-09-23", "tipo": "Palestra", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 15, "evento": "MBA Brasil - EUA", "date": "2026-11-06", "tipo": "Internacional", "est": "", "part": "", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}];
+const EV_DATA = [{"id": 1, "evento": "Feira Técnica SENAI", "date": "2026-03-26", "tipo": "Feira", "est": "", "part": "", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 200, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 134, "real_brinde": 0}}, {"id": 2, "evento": "Petrogames UFRJ", "date": "2026-04-11", "tipo": "Outro", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 35000, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 35000, "real_logistica": 0, "real_brinde": 0}}, {"id": 3, "evento": "CONECTA IBMEC", "date": "2026-04-28", "tipo": "Feira", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 360, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 4, "evento": "Petrogames UFRJ", "date": "2026-05-14", "tipo": "Outro", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 35000, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 35000, "real_logistica": 0, "real_brinde": 0}}, {"id": 5, "evento": "FEIRA FEA USP", "date": "2026-05-21", "tipo": "Feira", "est": "SP", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 20400, "prev_logistica": 8850, "prev_brinde": 0, "real_contrato": 20400, "real_logistica": 7976, "real_brinde": 0}}, {"id": 6, "evento": "SPEED JOB UFPel", "date": "2026-05-26", "tipo": "Palestra", "est": "RS", "part": "", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 7, "evento": "FEIRA VIRTUAL EMPREGA", "date": "2026-06-01", "tipo": "Painel", "est": "", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 8, "evento": "WORKSHOP GEOSCIENCES UNICAMP", "date": "2026-08-11", "tipo": "Palestra", "est": "SP", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 329, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 329, "real_brinde": 0}}, {"id": 9, "evento": "FEIRA DE CARREIRAS INTEGRA UNICAMP", "date": "2026-08-12", "tipo": "Feira", "est": "SP", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 9500, "prev_logistica": 2800, "prev_brinde": 0, "real_contrato": 9500, "real_logistica": 2465, "real_brinde": 0}}, {"id": 10, "evento": "FEIRA DE CARREIRAS ITA", "date": "2026-08-15", "tipo": "Feira", "est": "SP", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 17000, "prev_logistica": 6700, "prev_brinde": 0, "real_contrato": 17000, "real_logistica": 3354, "real_brinde": 0}}, {"id": 11, "evento": "SEMANA FLUXO UFRJ", "date": "2026-08-31", "tipo": "Feira", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 87733, "prev_logistica": 7500, "prev_brinde": 14928, "real_contrato": 22733, "real_logistica": 0, "real_brinde": 0}}, {"id": 12, "evento": "CONECTA IBMEC", "date": "2026-09-03", "tipo": "Feira", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 360, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 13, "evento": "FEIRA UFPE", "date": "2026-09-22", "tipo": "Feira", "est": "PE", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 13400, "prev_logistica": 14150, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 7605, "real_brinde": 0}}, {"id": 14, "evento": "SEMANA AYRA", "date": "2026-09-23", "tipo": "Palestra", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 4300, "prev_logistica": 30, "prev_brinde": 0, "real_contrato": 3300, "real_logistica": 0, "real_brinde": 0}}, {"id": 15, "evento": "MBA Brasil - EUA", "date": "2026-11-06", "tipo": "Internacional", "est": "", "part": "", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}];
+const CUSTOS_PLAN = [{"evento": "FLUXO", "prev": 110161.0, "real": 22733.0, "itens": [{"tipo": "Participação", "prev": 22733.0, "real": 22733.0}, {"tipo": "Estande", "prev": 20000.0, "real": 0.0}, {"tipo": "Ativação", "prev": 45000.0, "real": 0.0}, {"tipo": "Brinde", "prev": 14928.0, "real": 0.0}, {"tipo": "Transporte", "prev": 7500.0, "real": 0.0}]}, {"evento": "Petrogames", "prev": 35000.0, "real": 35000.0, "itens": [{"tipo": "Participação", "prev": 35000.0, "real": 35000.0}]}, {"evento": "FEA USP", "prev": 29250.0, "real": 28376.0, "itens": [{"tipo": "Transporte", "prev": 550.0, "real": 378.0}, {"tipo": "Aéreo", "prev": 2400.0, "real": 4526.0}, {"tipo": "Alimentação", "prev": 1400.0, "real": 0.0}, {"tipo": "Hospedagem", "prev": 4500.0, "real": 3072.0}, {"tipo": "Estande", "prev": 20400.0, "real": 20400.0}]}, {"evento": "UFPE", "prev": 27550.0, "real": 7604.6, "itens": [{"tipo": "Aéreo", "prev": 9600.0, "real": 7604.6}, {"tipo": "Hospedagem", "prev": 2700.0, "real": 0.0}, {"tipo": "Transporte", "prev": 450.0, "real": 0.0}, {"tipo": "Alimentação", "prev": 1400.0, "real": 0.0}, {"tipo": "Estande", "prev": 13400.0, "real": 0.0}]}, {"evento": "ITA", "prev": 23700.0, "real": 20354.01, "itens": [{"tipo": "Aéreo", "prev": 3000.0, "real": 3354.01}, {"tipo": "Hospedagem", "prev": 1700.0, "real": 0.0}, {"tipo": "Estande", "prev": 17000.0, "real": 17000.0}, {"tipo": "Transporte", "prev": 600.0, "real": 0.0}, {"tipo": "Alimentação", "prev": 1400.0, "real": 0.0}]}, {"evento": "Ecobags PLUS BRINDES", "prev": 18768.0, "real": 23099.08, "itens": [{"tipo": "Brinde", "prev": 18768.0, "real": 23099.08}]}, {"evento": "Chaveiro BB BRINDES", "prev": 17524.0, "real": 17524.0, "itens": [{"tipo": "Brinde", "prev": 17524.0, "real": 17524.0}]}, {"evento": "Visita na PRIO", "prev": 16200.0, "real": 2600.0, "itens": [{"tipo": "Alimentação", "prev": 16200.0, "real": 2600.0}]}, {"evento": "INTEGRA UNICAMP", "prev": 12300.0, "real": 11964.69, "itens": [{"tipo": "Transporte", "prev": 600.0, "real": 0.0}, {"tipo": "Aéreo", "prev": 2200.0, "real": 2464.69}, {"tipo": "Estande", "prev": 9500.0, "real": 9500.0}]}, {"evento": "SEMEC UNICAMP", "prev": 12133.15, "real": 0.0, "itens": [{"tipo": "Hospedagem", "prev": 744.34, "real": 0.0}, {"tipo": "Aéreo", "prev": 8688.81, "real": 0.0}, {"tipo": "Estande", "prev": 2700.0, "real": 0.0}]}, {"evento": "Folder", "prev": 9256.0, "real": 9256.0, "itens": [{"tipo": "Brinde", "prev": 9256.0, "real": 9256.0}]}, {"evento": "SEMANA AYRA", "prev": 4330.0, "real": 3300.0, "itens": [{"tipo": "Participação", "prev": 4300.0, "real": 3300.0}, {"tipo": "Transporte", "prev": 30.0, "real": 0.0}]}, {"evento": "Petrobowl", "prev": 1050.0, "real": 1329.0, "itens": [{"tipo": "Brinde", "prev": 1050.0, "real": 1329.0}]}, {"evento": "Personalização YURGAN", "prev": 1000.0, "real": 1000.0, "itens": [{"tipo": "Brinde", "prev": 1000.0, "real": 1000.0}]}, {"evento": "IBMEC", "prev": 360.0, "real": 0.0, "itens": [{"tipo": "Transporte", "prev": 360.0, "real": 0.0}]}, {"evento": "WORKSHOP GEOSCIENCES UNICAMP", "prev": 328.58, "real": 328.58, "itens": [{"tipo": "Hospedagem", "prev": 328.58, "real": 328.58}]}, {"evento": "CEFET", "prev": 200.0, "real": 0.0, "itens": [{"tipo": "Transporte", "prev": 200.0, "real": 0.0}]}, {"evento": "SENAI", "prev": 200.0, "real": 133.93, "itens": [{"tipo": "Transporte", "prev": 200.0, "real": 133.93}]}];
+const CUSTOS_TIPO = [{"tipo": "Estande", "prev": 83000.0, "real": 46900.0}, {"tipo": "Brinde", "prev": 62526.0, "real": 52208.08}, {"tipo": "Participação", "prev": 62033.0, "real": 61033.0}, {"tipo": "Ativação", "prev": 45000.0, "real": 0.0}, {"tipo": "Aéreo", "prev": 25888.81, "real": 17949.3}, {"tipo": "Alimentação", "prev": 20400.0, "real": 2600.0}, {"tipo": "Transporte", "prev": 10490.0, "real": 511.93}, {"tipo": "Hospedagem", "prev": 9972.92, "real": 3400.58}];
+const ORCAMENTO = {total:350000, previsto:319310.73};
 const VIS_CARDS = [
-  {idx:0, date:'2026-02-05', dia:'Qui', turno:'Tarde', espaco:'Sala TBMT', modalidade:'Presencial', tipo:'Misto',
-   univ:'UFS', liga:'—', area:'—', qtd:'3', palestrante:'—', status:'Realizada', obs:'—'},
-  {idx:1, date:'2026-03-25', dia:'Qua', turno:'Tarde', espaco:'Auditório', modalidade:'Presencial', tipo:'Corporativo',
-   univ:'UERJ / FGV / UFRJ', liga:'—', area:'—', qtd:'38', palestrante:'—', status:'Realizada', obs:'—'},
-  {idx:2, date:'2026-04-10', dia:'Sex', turno:'Tarde', espaco:'Rooftop', modalidade:'Presencial', tipo:'G&G',
-   univ:'UNICAMP / USP / SPWLA UFRJ', liga:'—', area:'—', qtd:'24', palestrante:'—', status:'Realizada', obs:'—'},
-  {idx:3, date:'2026-05-20', dia:'Seg', turno:'Tarde', espaco:'Auditório', modalidade:'Presencial', tipo:'Misto',
-   univ:'—', liga:'—', area:'—', qtd:'—', palestrante:'—', status:'Realizada', obs:'—'},
-  {idx:4, date:'2026-08-04', dia:'—', turno:'Manhã', espaco:'Online', modalidade:'Online', tipo:'Corporativo',
-   univ:'PUC SP', liga:'PUC Finance', area:'Corporativo', qtd:'—', palestrante:'Tiktin + Jansen', status:'A confirmar', obs:'PUC Finance confirmou viabilidade.'},
-  {idx:5, date:'2026-08-05', dia:'—', turno:'Noite', espaco:'Online', modalidade:'Online', tipo:'Engenharia',
-   univ:'UENF', liga:'EENGE', area:'Eng. Produção / Materiais / Metalúrgica / Civil', qtd:'—', palestrante:'Lucas Ribas', status:'A confirmar', obs:'Falar com o Lucas'},
-  {idx:6, date:'2026-08-12', dia:'—', turno:'Tarde', espaco:'Online', modalidade:'Online', tipo:'Engenharia',
-   univ:'Unicamp', liga:'Liga Empreendedora', area:'Engenharias', qtd:'—', palestrante:'Humberto B. + Grigoletto', status:'Confirmado', obs:'Liga confirmou viabilidade da vaga.'},
-  {idx:7, date:'2026-08-12', dia:'—', turno:'Manhã', espaco:'PRIO', modalidade:'Presencial', tipo:'Engenharia',
-   univ:'UFRJ', liga:'Petrobowl', area:'Engenharias', qtd:'14', palestrante:'—', status:'Confirmado', obs:'Petrobowl confirmou. Falar com os gestores.'},
-  {idx:8, date:'2026-08-19', dia:'—', turno:'Tarde', espaco:'PRIO', modalidade:'Presencial', tipo:'G&G',
-   univ:'UFRJ + UFF', liga:'SPE · Geosociety · AAPG · Ligpetro', area:'G&G', qtd:'20+', palestrante:'—', status:'Confirmado', obs:'Geosociety confirmou viabilidade.'},
-  {idx:9, date:'2026-08-26', dia:'—', turno:'Tarde', espaco:'PRIO', modalidade:'Presencial', tipo:'Corporativo',
-   univ:'FGV + IBMEC', liga:'FGValley · IBMEC Carreiras', area:'Corporativo', qtd:'30+', palestrante:'—', status:'A confirmar', obs:'IBMEC confirmou. FGValley vai confirmar até sexta.'},
-  {idx:10, date:'2026-09-08', dia:'—', turno:'Tarde', espaco:'PRIO', modalidade:'Presencial', tipo:'Corporativo',
-   univ:'UFRJ · UNIRIO · UERJ · PUC · FGV · IBMEC', liga:'Liga Acad. Regulatórios · LADME · LITIS Jr. · PETROLIGA', area:'Corporativo', qtd:'78+', palestrante:'Julia Heymann + Geraldo', status:'Confirmado', obs:'Ladme e Litis Jr. confirmaram viabilidade.'},
-  {idx:11, date:'2026-09-11', dia:'—', turno:'Tarde', espaco:'PRIO', modalidade:'Presencial', tipo:'Engenharia',
-   univ:'UFRJ', liga:'Fluxo Consultoria', area:'Engenharia de Produção', qtd:'—', palestrante:'—', status:'A confirmar', obs:'Fluxo está perguntando qual agenda prevista.'},
-  {idx:12, date:'2026-09-17', dia:'—', turno:'Manhã', espaco:'PRIO', modalidade:'Presencial', tipo:'G&G',
-   univ:'UFRRJ + UFF + UFRJ', liga:'AAPG UFRRJ · Cap. UFF e UFRJ', area:'G&G', qtd:'—', palestrante:'—', status:'Em análise', obs:'—'},
-  {idx:13, date:'2026-09-22', dia:'—', turno:'Tarde', espaco:'PRIO', modalidade:'Presencial', tipo:'Engenharia de Petróleo',
-   univ:'UDESC + UFPEL', liga:'Petro Jr. · DAKA', area:'Eng. de Petróleo', qtd:'54', palestrante:'—', status:'Confirmado', obs:'DAKA e Petro Jr. confirmaram viabilidade.'},
-  {idx:14, date:'2026-09-25', dia:'—', turno:'Tarde', espaco:'PRIO', modalidade:'Presencial', tipo:'—',
-   univ:'IME', liga:'—', area:'—', qtd:'—', palestrante:'—', status:'Em análise', obs:'—'},
-  {idx:15, date:'2026-10-01', dia:'—', turno:'Manhã', espaco:'PRIO', modalidade:'Presencial', tipo:'—',
-   univ:'—', liga:'ROG.E (21-24/Set)', area:'—', qtd:'—', palestrante:'—', status:'Em análise', obs:'—'},
-  {idx:16, date:'2026-10-13', dia:'—', turno:'Tarde', espaco:'PRIO', modalidade:'Presencial', tipo:'—',
-   univ:'—', liga:'—', area:'—', qtd:'—', palestrante:'—', status:'Em análise', obs:'—'},
+ {
+  "date": "2026-02-05",
+  "turno": "Tarde",
+  "espaco": "Sala TBMT",
+  "modalidade": "Presencial",
+  "tipo": "Misto",
+  "estado": "SE",
+  "univ": "UFS",
+  "liga": "—",
+  "qtd": "3",
+  "palestrante": "Caroline Santos • Gabriel Ramos • Davis de Godoy",
+  "status": "Realizada",
+  "obs": "—"
+ },
+ {
+  "date": "2026-03-25",
+  "turno": "Tarde",
+  "espaco": "Auditório",
+  "modalidade": "Presencial",
+  "tipo": "Corporativo",
+  "estado": "RJ",
+  "univ": "UERJ - FGV - UFRJ",
+  "liga": "—",
+  "qtd": "38",
+  "palestrante": "Caroline Santos • Gustavo Hooper • Diego Figueiredo",
+  "status": "Realizada",
+  "obs": "—"
+ },
+ {
+  "date": "2026-04-10",
+  "turno": "Tarde",
+  "espaco": "Rooftop",
+  "modalidade": "Presencial",
+  "tipo": "G&G",
+  "estado": "RJ",
+  "univ": "UNICAMP - USP - UFRJ",
+  "liga": "—",
+  "qtd": "24",
+  "palestrante": "Caroline Santos • Humberto Bovolenta • Marina Luiza Jordão",
+  "status": "Realizada",
+  "obs": "—"
+ },
+ {
+  "date": "2026-05-21",
+  "turno": "—",
+  "espaco": "Auditório",
+  "modalidade": "Presencial",
+  "tipo": "Engenharia",
+  "estado": "RJ",
+  "univ": "UNIRIO - CEFET - UFRJ",
+  "liga": "—",
+  "qtd": "31",
+  "palestrante": "Ana Luiza Abbiate",
+  "status": "Realizada",
+  "obs": "—"
+ },
+ {
+  "date": "2026-08-07",
+  "turno": "—",
+  "espaco": "Auditório",
+  "modalidade": "Online",
+  "tipo": "Corporativo",
+  "estado": "EUA",
+  "univ": "Texas A&M",
+  "liga": "—",
+  "qtd": "41",
+  "palestrante": "Fernanda Cabral • Gustavo Hooper • Milton Rangel",
+  "status": "Realizada",
+  "obs": "—"
+ },
+ {
+  "date": "2026-08-12",
+  "turno": "Tarde",
+  "espaco": "Auditório",
+  "modalidade": "Presencial",
+  "tipo": "Engenharia",
+  "estado": "RJ",
+  "univ": "UFRJ - UFF",
+  "liga": "Liga Empreendedora",
+  "qtd": "35",
+  "palestrante": "Caroline Santos • Matheus Vieira • Humberto Bovolenta",
+  "status": "Realizada",
+  "obs": "Liga confirmou viabilidade da vaga."
+ },
+ {
+  "date": "2026-08-19",
+  "turno": "Tarde",
+  "espaco": "Auditório",
+  "modalidade": "Presencial",
+  "tipo": "G&G",
+  "estado": "RJ",
+  "univ": "UFR - UFF - UERJ",
+  "liga": "SPE · Geosociety · AAPG · Ligpetro",
+  "qtd": "—",
+  "palestrante": "Caroline Santos • Manoel Farias",
+  "status": "Confirmado",
+  "obs": "Geosociety confirmou viabilidade."
+ },
+ {
+  "date": "2026-08-26",
+  "turno": "Tarde",
+  "espaco": "Auditório",
+  "modalidade": "Presencial",
+  "tipo": "Corporativo",
+  "estado": "RJ",
+  "univ": "ESPM - IBMEC",
+  "liga": "FGValley · IBMEC Carreiras",
+  "qtd": "—",
+  "palestrante": "Caroline Santos • Erika Scheiner • Edson Mosquera",
+  "status": "A confirmar",
+  "obs": "IBMEC confirmou. FGValley vai confirmar até sexta."
+ },
+ {
+  "date": "2026-09-08",
+  "turno": "Tarde",
+  "espaco": "Auditório",
+  "modalidade": "Presencial",
+  "tipo": "Corporativo",
+  "estado": "RJ",
+  "univ": "UFRJ - UNIRIO - UERJ - PUC - FGV - IBMEC",
+  "liga": "Liga Acad. Regulatórios · LADME · LITIS Jr. · PETROLIGA",
+  "qtd": "—",
+  "palestrante": "Julia Heymann + Geraldo",
+  "status": "Confirmado",
+  "obs": "Ladme e Litis Jr. confirmaram viabilidade."
+ },
+ {
+  "date": "2026-09-11",
+  "turno": "Tarde",
+  "espaco": "Auditório",
+  "modalidade": "Presencial",
+  "tipo": "Engenharia",
+  "estado": "RJ",
+  "univ": "UFRJ",
+  "liga": "Fluxo Consultoria",
+  "qtd": "—",
+  "palestrante": "—",
+  "status": "A confirmar",
+  "obs": "Fluxo está perguntando qual agenda prevista."
+ },
+ {
+  "date": "2026-09-17",
+  "turno": "Manhã",
+  "espaco": "Auditório",
+  "modalidade": "Presencial",
+  "tipo": "G&G",
+  "estado": "RJ",
+  "univ": "UFRRJ - UFF - UFRJ",
+  "liga": "AAPG UFRRJ · Cap. UFF e UFRJ",
+  "qtd": "—",
+  "palestrante": "—",
+  "status": "Em análise",
+  "obs": "—"
+ },
+ {
+  "date": "2026-09-22",
+  "turno": "Tarde",
+  "espaco": "Auditório",
+  "modalidade": "Presencial",
+  "tipo": "Misto",
+  "estado": "—",
+  "univ": "ROG.E",
+  "liga": "Petro Jr. · DAKA",
+  "qtd": "—",
+  "palestrante": "—",
+  "status": "Confirmado",
+  "obs": "DAKA e Petro Jr. confirmaram viabilidade."
+ },
+ {
+  "date": "2026-09-25",
+  "turno": "Tarde",
+  "espaco": "Auditório",
+  "modalidade": "Presencial",
+  "tipo": "Engenharia",
+  "estado": "—",
+  "univ": "IME",
+  "liga": "—",
+  "qtd": "—",
+  "palestrante": "—",
+  "status": "Em análise",
+  "obs": "—"
+ },
+ {
+  "date": "2026-10-01",
+  "turno": "Manhã",
+  "espaco": "Auditório",
+  "modalidade": "Presencial",
+  "tipo": "G&G",
+  "estado": "—",
+  "univ": "—",
+  "liga": "ROG.E (21-24/Set)",
+  "qtd": "—",
+  "palestrante": "—",
+  "status": "Em análise",
+  "obs": "—"
+ },
+ {
+  "date": "2026-10-13",
+  "turno": "Tarde",
+  "espaco": "Auditório",
+  "modalidade": "Presencial",
+  "tipo": "Engenharia",
+  "estado": "—",
+  "univ": "—",
+  "liga": "—",
+  "qtd": "—",
+  "palestrante": "—",
+  "status": "Em análise",
+  "obs": "—"
+ }
 ];
-const VIS_DATA = [{"faculdade": "UFS", "data": "2026-02-05", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": "UERJ - FGV - UFRJ", "data": "2026-03-25", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": "UNICAMP - USP - SPWLA UFRJ", "data": "2026-04-10", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-05-20", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-08-12", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-08-19", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-08-26", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-09-08", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-09-11", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-09-17", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": "ROG.E (21-24/Set)", "data": "2026-09-22", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": "IME", "data": "2026-09-25", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-10-01", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-10-13", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}];
-let evData  = JSON.parse(localStorage.getItem('prioEv3')  || 'null') || EV_DATA;
-let visData = JSON.parse(localStorage.getItem('prioVis3') || 'null') || VIS_DATA;
+const VIS_CL_BLANK = {espaco_reservado:false,convites_enviados:false,lista_presenca:false,coffee_break:false,palestrante_confirmado:false,roteiro_definido:false};
+const VIS_DATA = VIS_CARDS.map(v=>({faculdade:v.univ, data:v.date, checklist_visita:{...VIS_CL_BLANK}}));
+let evData  = JSON.parse(localStorage.getItem('prioEv4')  || 'null') || EV_DATA;
+let visData = JSON.parse(localStorage.getItem('prioVis4') || 'null') || VIS_DATA;
 
 const EV_CL  = {contrato:'📄 Contrato assinado',pagamento:'💳 Pagamento iniciado',brinde:'🎁 Brindes confirmados',convidados:'👥 Convidados definidos',palestrante:'🎤 Palestrante confirmado',logistica_ok:'✈️ Logística ok'};
 const VIS_CL = {espaco_reservado:'🏛️ Espaço reservado',convites_enviados:'📨 Convites enviados',lista_presenca:'📝 Lista de presença preparada',coffee_break:'☕ Coffee break confirmado',palestrante_confirmado:'🎤 Palestrante interno confirmado',roteiro_definido:'📋 Roteiro da visita definido'};
@@ -1977,11 +2191,12 @@ function goto(sec, el){
   document.getElementById('topbar-other').classList.toggle('hidden',isTL);
   document.getElementById('tabs-tl').classList.toggle('hidden',!isTL);
   document.getElementById('tabs-cont').classList.toggle('hidden',!isCont);
-  const titles={visitas:'Visitas PRIO',contatos:'Contatos',brindes:'Brindes',custos:'Custos por Evento',declinados:'Eventos Declinados'};
+  const titles={visitas:'Visitas PRIO',convites:'Convites Recebidos',contatos:'Contatos',brindes:'Brindes',custos:'Custos por Evento',declinados:'Eventos Declinados'};
   if(titles[sec]) document.getElementById('topbar-title-other').textContent=titles[sec];
+  document.querySelector('.content').scrollTop = 0;
   if(isTL) applyTL();
   if(sec==='contatos') buildLocalFilter();
-  if(sec==='custos') setTimeout(renderCustos,0);
+  if(sec==='custos') setTimeout(()=>{renderCustos();renderPlanCustos();},0);
 }
 
 // ── VIEW TOGGLE (timeline / calendar) ────────────────────────────────────────
@@ -2063,14 +2278,14 @@ function syncAno(v){
   document.getElementById('filter-ano').value=v;
   applyTL();
 }
-document.getElementById('search-tl').addEventListener('input',applyTL);
-document.getElementById('filter-est').addEventListener('input',applyTL);
-document.getElementById('filter-part').addEventListener('input',applyTL);
+document.getElementById('search-tl')?.addEventListener('input',applyTL);
+document.getElementById('filter-est')?.addEventListener('input',applyTL);
+document.getElementById('filter-part')?.addEventListener('input',applyTL);
 
 // ── CALENDAR ─────────────────────────────────────────────────────────────────
 const CAL_MONTHS = ["","Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
-const VIS_DATES  = ["2026-02-05","2026-03-25","2026-04-10","2026-05-20","2026-08-12","2026-08-19","2026-08-26","2026-09-08","2026-09-11","2026-09-17","2026-09-22","2026-09-25","2026-10-01","2026-10-13"];
-const VIS_LABELS = ["UFS","UERJ/FGV/UFRJ","UNICAMP/USP","—","—","—","—","—","—","—","ROG.E","IME","—","—"];
+const VIS_DATES = VIS_CARDS.map(v=>v.date);
+const VIS_LABELS = VIS_CARDS.map(v=>v.univ||'—');
 let calMonth = 3; // start at March 2026
 
 function renderCalendar(){
@@ -2122,8 +2337,8 @@ function buildLocalFilter(){
   });
   [...locs].sort().forEach(l=>{const o=document.createElement('option');o.value=l;o.textContent=l;sel.appendChild(o);});
 }
-document.getElementById('search-cont').addEventListener('input',filterContacts);
-document.getElementById('filter-grupo').addEventListener('input',filterContacts);
+document.getElementById('search-cont')?.addEventListener('input',filterContacts);
+document.getElementById('filter-grupo')?.addEventListener('input',filterContacts);
 function filterContacts(){
   const q   = document.getElementById('search-cont').value.toLowerCase();
   const gr  = document.getElementById('filter-grupo').value;
@@ -2144,13 +2359,16 @@ document.querySelectorAll('[data-ctab]').forEach(t=>t.addEventListener('click',(
 }));
 
 // ── CONVITES FILTER ───────────────────────────────────────────────────────────
-document.getElementById('search-conv').addEventListener('input',filterConvites);
+document.getElementById('search-conv')?.addEventListener('input',filterConvites);
 function filterConvites(){
-  const q  = document.getElementById('search-conv').value.toLowerCase();
-  const st = document.getElementById('filter-conv-status').value;
+  const q  = (document.getElementById('search-conv')?.value||'').toLowerCase();
+  const fp = document.getElementById('filter-conv-part')?.value||'';
+  const ft = document.getElementById('filter-conv-tipo')?.value||'';
   document.querySelectorAll('#conv-body tr').forEach(r=>{
-    const ok=(!q||r.textContent.toLowerCase().includes(q))&&(!st||r.dataset.status===st);
-    r.classList.toggle('hidden',!ok);
+    const ok = (!q || r.textContent.toLowerCase().includes(q))
+            && (!fp || r.dataset.part===fp)
+            && (!ft || r.dataset.tipo===ft);
+    r.style.display = ok ? '' : 'none';
   });
 }
 
@@ -2218,7 +2436,7 @@ function saveChecklist(type){
       const inp=document.getElementById('c-'+k.replace('_','-'));
       if(inp) e.custo[k]=+inp.value||0;
     });
-    localStorage.setItem('prioEv3',JSON.stringify(evData));
+    localStorage.setItem('prioEv4',JSON.stringify(evData));
     const card=document.querySelector(`.card[data-id="${curEvId}"]`);
     if(card){const cl=e.checklist;const d=Object.values(cl).filter(Boolean).length;const t=Object.keys(cl).length;const p=Math.round(d/t*100);card.querySelectorAll('.cl-fill').forEach(f=>f.style.width=p+'%');card.querySelectorAll('.cl-label').forEach(l=>l.textContent=d+'/'+t);}
     // Update cost display
@@ -2229,7 +2447,7 @@ function saveChecklist(type){
   } else {
     const v=visData[curVisIdx]; if(!v)return;
     document.querySelectorAll('#mvis-items .cl-item').forEach(item=>{v.checklist_visita[item.dataset.key]=item.classList.contains('done');});
-    localStorage.setItem('prioVis3',JSON.stringify(visData));
+    localStorage.setItem('prioVis4',JSON.stringify(visData));
   }
   closeModal(type);
 }
@@ -2254,108 +2472,169 @@ function exportReport(){
 // init
 applyTL();
 
+
 // ═══════════════════════════════════════════════════════════════
 // VISITAS CARD GRID
 // ═══════════════════════════════════════════════════════════════
 const MABR3 = ["","Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
 const DIAS_ABR = {1:"Seg",2:"Ter",3:"Qua",4:"Qui",5:"Sex",6:"Sáb",0:"Dom"};
 
-function renderVisCards(){
-  const today = new Date().toISOString().slice(0,10);
+function visStatusPill(st){
+  const m = {'Confirmado':['pill-sim','✓ Confirmado'],'A confirmar':['pill-warn','⏳ A confirmar'],
+             'Em análise':['pill-outro','◌ Em análise'],'Realizada':['pill-outro','✓ Realizada']};
+  const [c,l] = m[st] || ['pill-outro', st||'—'];
+  return `<span class="pill ${c}">${l}</span>`;
+}
+
+// popula filtros de curso/estado a partir dos dados
+(function fillVisFilters(){
+  const add = (id, vals) => {
+    const s = document.getElementById(id); if(!s) return;
+    [...new Set(vals)].filter(v=>v&&v!=='—').sort().forEach(v=>{
+      const o=document.createElement('option'); o.value=v; o.textContent=v; s.appendChild(o);
+    });
+  };
+  add('filter-vis-tipo', VIS_CARDS.map(v=>v.tipo));
+  add('filter-vis-est',  VIS_CARDS.map(v=>v.estado));
+})();
+
+function visFiltered(){
   const q     = (document.getElementById('search-vis')?.value||'').toLowerCase();
   const fTipo = document.getElementById('filter-vis-tipo')?.value||'';
-  const fStat = document.getElementById('filter-vis-status')?.value||'';
+  const fEst  = document.getElementById('filter-vis-est')?.value||'';
   const fMod  = document.getElementById('filter-vis-mod')?.value||'';
-
-  const filtered = VIS_CARDS.filter(v => {
-    if(fTipo && v.tipo !== fTipo) return false;
-    if(fStat && v.status !== fStat) return false;
-    if(fMod && v.modalidade !== fMod) return false;
-    if(q && !(v.univ+v.liga+v.area+v.palestrante+v.obs+v.date).toLowerCase().includes(q)) return false;
+  const fStat = document.getElementById('filter-vis-status')?.value||'';
+  return VIS_CARDS.filter(v=>{
+    if(fTipo && v.tipo!==fTipo) return false;
+    if(fEst  && v.estado!==fEst) return false;
+    if(fMod  && v.modalidade!==fMod) return false;
+    if(fStat && v.status!==fStat) return false;
+    if(q && !(v.univ+' '+v.tipo+' '+v.liga+' '+v.palestrante+' '+v.espaco+' '+v.estado+' '+v.date).toLowerCase().includes(q)) return false;
     return true;
   });
+}
 
-  const upcoming = filtered.filter(v => v.date >= today).sort((a,b)=>a.date.localeCompare(b.date));
-  const past     = filtered.filter(v => v.date < today).sort((a,b)=>b.date.localeCompare(a.date));
+let curVisView = 'timeline';
+function setVisView(v){
+  curVisView = v;
+  document.getElementById('vis-view-timeline').classList.toggle('hidden', v!=='timeline');
+  document.getElementById('vis-view-calendar').classList.toggle('hidden', v!=='calendar');
+  document.getElementById('vbtn-vis-tl').classList.toggle('active', v==='timeline');
+  document.getElementById('vbtn-vis-cal').classList.toggle('active', v==='calendar');
+  renderVisCards();
+}
 
-  // stats
+function renderVisCards(){
+  const today = new Date().toISOString().slice(0,10);
+  const f = visFiltered();
+
+  // ── stats (sempre sobre o total, não sobre o filtro) ──
   const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
-  set('vis-total',   VIS_CARDS.length);
-  set('vis-conf',    VIS_CARDS.filter(v=>v.status==='Confirmado').length);
-  set('vis-upcoming',upcoming.length);
+  set('vis-total',    VIS_CARDS.length);
+  set('vis-upcoming', VIS_CARDS.filter(v=>v.date>=today).length);
+  set('vis-conf',     VIS_CARDS.filter(v=>v.date< today).length);
+  set('vis-pessoas',  VIS_CARDS.reduce((s,v)=>s+(parseInt(v.qtd)||0),0));
 
-  let html = '';
-  if(upcoming.length){
-    html += '<div class="vis-sep-row"><span class="vis-sep">▶ Próximas</span><div class="vis-sep-line"></div></div>';
-    html += '<div class="vis-grid">' + upcoming.map(buildCard).join('') + '</div>';
+  if(curVisView==='calendar'){ renderVisCalendar(f); return; }
+
+  const up   = f.filter(v=>v.date>=today).sort((a,b)=>a.date.localeCompare(b.date));
+  const past = f.filter(v=>v.date< today).sort((a,b)=>b.date.localeCompare(a.date));
+
+  const byMonth = list => {
+    let out='', lastM='';
+    list.forEach(v=>{
+      const m = CAL_MONTHS[parseInt(v.date.slice(5,7))]+' 2026';
+      if(m!==lastM){ out+=`<div class="month-sep"><span class="month-label">${m}</span><div class="month-line"></div></div>`; lastM=m; }
+      out += buildVisCard(v);
+    });
+    return out;
+  };
+
+  let html='';
+  if(up.length){
+    html += `<div class="vis-sep-row" style="display:flex;align-items:center;gap:10px;margin:4px 0 6px"><span class="vis-sep">▶ Próximas · ${up.length}</span><div class="vis-sep-line" style="flex:1;height:1px;background:var(--border)"></div></div>`;
+    html += byMonth(up);
   }
   if(past.length){
-    html += '<div class="vis-sep-row"><span class="vis-sep" style="background:var(--bg);color:var(--muted);border-color:var(--border)">✓ Realizadas</span><div class="vis-sep-line"></div></div>';
-    html += '<div class="vis-grid">' + past.map(v=>buildCard(v,true)).join('') + '</div>';
+    html += `<div class="vis-sep-row" style="display:flex;align-items:center;gap:10px;margin:22px 0 6px"><span class="vis-sep" style="background:var(--bg);color:var(--muted);border-color:var(--border)">✓ Realizadas · ${past.length}</span><div class="vis-sep-line" style="flex:1;height:1px;background:var(--border)"></div></div>`;
+    html += byMonth(past);
   }
-  if(!filtered.length) html = '<div class="empty">Nenhuma visita encontrada para os filtros selecionados.</div>';
+  if(!f.length) html = '<div class="empty">Nenhuma visita encontrada para os filtros selecionados.</div>';
   document.getElementById('vis-cards-container').innerHTML = html;
-  // Re-apply badge inject for Forms
   if(typeof refreshBadges === 'function') refreshBadges();
 }
 
-function buildCard(v, isPast=false){
+function buildVisCard(v){
+  const today = new Date().toISOString().slice(0,10);
+  const isPast = v.date < today;
   const [y,m,d] = v.date.split('-').map(Number);
-  const jsDate = new Date(y, m-1, d);
-  const diaSemana = v.dia !== '—' ? v.dia : (DIAS_ABR[jsDate.getDay()]||'');
   const dateStr = `${String(d).padStart(2,'0')}/${MABR3[m]}`;
+  const dow = DIAS_ABR[new Date(y,m-1,d).getDay()]||'';
+  const cor = isPast ? '#94a3b8' : (v.modalidade==='Online' ? '#0369a1' : '#059669');
 
-  const statusBadge = {
-    'Confirmado':  ['confirmado','Confirmado'],
-    'A confirmar': ['confirmar','A confirmar'],
-    'Em análise':  ['analise','Em análise'],
-    'Realizada':   ['realizada','Realizada'],
-  }[v.status]||['analise',v.status];
-  const badgeCls = isPast ? 'realizada' : (v.date === new Date().toISOString().slice(0,10) ? 'upcoming' : statusBadge[0]);
-  const badgeLbl = isPast ? 'Realizada' : statusBadge[1];
-
-  const modCls = v.modalidade === 'Online' ? 'online' : 'presencial';
-  const modIcon = v.modalidade === 'Online' ? '🌐' : '🏛';
-
-  // checklist from VIS_DATA (by date match)
-  const vd = visData ? visData.find(x=>x.data===v.date) : null;
+  // checklist
+  const vd = (typeof visData!=='undefined' && visData) ? visData.find(x=>x.data===v.date) : null;
   let clDone=0, clTotal=6;
-  if(vd) { const vals = Object.values(vd.checklist_visita||{}); clDone=vals.filter(Boolean).length; clTotal=vals.length||6; }
+  if(vd){ const vals=Object.values(vd.checklist_visita||{}); clDone=vals.filter(Boolean).length; clTotal=vals.length||6; }
   const clPct = Math.round(clDone/clTotal*100);
   const clColor = clPct===100?'#16a34a':clPct>0?'var(--blue)':'var(--border)';
 
-  // Forms participants by date
-  const partCount = typeof formsData !== 'undefined' && formsData
-    ? formsData.filter(r => typeof matchesVisit === 'function' && matchesVisit(r.dataVisita, v.date)).length
-    : 0;
+  const insc = (typeof formsData!=='undefined' && formsData)
+    ? formsData.filter(r=>typeof matchesVisit==='function' && matchesVisit(r.dataVisita, v.date)).length : 0;
 
-  return `<div class="vis-card${isPast?' past':''}" onclick="openVisCardChecklist('${v.date}')">
-  <span class="vis-card-badge ${badgeCls}">${badgeLbl}</span>
-  <div class="vis-date-row">
-    <div>
-      <div class="vis-date">${dateStr}</div>
-      <div class="vis-date-meta">${diaSemana ? diaSemana+' · ' : ''}${v.turno}${v.espaco&&v.espaco!=='—'?' · '+v.espaco:''}</div>
+  const sub = [v.estado!=='—'?v.estado:null, v.espaco!=='—'?v.espaco:null, v.turno!=='—'?v.turno:null].filter(Boolean).join(' · ');
+  const modCls = v.modalidade==='Online'?'online':'presencial';
+
+  return `<div class="card${isPast?' vis-past':''}" onclick="openVisCardChecklist('${v.date}')" style="cursor:pointer">
+  <div class="card-left" style="border-left:4px solid ${cor}">
+    <div class="card-date">${dateStr}<br><span style="font-weight:400;font-size:10px">${dow}</span></div>
+    <div class="card-dot" style="background:${cor}"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top">
+      <span class="pill pill-visita">🏢 Visita PRIO</span>
+      ${visStatusPill(v.status)}
+      <span class="vis-modality ${modCls}" style="margin-left:0">${v.modalidade==='Online'?'🌐':'🏛'} ${v.modalidade}</span>
+      ${v.tipo!=='—'?`<span class="tag-area">${v.tipo}</span>`:''}
     </div>
-    <span class="vis-modality ${modCls}">${modIcon} ${v.modalidade}</span>
-  </div>
-  <div class="vis-title">${v.univ}</div>
-  <div class="vis-liga">${v.liga!=='—'?v.liga:''}</div>
-  <div class="vis-chips">
-    ${v.tipo&&v.tipo!=='—'?`<span class="tag-area">${v.tipo}</span>`:''}
-    ${v.palestrante&&v.palestrante!=='—'?`<span style="font-size:11px;color:var(--muted)">🎤 ${v.palestrante}</span>`:''}
-  </div>
-  ${v.obs&&v.obs!=='—'?`<div class="vis-obs">${v.obs}</div>`:''}
-  <div class="vis-footer">
-    <div style="display:flex;align-items:center;gap:5px;flex:1">
-      <div style="width:80px;height:5px;background:var(--border);border-radius:3px;overflow:hidden">
-        <div style="width:${clPct}%;height:100%;background:${clColor};border-radius:3px;transition:width .3s"></div>
+    <div class="card-title">${v.univ}</div>
+    <div class="card-sub">${sub}${v.liga!=='—'?' · '+v.liga:''}</div>
+    <div class="card-footer">
+      ${v.qtd!=='—'?`<span class="meta">👥 <strong>${v.qtd}</strong> participantes</span>`:''}
+      ${v.palestrante!=='—'?`<span class="meta">🎤 ${v.palestrante}</span>`:''}
+      ${insc>0?`<span class="meta" style="color:var(--blue);font-weight:600">📋 ${insc} inscritos</span>`:''}
+      <div class="checklist-mini" onclick="event.stopPropagation();openVisCardChecklist('${v.date}')" title="Checklist da visita">
+        <div class="cl-bar"><div class="cl-fill" style="width:${clPct}%;background:${clColor}"></div></div>
+        <span class="cl-label">${clDone}/${clTotal}</span>
       </div>
-      <span class="small muted">${clDone}/${clTotal} checklist</span>
     </div>
-    ${v.qtd&&v.qtd!=='—'?`<span class="small muted">👥 ${v.qtd} esp.</span>`:''}
-    ${partCount>0?`<span class="small" style="color:var(--blue);font-weight:600">📋 ${partCount} inscritos</span>`:''}
+    ${v.obs&&v.obs!=='—'?`<div class="vis-obs" style="margin-top:8px;margin-bottom:0">${v.obs}</div>`:''}
   </div>
 </div>`;
+}
+
+let visCalMonth = 8;
+function visCalPrev(){ if(visCalMonth>1) visCalMonth--; renderVisCards(); }
+function visCalNext(){ if(visCalMonth<12) visCalMonth++; renderVisCards(); }
+function renderVisCalendar(list){
+  const year=2026, today=new Date().toISOString().slice(0,10);
+  document.getElementById('vis-cal-title').textContent = CAL_MONTHS[visCalMonth]+' '+year;
+  const first = new Date(year, visCalMonth-1, 1).getDay();
+  const days  = new Date(year, visCalMonth, 0).getDate();
+  let html = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'].map(d=>`<div class="cal-dow">${d}</div>`).join('');
+  for(let i=0;i<first;i++) html+='<div class="cal-day empty-day"></div>';
+  for(let day=1;day<=days;day++){
+    const iso = `${year}-${String(visCalMonth).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+    let evs='';
+    list.filter(v=>v.date===iso).forEach(v=>{
+      const bg = v.date<today ? '#f1f5f9' : (v.modalidade==='Online'?'#e0f2fe':'#dcfce7');
+      const fg = v.date<today ? '#64748b' : (v.modalidade==='Online'?'#0369a1':'#166534');
+      const lbl = v.univ.length>16 ? v.univ.slice(0,15)+'…' : v.univ;
+      evs += `<span class="cal-ev" style="background:${bg};color:${fg}" onclick="openVisCardChecklist('${v.date}')" title="${v.univ} · ${v.tipo} · ${v.modalidade}${v.qtd!=='—'?' · '+v.qtd+' pessoas':''}">🏢 ${lbl}</span>`;
+    });
+    html += `<div class="cal-day${iso===today?' today':''}"><div class="cal-day-num">${day}</div>${evs}</div>`;
+  }
+  document.getElementById('vis-cal-grid').innerHTML = html;
 }
 
 function openVisCardChecklist(date){
@@ -2388,8 +2667,60 @@ const TIPO_PILL = {
 };
 const MABR2 = ["","Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
 
+
+// ── PREVISTO × REAL (planilha) ───────────────────────────────────────────────
+function renderPlanCustos(){
+  const brl = n => 'R$ '+Math.round(n).toLocaleString('pt-BR');
+  const bar = (real, prev) => {
+    const pct = prev>0 ? Math.min(Math.round(real/prev*100), 150) : (real>0?100:0);
+    const cor = prev>0 && real>prev ? '#dc2626' : (pct>=80 ? '#16a34a' : 'var(--blue)');
+    return `<div style="display:flex;align-items:center;gap:6px">
+      <div class="cost-bar"><span style="width:${Math.min(pct,100)}%;background:${cor}"></span></div>
+      <span class="small muted">${pct}%</span></div>`;
+  };
+  let tp=0, tr=0, rows='';
+  CUSTOS_PLAN.forEach(c=>{
+    tp+=c.prev; tr+=c.real;
+    const d = c.real - c.prev;
+    const cor = d>0 ? '#dc2626' : (d<0 ? '#16a34a' : 'var(--muted)');
+    const comp = c.itens.map(i=>i.tipo).join(' · ');
+    rows += `<tr>
+      <td class="fw">${c.evento}</td>
+      <td class="small muted">${comp}</td>
+      <td class="num" style="background:#eff6ff;font-weight:700">${brl(c.prev)}</td>
+      <td class="num" style="background:#f0fdf4;font-weight:700;color:#16a34a">${c.real?brl(c.real):'—'}</td>
+      <td class="num" style="color:${cor};font-weight:600">${d?(d>0?'+':'−')+brl(Math.abs(d)).slice(3):'—'}</td>
+      <td>${bar(c.real, c.prev)}</td></tr>`;
+  });
+  document.getElementById('plan-body').innerHTML = rows;
+  const dt = tr - tp;
+  document.getElementById('plan-foot').innerHTML = `<tr style="border-top:2px solid var(--border);background:#f8fafc">
+    <td colspan="2" class="fw" style="padding:9px 12px">TOTAL</td>
+    <td class="num" style="background:#eff6ff;font-weight:800">${brl(tp)}</td>
+    <td class="num" style="background:#f0fdf4;font-weight:800;color:#16a34a">${brl(tr)}</td>
+    <td class="num" style="font-weight:800;color:${dt>0?'#dc2626':'#16a34a'}">${(dt>0?'+':'−')+brl(Math.abs(dt)).slice(3)}</td>
+    <td>${bar(tr,tp)}</td></tr>`;
+
+  document.getElementById('plan-tipo-body').innerHTML = CUSTOS_TIPO.map(t=>{
+    const d=t.real-t.prev, cor = d>0?'#dc2626':(d<0?'#16a34a':'var(--muted)');
+    return `<tr><td class="fw">${t.tipo}</td>
+      <td class="num" style="background:#eff6ff;font-weight:600">${brl(t.prev)}</td>
+      <td class="num" style="background:#f0fdf4;font-weight:600;color:#16a34a">${t.real?brl(t.real):'—'}</td>
+      <td class="num" style="color:${cor};font-weight:600">${d?(d>0?'+':'−')+brl(Math.abs(d)).slice(3):'—'}</td>
+      <td>${bar(t.real,t.prev)}</td></tr>`;
+  }).join('');
+
+  const saldo = ORCAMENTO.total - tp;
+  document.getElementById('orc-total').textContent = brl(ORCAMENTO.total);
+  document.getElementById('orc-prev').textContent  = brl(tp);
+  document.getElementById('orc-real').textContent  = brl(tr);
+  const s = document.getElementById('orc-saldo');
+  s.textContent = brl(saldo);
+  s.style.color = saldo < 0 ? '#dc2626' : '#16a34a';
+}
+
 function renderCustos(){
-  const data = JSON.parse(localStorage.getItem('prioEv3')||'null') || evData;
+  const data = JSON.parse(localStorage.getItem('prioEv4')||'null') || evData;
   const fmt = n => n ? 'R$ '+n.toLocaleString('pt-BR') : '—';
   const fmtN = n => n ? n.toLocaleString('pt-BR') : '—';
   let totalPrev=0, totalReal=0, zerados=0;
@@ -2465,7 +2796,7 @@ function renderCustos(){
 // ═══════════════════════════════════════════════════════════════
 
 // Visit ISO dates — order matches table rows 0-13
-const VIS_ISO = ["2026-02-05","2026-03-25","2026-04-10","2026-05-20","2026-08-12","2026-08-19","2026-08-26","2026-09-08","2026-09-11","2026-09-17","2026-09-22","2026-09-25","2026-10-01","2026-10-13"];
+const VIS_ISO = VIS_CARDS.map(v=>v.date);
 const VIS_DISPLAY = ["05/Fev","25/Mar","10/Abr","20/Mai","12/Ago","19/Ago","26/Ago","08/Set","11/Set","17/Set","22/Set","25/Set","01/Out","13/Out"];
 
 // Column mapping saved in localStorage
@@ -2696,14 +3027,31 @@ function clearImport(){
   const sum = document.getElementById('import-summary'); if(sum) sum.classList.remove('show');
 }
 
-function openCard(id) {
-  const card = document.querySelector(`[data-id="\${id}"]`);
-  if(card) {
-    const title = card.querySelector('.card-title')?.textContent || 'Evento';
-    const info = card.textContent;
-    alert(`${title}\n\n${info}`);
-  }
-}
+(function paintCards(){
+  evData.forEach(e=>{
+    const cu = e.custo||{};
+    const prev = (cu.prev_contrato||0)+(cu.prev_logistica||0)+(cu.prev_brinde||0);
+    const real = (cu.real_contrato||0)+(cu.real_logistica||0)+(cu.real_brinde||0);
+    document.querySelectorAll(`.cost-prev[data-id="${e.id}"]`).forEach(el=>{
+      el.textContent = prev>0
+        ? (real>0 ? `💰 R$ ${prev.toLocaleString('pt-BR')} · real R$ ${real.toLocaleString('pt-BR')}`
+                  : `💰 R$ ${prev.toLocaleString('pt-BR')}`)
+        : '💰 —';
+      if(real>prev && prev>0) el.style.color='#dc2626';
+    });
+    const cl = e.checklist||{}; const vals=Object.values(cl);
+    if(vals.length){
+      const d=vals.filter(Boolean).length, t=vals.length, pc=Math.round(d/t*100);
+      const card=document.querySelector(`.card[data-id="${e.id}"]`);
+      if(card){card.querySelectorAll('.cl-fill').forEach(f=>f.style.width=pc+'%');
+               card.querySelectorAll('.cl-label').forEach(l=>l.textContent=d+'/'+t);}
+    }
+  });
+})();
+(function initVis(){
+  const b=document.getElementById('nav-badge-vis'); if(b) b.textContent=VIS_CARDS.length;
+  if(typeof renderVisCards==='function') renderVisCards();
+})();
 </script>
 </body>
 </html>
