@@ -3,203 +3,2546 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PRIO — Marca Empregadora 2026</title>
+<title>Timeline Eventos Atração PRIO</title>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 <style>
+:root{--blue:#1d4ed8;--blue-d:#1e3a8a;--blue-l:#eff6ff;--blue-m:#dbeafe;--text:#111827;--muted:#6b7280;--border:#e5e7eb;--bg:#f3f4f6;--white:#fff;--radius:10px;--sidebar:230px}
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--blue:#1d4ed8;--blue-d:#1e3a8a;--green:#16a34a;--red:#dc2626;--amber:#d97706;--teal:#0d9488;--bg:#f1f5f9;--card:#fff;--text:#1e293b;--muted:#64748b;--border:#e2e8f0}
-body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh}
-.sidebar{width:220px;background:var(--blue-d);color:#fff;padding:20px;position:fixed;left:0;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;z-index:100}
-.logo{font-size:20px;font-weight:700;margin-bottom:30px}
-.nav{flex:1}
-.nav a{display:block;padding:12px 0;color:rgba(255,255,255,.7);text-decoration:none;font-size:14px;cursor:pointer;border-left:3px solid transparent;padding-left:12px;transition:.15s}
-.nav a:hover,.nav a.active{color:#fff;border-left-color:#60a5fa;background:rgba(255,255,255,.05)}
-.footer{font-size:12px;color:rgba(255,255,255,.5)}
-main{margin-left:220px;flex:1;padding:24px}
-.header{background:var(--card);padding:20px 24px;border-radius:10px;margin-bottom:24px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
-.header h1{font-size:22px;color:var(--blue-d);margin-bottom:4px}
-.header p{font-size:13px;color:var(--muted)}
-.content{display:none}
-.content.active{display:block}
-.section-title{font-size:16px;font-weight:700;color:var(--blue-d);margin-bottom:16px}
-.table-wrap{background:var(--card);border-radius:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05);overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:13px}
-thead{background:var(--blue);color:#fff}
-th{padding:12px;text-align:left;font-weight:600;font-size:12px;white-space:nowrap}
-td{padding:12px;border-bottom:1px solid var(--border)}
-tr:hover{background:#f8fafc}
-tbody tr:last-child td{border:none}
-.badge{display:inline-block;padding:3px 8px;border-radius:4px;font-size:11px;font-weight:600;color:#fff}
-.badge-feira{background:#1d4ed8}
-.badge-palestra{background:#7c3aed}
-.badge-visita{background:#0d9488}
-.badge-outro{background:#64748b}
-.badge-sim{background:#16a34a}
-.badge-nao{background:#dc2626}
-.badge-analise{background:#d97706}
-.empty{text-align:center;color:var(--muted);padding:40px 20px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:24px}
-.card{background:var(--card);border-radius:10px;padding:16px;border-left:4px solid var(--blue);box-shadow:0 1px 3px rgba(0,0,0,.05)}
-.card-title{font-weight:700;margin-bottom:8px;color:var(--text)}
-.card-meta{font-size:12px;color:var(--muted);margin-bottom:8px}
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px}
-.kpi{background:var(--card);padding:16px;border-radius:10px;border-top:4px solid var(--blue);box-shadow:0 1px 3px rgba(0,0,0,.05)}
-.kpi-val{font-size:28px;font-weight:800;color:var(--blue-d);margin-bottom:4px}
-.kpi-label{font-size:12px;color:var(--muted);text-transform:uppercase;font-weight:600;letter-spacing:.4px}
-@media(max-width:768px){.sidebar{width:100%;height:auto;position:relative}main{margin:0}.grid{grid-template-columns:1fr}}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:14px;display:flex;height:100vh;overflow:hidden}
+
+.sidebar{width:var(--sidebar);background:var(--blue-d);display:flex;flex-direction:column;flex-shrink:0}
+.sidebar-logo{padding:20px 20px 14px;border-bottom:1px solid rgba(255,255,255,.1)}
+.logo{font-size:26px;font-weight:900;color:#fff;letter-spacing:-1px}
+.logo-sub{font-size:11px;color:#93c5fd;margin-top:2px}
+nav{padding:10px 0;flex:1;overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 18px;color:#cbd5e1;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;border-left:3px solid transparent;user-select:none}
+.nav-item:hover{background:rgba(255,255,255,.07);color:#fff}
+.nav-item.active{background:rgba(255,255,255,.12);color:#fff;border-left-color:#60a5fa}
+.nav-icon{font-size:15px;width:18px;text-align:center}
+.nav-badge{margin-left:auto;background:rgba(255,255,255,.15);color:#e2e8f0;border-radius:20px;padding:1px 7px;font-size:11px;font-weight:700}
+.nav-sep{height:1px;background:rgba(255,255,255,.08);margin:8px 0}
+
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{background:var(--white);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;gap:10px;height:54px;flex-shrink:0;flex-wrap:wrap}
+.topbar-title{font-size:15px;font-weight:700;color:var(--blue-d);flex:1;white-space:nowrap}
+.topbar input,.topbar select{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:5px 10px;border-radius:6px;font-size:13px;outline:none}
+.topbar input{width:175px}
+.topbar input:focus,.topbar select:focus{border-color:var(--blue)}
+.btn{padding:7px 14px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
+.btn-primary{background:var(--blue);color:#fff}.btn-primary:hover{background:var(--blue-d)}
+.btn-ghost{background:none;color:var(--muted);border:1px solid var(--border)}.btn-ghost:hover{border-color:var(--blue);color:var(--blue)}
+.btn-sm{padding:5px 10px;font-size:12px}
+.view-toggle{display:flex;border:1px solid var(--border);border-radius:7px;overflow:hidden;flex-shrink:0}
+.view-btn{padding:5px 11px;font-size:12px;font-weight:600;cursor:pointer;border:none;background:var(--bg);color:var(--muted);transition:all .15s}
+.view-btn.active{background:var(--blue);color:#fff}
+
+.tabs-row{background:var(--white);border-bottom:1px solid var(--border);padding:0 24px;display:flex;overflow-x:auto}
+.tab{padding:11px 16px;font-size:13px;font-weight:600;cursor:pointer;border-bottom:3px solid transparent;color:var(--muted);transition:all .15s;user-select:none;background:none;border-top:none;border-left:none;border-right:none;white-space:nowrap}
+.tab:hover{color:var(--blue)}.tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.cb{display:inline-block;background:var(--blue-l);color:var(--blue);border-radius:20px;padding:1px 7px;font-size:11px;margin-left:5px;font-weight:700}
+.tab.active .cb{background:var(--blue);color:#fff}
+
+.content{flex:1;overflow-y:auto;padding:22px 24px}
+.section{display:none}.section.active{display:block}
+
+.stats{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+.stat-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:13px 16px;min-width:110px}
+.stat-card .val{font-size:22px;font-weight:800;color:var(--blue)}
+.stat-card .lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:1px}
+.stat-card.dark{background:var(--blue-d)}.stat-card.dark .val{color:#fff}.stat-card.dark .lbl{color:#93c5fd}
+
+.month-sep{display:flex;align-items:center;gap:10px;margin:20px 0 10px}
+.month-label{font-size:11px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.08em;background:var(--blue-l);padding:3px 12px;border-radius:20px;border:1px solid var(--blue-m);white-space:nowrap}
+.month-line{flex:1;height:1px;background:var(--border)}
+
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);display:flex;margin-bottom:9px;overflow:hidden;transition:box-shadow .15s,border-color .15s}
+.card:hover{box-shadow:0 3px 12px rgba(29,78,216,.08);border-color:#bfdbfe}
+.card-left{padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--bg);width:58px;flex-shrink:0}
+.card-date{font-size:11px;font-weight:700;color:var(--muted);text-align:center;line-height:1.3}
+.card-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.card-body{padding:11px 15px;flex:1;min-width:0}
+.card-top{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:5px;align-items:center}
+.card-title{font-size:14px;font-weight:700;margin-bottom:2px}
+.card-sub{font-size:12px;color:var(--muted);margin-bottom:7px}
+.card-footer{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.meta{font-size:12px;color:var(--muted)}
+
+.checklist-mini{display:flex;align-items:center;gap:5px;cursor:pointer;margin-left:auto;padding:4px 8px;border-radius:6px;border:1px solid var(--border);background:var(--bg);transition:border-color .15s}
+.checklist-mini:hover{border-color:var(--blue)}
+.cl-bar{width:50px;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.cl-fill{height:100%;background:var(--blue);border-radius:3px;transition:width .3s}
+.cl-label{font-size:11px;color:var(--muted);white-space:nowrap}
+
+.pill{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;border:1px solid transparent}
+.pill-feira{background:#f3e8ff;color:#7c3aed;border-color:#e9d5ff}
+.pill-palestra{background:#e0f2fe;color:#0369a1;border-color:#bae6fd}
+.pill-painel{background:#fff7ed;color:#c2410c;border-color:#fed7aa}
+.pill-visita,.pill-visitaprio{background:#dcfce7;color:#166534;border-color:#bbf7d0}
+.pill-outro{background:var(--bg);color:var(--muted);border-color:var(--border)}
+.pill-sim{background:#dcfce7;color:#166534;border-color:#bbf7d0}
+.pill-nao{background:#fee2e2;color:#991b1b;border-color:#fecaca}
+.pill-warn{background:#fef9c3;color:#854d0e;border-color:#fef08a}
+.pill-internacional{background:#fce7f3;color:#9d174d;border-color:#fbcfe8}
+
+.tbl-wrap{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:16px;overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+thead th{background:#f8fafc;color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--border);transition:background .12s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:var(--blue-l)}
+tbody td{padding:9px 12px;vertical-align:middle}
+.fw{font-weight:600}.muted{color:var(--muted)}.small{font-size:12px}.num{text-align:right;font-variant-numeric:tabular-nums}
+.used{color:#16a34a;font-weight:600}.blue{color:var(--blue)}.green{color:#16a34a}
+.date-cell{white-space:nowrap}.action-cell{color:#b45309}
+.tag-grupo{display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:600;background:var(--blue-l);color:var(--blue)}
+.tag-area{display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:600;background:#f0fdf4;color:#166534;border:1px solid #bbf7d0}
+
+.search-bar{display:flex;gap:9px;margin-bottom:14px;flex-wrap:wrap}
+.search-bar input,.search-bar select{background:var(--white);border:1px solid var(--border);color:var(--text);padding:7px 11px;border-radius:7px;font-size:13px;outline:none}
+.search-bar input{flex:1;min-width:160px}
+.search-bar input:focus,.search-bar select:focus{border-color:var(--blue)}
+
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:100;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal-bg.open{opacity:1;pointer-events:all}
+.modal{background:var(--white);border-radius:12px;padding:26px;width:500px;max-width:96vw;box-shadow:0 20px 60px rgba(0,0,0,.18);max-height:90vh;overflow-y:auto}
+.modal-title{font-size:15px;font-weight:700;color:var(--blue-d);margin-bottom:3px}
+.modal-sub{font-size:12px;color:var(--muted);margin-bottom:16px}
+.cl-items{display:flex;flex-direction:column;gap:8px}
+.cl-item{display:flex;align-items:center;gap:10px;padding:10px 13px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s}
+.cl-item:hover{border-color:var(--blue);background:var(--blue-l)}
+.cl-item.done{border-color:#bbf7d0;background:#f0fdf4}
+.cl-check{width:18px;height:18px;border-radius:4px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;transition:all .15s}
+.cl-item.done .cl-check{background:#16a34a;border-color:#16a34a;color:#fff}
+.cl-item-lbl{font-size:13px;font-weight:500}
+.cl-item.done .cl-item-lbl{color:#166534}
+.modal-footer{margin-top:18px;display:flex;justify-content:space-between;align-items:center}
+.cl-prog{font-size:13px;color:var(--muted)}
+
+.cost-section{margin-top:16px;border-top:1px solid var(--border);padding-top:14px}
+.cost-section h4{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+.cost-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.cost-field{display:flex;flex-direction:column;gap:3px}
+.cost-field label{font-size:11px;color:var(--muted);font-weight:600}
+.cost-field input{border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:13px;width:100%;outline:none}
+.cost-field input:focus{border-color:var(--blue)}
+.cost-total{margin-top:10px;background:var(--blue-l);border-radius:8px;padding:10px 12px;display:flex;justify-content:space-between;font-size:13px}
+.cost-total .lbl{color:var(--muted)}
+.cost-total .val{font-weight:700;color:var(--blue)}
+
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.section-header h3{font-size:14px;font-weight:700;color:var(--blue-d)}
+.hidden{display:none!important}
+.empty{text-align:center;padding:48px;color:var(--muted)}
+
+/* CALENDAR GRID */
+.cal-nav{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.cal-nav h3{font-size:16px;font-weight:700;color:var(--blue-d);flex:1;text-align:center}
+.cal-nav button{background:var(--white);border:1px solid var(--border);border-radius:7px;padding:6px 14px;cursor:pointer;font-size:13px;font-weight:600;color:var(--text)}
+.cal-nav button:hover{border-color:var(--blue);color:var(--blue)}
+.cal-legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.cal-legend-item{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted)}
+.cal-legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal-dow{text-align:center;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;padding:6px 0}
+.cal-day{background:var(--white);border:1px solid var(--border);border-radius:8px;min-height:80px;padding:6px;position:relative;transition:border-color .15s}
+.cal-day:hover{border-color:#bfdbfe}
+.cal-day.today{border-color:var(--blue);background:var(--blue-l)}
+.cal-day.empty-day{background:transparent;border-color:transparent}
+.cal-day-num{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:4px}
+.cal-ev{display:block;font-size:10px;font-weight:600;border-radius:4px;padding:2px 5px;margin-bottom:2px;cursor:pointer;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;line-height:1.4}
+.cal-ev:hover{opacity:.8}
+.cal-ev.feira{background:#f3e8ff;color:#7c3aed}
+.cal-ev.palestra{background:#e0f2fe;color:#0369a1}
+.cal-ev.painel{background:#fff7ed;color:#c2410c}
+.cal-ev.outro{background:#f1f5f9;color:#475569}
+.cal-ev.visita{background:#dcfce7;color:#166534}
+.cal-more{font-size:10px;color:var(--muted);cursor:pointer}
+.cal-filter-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.cal-filter-row label{font-size:12px;font-weight:600;color:var(--muted)}
+.cal-filter-row select{background:var(--white);border:1px solid var(--border);color:var(--text);padding:5px 10px;border-radius:6px;font-size:12px;outline:none}
+
+/* IMPORT FORMS */
+.import-bar{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;padding:12px 14px;background:var(--white);border:1px solid var(--border);border-radius:var(--radius)}
+.import-bar .lbl{font-size:13px;font-weight:600;color:var(--blue-d);flex:1}
+.import-bar .hint{font-size:12px;color:var(--muted)}
+.file-btn{position:relative;overflow:hidden;display:inline-flex}
+.file-btn input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0}
+.import-status{font-size:12px;color:#16a34a;font-weight:600;display:none}
+.import-status.show{display:inline}
+.part-badge{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 6px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;transition:all .15s}
+.part-badge.has-data{background:var(--blue-l);color:var(--blue);border:1px solid var(--blue-m)}
+.part-badge.no-data{background:var(--bg);color:var(--muted);border:1px solid var(--border)}
+.part-badge:hover{background:var(--blue);color:#fff}
+.map-modal .map-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.map-modal .map-row label{font-size:13px;font-weight:600;width:160px;flex-shrink:0;color:var(--text)}
+.map-modal .map-row select{flex:1;border:1px solid var(--border);border-radius:7px;padding:7px 10px;font-size:13px;outline:none;background:var(--white)}
+.map-modal .map-row select:focus{border-color:var(--blue)}
+.map-hint{font-size:12px;color:var(--muted);margin-bottom:16px;padding:8px 10px;background:var(--bg);border-radius:7px;line-height:1.6}
+.part-list{display:flex;flex-direction:column;gap:6px;max-height:55vh;overflow-y:auto}
+.part-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid var(--border);border-radius:8px;background:var(--white)}
+.part-item .part-nome{font-weight:600;font-size:13px;flex:1}
+.part-item .part-univ{font-size:12px;color:var(--muted)}
+.part-item .part-curso{font-size:11px;color:var(--blue);background:var(--blue-l);padding:2px 7px;border-radius:20px;white-space:nowrap}
+.part-item .part-area{font-size:11px;color:#166534;background:#dcfce7;padding:2px 7px;border-radius:20px;white-space:nowrap}
+.part-empty{text-align:center;padding:32px;color:var(--muted);font-size:13px}
+.part-search{width:100%;border:1px solid var(--border);border-radius:7px;padding:8px 11px;font-size:13px;outline:none;margin-bottom:12px}
+.part-search:focus{border-color:var(--blue)}
+.import-summary{padding:8px 12px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;font-size:12px;color:#166534;margin-bottom:14px;display:none}
+.import-summary.show{display:block}
+/* VISIT CARDS */
+.vis-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px;margin-bottom:20px}
+.vis-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px;position:relative;transition:box-shadow .15s,border-color .15s;cursor:pointer}
+.vis-card:hover{box-shadow:0 4px 16px rgba(29,78,216,.1);border-color:#bfdbfe}
+.vis-card.past{opacity:.6}
+.vis-card-badge{position:absolute;top:12px;right:12px;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:.05em}
+.vis-card-badge.upcoming{background:#fef9c3;color:#854d0e;border:1px solid #fef08a}
+.vis-card-badge.confirmado{background:#dcfce7;color:#166534;border:1px solid #bbf7d0}
+.vis-card-badge.confirmar{background:#fee2e2;color:#991b1b;border:1px solid #fecaca}
+.vis-card-badge.analise{background:#f1f5f9;color:#475569;border:1px solid var(--border)}
+.vis-card-badge.realizada{background:var(--bg);color:var(--muted);border:1px solid var(--border)}
+.vis-date-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.vis-date{font-size:22px;font-weight:800;color:var(--blue-d);line-height:1}
+.vis-date-meta{font-size:11px;color:var(--muted);line-height:1.5}
+.vis-modality{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;margin-left:auto}
+.vis-modality.presencial{background:#dcfce7;color:#166534;border:1px solid #bbf7d0}
+.vis-modality.online{background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd}
+.vis-title{font-size:14px;font-weight:700;margin-bottom:2px;padding-right:80px}
+.vis-liga{font-size:12px;color:var(--muted);margin-bottom:8px}
+.vis-chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.vis-meta-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;font-size:12px;color:var(--muted)}
+.vis-obs{font-size:12px;color:var(--muted);background:var(--bg);border-radius:6px;padding:6px 9px;margin-bottom:10px;line-height:1.5;border-left:3px solid var(--blue-m)}
+.vis-footer{display:flex;align-items:center;gap:8px}
+.vis-sep{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--blue);background:var(--blue-l);padding:4px 12px;border-radius:20px;border:1px solid var(--blue-m);white-space:nowrap}
+.vis-sep-line{flex:1;height:1px;background:var(--border)}
+.vis-sep-row{display:flex;align-items:center;gap:10px;margin:20px 0 12px}
+@media print{
+  .sidebar,.topbar,.tabs-row,.checklist-mini,.btn,.view-toggle{display:none!important}
+  .main{overflow:visible}.content{overflow:visible;padding:0}
+  .section{display:block!important}.card{page-break-inside:avoid}
+}
+
+.vis-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:10px;border-left:4px solid #16a34a}
+.vis-card .vis-date{font-size:12px;color:var(--muted);margin-bottom:6px}
+.vis-card .vis-inst{font-size:14px;margin-bottom:8px}
+.vis-card .vis-meta{font-size:12px;line-height:1.6;margin-bottom:8px}
+.vis-card .vis-meta div{margin:2px 0}
+.vis-card .vis-status{font-size:11px;font-weight:600;color:#16a34a;padding-top:6px;border-top:1px solid var(--border);margin-top:6px}
 </style>
 </head>
 <body>
 
-<nav class="sidebar">
-  <div class="logo">🛢 PRIO</div>
-  <div class="nav">
-    <a onclick="goto('calendario')" class="active">📅 Calendário</a>
-    <a onclick="goto('visitas')">🏢 Visitas PRIO</a>
-    <a onclick="goto('convites')">✉️ Convites Recebidos</a>
-    <a onclick="goto('contatos')">👥 Contatos</a>
-    <a onclick="goto('custos')">💰 Custos</a>
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo">PRIO</div>
+    <div class="logo-sub">Atração &amp; Seleção 2026</div>
   </div>
-  <div class="footer">PRIO Eventos<br>2026</div>
-</nav>
+  <nav>
+    <div class="nav-item active" onclick="goto('timeline',this)"><span class="nav-icon">📅</span> Timeline / Calendário <span class="nav-badge" id="nb-tl">15</span></div>
+    <div class="nav-item" onclick="goto('visitas',this)"><span class="nav-icon">🏢</span> Visitas PRIO <span class="nav-badge">14</span></div>
+    <div class="nav-item" onclick="goto('contatos',this)"><span class="nav-icon">📋</span> Contatos <span class="nav-badge">72</span></div>
+    <div class="nav-item" onclick="goto('brindes',this)"><span class="nav-icon">🎁</span> Brindes</div>
+    <div class="nav-item" onclick="goto('custos',this)"><span class="nav-icon">💰</span> Custos</div>
+    <div class="nav-sep"></div>
+    <div class="nav-item" onclick="goto('declinados',this)"><span class="nav-icon">🚫</span> Eventos Declinados <span class="nav-badge">6</span></div>
+  </nav>
+</aside>
 
-<main>
+<div class="main">
+  <!-- TOPBAR TIMELINE -->
+  <div class="topbar" id="topbar-tl">
+    <div class="topbar-title">Timeline Eventos Atração PRIO</div>
+    <div class="view-toggle">
+      <button class="view-btn active" id="vbtn-tl" onclick="setView('timeline')">≡ Timeline</button>
+      <button class="view-btn" id="vbtn-cal" onclick="setView('calendar')">▦ Calendário</button>
+    </div>
+    <select id="filter-ano" onchange="applyTL()"><option value="2026">2026</option><option value="2025">2025</option><option value="">Todos os anos</option></select>
+    <input type="text" id="search-tl" placeholder="🔍 Buscar...">
+    <select id="filter-part">
+      <option value="Sim" selected>✓ Confirmado</option>
+      <option value="">Todos</option>
+      <option value="none">— Sem resposta</option>
+    </select>
+    <select id="filter-est"><option value="">Todos os estados</option></select>
+    <button class="btn btn-ghost btn-sm" onclick="exportReport()">⬇️ Exportar</button>
+  </div>
+  <div class="topbar hidden" id="topbar-other">
+    <div class="topbar-title" id="topbar-title-other"></div>
+    <select id="filter-ano-other" onchange="syncAno(this.value)"><option value="2026">2026</option><option value="2025">2025</option><option value="">Todos os anos</option></select>
+    <button class="btn btn-ghost btn-sm" onclick="exportReport()">⬇️ Exportar</button>
+  </div>
 
-<div class="header">
-  <h1>Marca Empregadora — 2026</h1>
-  <p>Dashboard de eventos, visitas e participações</p>
+  <div class="tabs-row" id="tabs-tl">
+    <button class="tab active" data-tab="todos">Todos <span class="cb" id="cb-todos">15</span></button>
+    <button class="tab" data-tab="feira">Feiras <span class="cb" id="cb-feira">8</span></button>
+    <button class="tab" data-tab="palestra">Palestras <span class="cb" id="cb-palestra">3</span></button>
+    <button class="tab" data-tab="outro">Outros <span class="cb" id="cb-outro">3</span></button>
+    <button class="tab" data-tab="internacional">Internacional <span class="cb" id="cb-internacional">1</span></button>
+  </div>
+  <div class="tabs-row hidden" id="tabs-cont">
+    <button class="tab active" data-ctab="todos">Todos</button>
+    <button class="tab" data-ctab="G&G">G&amp;G</button>
+    <button class="tab" data-ctab="Engenharia">Engenharia</button>
+    <button class="tab" data-ctab="Business">Business</button>
+  </div>
+
+  <div class="content">
+
+    <!-- TIMELINE + CALENDAR -->
+    <section class="section active" id="sec-timeline">
+      <div class="stats">
+        <div class="stat-card dark"><div class="val" id="st-conf-main">—</div><div class="lbl">Confirmados</div></div>
+        <div class="stat-card"><div class="val stat-tipo" data-tipo="feira">8</div><div class="lbl">Feiras</div></div>
+        <div class="stat-card"><div class="val stat-tipo" data-tipo="palestra">3</div><div class="lbl">Palestras</div></div>
+        <div class="stat-card"><div class="val stat-tipo" data-tipo="outro">3</div><div class="lbl">Outros</div></div>
+        <div class="stat-card" style="border-left:4px solid #9d174d"><div class="val stat-tipo" data-tipo="internacional" style="color:#9d174d">1</div><div class="lbl">Internacionais</div></div>
+      </div>
+
+      <!-- TIMELINE VIEW -->
+      <div id="view-timeline">
+        <div id="tl-feira" class="tl-panel"><div class="month-sep" data-month="Março"><span class="month-label">Março 2026</span><div class="month-line"></div></div><div class="card" data-id="1" data-part="" data-tab="feira" data-mes="Março" data-date="2026-03-26" data-est="">
+  <div class="card-left" style="border-left:4px solid #7c3aed">
+    <div class="card-date">26/Mar</div>
+    <div class="card-dot" style="background:#7c3aed"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-feira">Feira</span> </div>
+    <div class="card-title">Feira Técnica SENAI</div>
+    <div class="card-sub">SENAI</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="1">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(1)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="month-sep" data-month="Abril"><span class="month-label">Abril 2026</span><div class="month-line"></div></div><div class="card" data-id="3" data-part="Sim" data-tab="feira" data-mes="Abril" data-date="2026-04-28" data-est="RJ">
+  <div class="card-left" style="border-left:4px solid #7c3aed">
+    <div class="card-date">28/Abr</div>
+    <div class="card-dot" style="background:#7c3aed"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-feira">Feira</span> <span class="pill pill-sim">✓ Confirmado</span></div>
+    <div class="card-title">CONECTA IBMEC</div>
+    <div class="card-sub">IBMEC · RJ</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="3">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(3)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="5" data-part="Sim" data-tab="feira" data-mes="Maio" data-date="2026-05-21" data-est="SP">
+  <div class="card-left" style="border-left:4px solid #7c3aed">
+    <div class="card-date">21/Mai</div>
+    <div class="card-dot" style="background:#7c3aed"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-feira">Feira</span> <span class="pill pill-sim">✓ Confirmado</span></div>
+    <div class="card-title">FEIRA FEA USP</div>
+    <div class="card-sub">USP · SP</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="5">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(5)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="9" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-12" data-est="SP">
+  <div class="card-left" style="border-left:4px solid #7c3aed">
+    <div class="card-date">12/Ago</div>
+    <div class="card-dot" style="background:#7c3aed"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-feira">Feira</span> <span class="pill pill-sim">✓ Confirmado</span></div>
+    <div class="card-title">FEIRA DE CARREIRAS INTEGRA UNICAMP</div>
+    <div class="card-sub">UNICAMP · SP</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="9">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(9)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="card" data-id="10" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-15" data-est="SP">
+  <div class="card-left" style="border-left:4px solid #7c3aed">
+    <div class="card-date">15/Ago</div>
+    <div class="card-dot" style="background:#7c3aed"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-feira">Feira</span> <span class="pill pill-sim">✓ Confirmado</span></div>
+    <div class="card-title">FEIRA DE CARREIRAS ITA</div>
+    <div class="card-sub">ITA · SP</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="10">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(10)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="card" data-id="11" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-31" data-est="RJ">
+  <div class="card-left" style="border-left:4px solid #7c3aed">
+    <div class="card-date">31/Ago</div>
+    <div class="card-dot" style="background:#7c3aed"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-feira">Feira</span> <span class="pill pill-sim">✓ Confirmado</span></div>
+    <div class="card-title">SEMANA FLUXO UFRJ</div>
+    <div class="card-sub">UFRJ · RJ</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="11">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(11)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="12" data-part="Sim" data-tab="feira" data-mes="Setembro" data-date="2026-09-03" data-est="RJ">
+  <div class="card-left" style="border-left:4px solid #7c3aed">
+    <div class="card-date">03/Set</div>
+    <div class="card-dot" style="background:#7c3aed"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-feira">Feira</span> <span class="pill pill-sim">✓ Confirmado</span></div>
+    <div class="card-title">CONECTA IBMEC</div>
+    <div class="card-sub">IBMEC · RJ</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="12">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(12)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="card" data-id="13" data-part="Sim" data-tab="feira" data-mes="Setembro" data-date="2026-09-22" data-est="PE">
+  <div class="card-left" style="border-left:4px solid #7c3aed">
+    <div class="card-date">22/Set</div>
+    <div class="card-dot" style="background:#7c3aed"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-feira">Feira</span> <span class="pill pill-sim">✓ Confirmado</span></div>
+    <div class="card-title">FEIRA UFPE</div>
+    <div class="card-sub">UFPE · PE</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="13">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(13)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div></div>
+        <div id="tl-palestra" class="tl-panel  hidden"><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="6" data-part="" data-tab="palestra" data-mes="Maio" data-date="2026-05-26" data-est="RS">
+  <div class="card-left" style="border-left:4px solid #0369a1">
+    <div class="card-date">26/Mai</div>
+    <div class="card-dot" style="background:#0369a1"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-palestra">Palestra</span> </div>
+    <div class="card-title">SPEED JOB UFPel</div>
+    <div class="card-sub">UFPel · RS</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="6">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(6)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="8" data-part="Sim" data-tab="palestra" data-mes="Agosto" data-date="2026-08-11" data-est="SP">
+  <div class="card-left" style="border-left:4px solid #0369a1">
+    <div class="card-date">11/Ago</div>
+    <div class="card-dot" style="background:#0369a1"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-palestra">Palestra</span> <span class="pill pill-sim">✓ Confirmado</span></div>
+    <div class="card-title">WORKSHOP GEOSCIENCES UNICAMP</div>
+    <div class="card-sub">UNICAMP · SP</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="8">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(8)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="14" data-part="Sim" data-tab="palestra" data-mes="Setembro" data-date="2026-09-23" data-est="RJ">
+  <div class="card-left" style="border-left:4px solid #0369a1">
+    <div class="card-date">23/Set</div>
+    <div class="card-dot" style="background:#0369a1"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-palestra">Palestra</span> <span class="pill pill-sim">✓ Confirmado</span></div>
+    <div class="card-title">SEMANA AYRA</div>
+    <div class="card-sub">UFRJ · RJ</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="14">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(14)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div></div>
+        <div id="tl-outro" class="tl-panel  hidden"><div class="month-sep" data-month="Abril"><span class="month-label">Abril 2026</span><div class="month-line"></div></div><div class="card" data-id="2" data-part="Sim" data-tab="outro" data-mes="Abril" data-date="2026-04-11" data-est="RJ">
+  <div class="card-left" style="border-left:4px solid #64748b">
+    <div class="card-date">11/Abr</div>
+    <div class="card-dot" style="background:#64748b"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-outro">Outro</span> <span class="pill pill-sim">✓ Confirmado</span></div>
+    <div class="card-title">Petrogames UFRJ</div>
+    <div class="card-sub">UFRJ · RJ</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="2">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(2)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="4" data-part="Sim" data-tab="outro" data-mes="Maio" data-date="2026-05-14" data-est="RJ">
+  <div class="card-left" style="border-left:4px solid #64748b">
+    <div class="card-date">14/Mai</div>
+    <div class="card-dot" style="background:#64748b"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-outro">Outro</span> <span class="pill pill-sim">✓ Confirmado</span></div>
+    <div class="card-title">Petrogames UFRJ</div>
+    <div class="card-sub">UFRJ · RJ</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="4">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(4)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="month-sep" data-month="Junho"><span class="month-label">Junho 2026</span><div class="month-line"></div></div><div class="card" data-id="7" data-part="Sim" data-tab="outro" data-mes="Junho" data-date="2026-06-01" data-est="">
+  <div class="card-left" style="border-left:4px solid #c2410c">
+    <div class="card-date">01/Jun</div>
+    <div class="card-dot" style="background:#c2410c"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-painel">Painel</span> <span class="pill pill-sim">✓ Confirmado</span></div>
+    <div class="card-title">FEIRA VIRTUAL EMPREGA</div>
+    <div class="card-sub">Online</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="7">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(7)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
 </div>
+        <div id="tl-internacional" class="tl-panel  hidden"><div class="month-sep" data-month="Novembro"><span class="month-label">Novembro 2026</span><div class="month-line"></div></div><div class="card" data-id="15" data-part="" data-tab="internacional" data-mes="Novembro" data-date="2026-11-06" data-est="">
+  <div class="card-left" style="border-left:4px solid #64748b">
+    <div class="card-date">06/Nov</div>
+    <div class="card-dot" style="background:#64748b"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-internacional">Internacional</span> </div>
+    <div class="card-title">MBA Brasil - EUA</div>
+    <div class="card-sub">Internacional</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="15">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(15)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div></div></div>
+        <div id="tl-todos" class="tl-panel  hidden"><div class="month-sep" data-month="Março"><span class="month-label">Março 2026</span><div class="month-line"></div></div><div class="card" data-id="1" data-part="" data-tab="feira" data-mes="Março" data-date="2026-03-26" data-est="">
+  <div class="card-left" style="border-left:4px solid #7c3aed">
+    <div class="card-date">26/Mar</div>
+    <div class="card-dot" style="background:#7c3aed"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-feira">Feira</span> </div>
+    <div class="card-title">Feira Técnica SENAI</div>
+    <div class="card-sub">SENAI</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="1">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(1)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="month-sep" data-month="Abril"><span class="month-label">Abril 2026</span><div class="month-line"></div></div><div class="card" data-id="2" data-part="Sim" data-tab="outro" data-mes="Abril" data-date="2026-04-11" data-est="RJ">
+  <div class="card-left" style="border-left:4px solid #64748b">
+    <div class="card-date">11/Abr</div>
+    <div class="card-dot" style="background:#64748b"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-outro">Outro</span> <span class="pill pill-sim">✓ Confirmado</span></div>
+    <div class="card-title">Petrogames UFRJ</div>
+    <div class="card-sub">UFRJ · RJ</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="2">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(2)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="card" data-id="3" data-part="Sim" data-tab="feira" data-mes="Abril" data-date="2026-04-28" data-est="RJ">
+  <div class="card-left" style="border-left:4px solid #7c3aed">
+    <div class="card-date">28/Abr</div>
+    <div class="card-dot" style="background:#7c3aed"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-feira">Feira</span> <span class="pill pill-sim">✓ Confirmado</span></div>
+    <div class="card-title">CONECTA IBMEC</div>
+    <div class="card-sub">IBMEC · RJ</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="3">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(3)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="4" data-part="Sim" data-tab="outro" data-mes="Maio" data-date="2026-05-14" data-est="RJ">
+  <div class="card-left" style="border-left:4px solid #64748b">
+    <div class="card-date">14/Mai</div>
+    <div class="card-dot" style="background:#64748b"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-outro">Outro</span> <span class="pill pill-sim">✓ Confirmado</span></div>
+    <div class="card-title">Petrogames UFRJ</div>
+    <div class="card-sub">UFRJ · RJ</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="4">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(4)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="card" data-id="5" data-part="Sim" data-tab="feira" data-mes="Maio" data-date="2026-05-21" data-est="SP">
+  <div class="card-left" style="border-left:4px solid #7c3aed">
+    <div class="card-date">21/Mai</div>
+    <div class="card-dot" style="background:#7c3aed"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-feira">Feira</span> <span class="pill pill-sim">✓ Confirmado</span></div>
+    <div class="card-title">FEIRA FEA USP</div>
+    <div class="card-sub">USP · SP</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="5">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(5)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="card" data-id="6" data-part="" data-tab="palestra" data-mes="Maio" data-date="2026-05-26" data-est="RS">
+  <div class="card-left" style="border-left:4px solid #0369a1">
+    <div class="card-date">26/Mai</div>
+    <div class="card-dot" style="background:#0369a1"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-palestra">Palestra</span> </div>
+    <div class="card-title">SPEED JOB UFPel</div>
+    <div class="card-sub">UFPel · RS</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="6">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(6)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="month-sep" data-month="Junho"><span class="month-label">Junho 2026</span><div class="month-line"></div></div><div class="card" data-id="7" data-part="Sim" data-tab="outro" data-mes="Junho" data-date="2026-06-01" data-est="">
+  <div class="card-left" style="border-left:4px solid #c2410c">
+    <div class="card-date">01/Jun</div>
+    <div class="card-dot" style="background:#c2410c"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-painel">Painel</span> <span class="pill pill-sim">✓ Confirmado</span></div>
+    <div class="card-title">FEIRA VIRTUAL EMPREGA</div>
+    <div class="card-sub">Online</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="7">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(7)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="8" data-part="Sim" data-tab="palestra" data-mes="Agosto" data-date="2026-08-11" data-est="SP">
+  <div class="card-left" style="border-left:4px solid #0369a1">
+    <div class="card-date">11/Ago</div>
+    <div class="card-dot" style="background:#0369a1"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-palestra">Palestra</span> <span class="pill pill-sim">✓ Confirmado</span></div>
+    <div class="card-title">WORKSHOP GEOSCIENCES UNICAMP</div>
+    <div class="card-sub">UNICAMP · SP</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="8">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(8)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="card" data-id="9" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-12" data-est="SP">
+  <div class="card-left" style="border-left:4px solid #7c3aed">
+    <div class="card-date">12/Ago</div>
+    <div class="card-dot" style="background:#7c3aed"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-feira">Feira</span> <span class="pill pill-sim">✓ Confirmado</span></div>
+    <div class="card-title">FEIRA DE CARREIRAS INTEGRA UNICAMP</div>
+    <div class="card-sub">UNICAMP · SP</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="9">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(9)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="card" data-id="10" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-15" data-est="SP">
+  <div class="card-left" style="border-left:4px solid #7c3aed">
+    <div class="card-date">15/Ago</div>
+    <div class="card-dot" style="background:#7c3aed"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-feira">Feira</span> <span class="pill pill-sim">✓ Confirmado</span></div>
+    <div class="card-title">FEIRA DE CARREIRAS ITA</div>
+    <div class="card-sub">ITA · SP</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="10">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(10)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="card" data-id="11" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-31" data-est="RJ">
+  <div class="card-left" style="border-left:4px solid #7c3aed">
+    <div class="card-date">31/Ago</div>
+    <div class="card-dot" style="background:#7c3aed"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-feira">Feira</span> <span class="pill pill-sim">✓ Confirmado</span></div>
+    <div class="card-title">SEMANA FLUXO UFRJ</div>
+    <div class="card-sub">UFRJ · RJ</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="11">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(11)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="12" data-part="Sim" data-tab="feira" data-mes="Setembro" data-date="2026-09-03" data-est="RJ">
+  <div class="card-left" style="border-left:4px solid #7c3aed">
+    <div class="card-date">03/Set</div>
+    <div class="card-dot" style="background:#7c3aed"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-feira">Feira</span> <span class="pill pill-sim">✓ Confirmado</span></div>
+    <div class="card-title">CONECTA IBMEC</div>
+    <div class="card-sub">IBMEC · RJ</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="12">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(12)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="card" data-id="13" data-part="Sim" data-tab="feira" data-mes="Setembro" data-date="2026-09-22" data-est="PE">
+  <div class="card-left" style="border-left:4px solid #7c3aed">
+    <div class="card-date">22/Set</div>
+    <div class="card-dot" style="background:#7c3aed"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-feira">Feira</span> <span class="pill pill-sim">✓ Confirmado</span></div>
+    <div class="card-title">FEIRA UFPE</div>
+    <div class="card-sub">UFPE · PE</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="13">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(13)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="card" data-id="14" data-part="Sim" data-tab="palestra" data-mes="Setembro" data-date="2026-09-23" data-est="RJ">
+  <div class="card-left" style="border-left:4px solid #0369a1">
+    <div class="card-date">23/Set</div>
+    <div class="card-dot" style="background:#0369a1"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-palestra">Palestra</span> <span class="pill pill-sim">✓ Confirmado</span></div>
+    <div class="card-title">SEMANA AYRA</div>
+    <div class="card-sub">UFRJ · RJ</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="14">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(14)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div><div class="month-sep" data-month="Novembro"><span class="month-label">Novembro 2026</span><div class="month-line"></div></div><div class="card" data-id="15" data-part="" data-tab="internacional" data-mes="Novembro" data-date="2026-11-06" data-est="">
+  <div class="card-left" style="border-left:4px solid #64748b">
+    <div class="card-date">06/Nov</div>
+    <div class="card-dot" style="background:#64748b"></div>
+  </div>
+  <div class="card-body">
+    <div class="card-top"><span class="pill pill-internacional">Internacional</span> </div>
+    <div class="card-title">MBA Brasil - EUA</div>
+    <div class="card-sub">Internacional</div>
+    <div class="card-footer">
+      <span class="meta cost-prev" data-id="15">💰 —</span>
+      <div class="checklist-mini" onclick="openChecklist(15)" title="Checklist">
+        <div class="cl-bar"><div class="cl-fill" style="width:0%"></div></div>
+        <span class="cl-label">0/6</span>
+      </div>
+    </div>
+  </div>
+</div></div>
+        <div class="empty hidden" id="tl-empty">Nenhum evento encontrado.</div>
+      </div>
 
-<div class="content active" id="sec-calendario">
-  <h2 class="section-title">📅 Calendário de Eventos</h2>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr><th>Data</th><th>Evento</th><th>Tipo</th><th>Estado</th><th>Instituição</th><th>Impactados</th><th>Local</th></tr>
-      </thead>
-      <tbody id="cal-tbody"></tbody>
-    </table>
+      <!-- CALENDAR VIEW -->
+      <div id="view-calendar" class="hidden">
+        <div class="cal-filter-row">
+          <label>Mostrar:</label>
+          <select id="cal-filter-tipo" onchange="renderCalendar()">
+            <option value="">Tudo (eventos + visitas)</option>
+            <option value="externo">Apenas eventos externos</option>
+            <option value="visita">Apenas visitas PRIO</option>
+          </select>
+          <label style="margin-left:8px">Estado:</label>
+          <select id="cal-filter-est" onchange="renderCalendar()"><option value="">Todos</option></select>
+        </div>
+        <div class="cal-legend">
+          <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#7c3aed"></div>Feira</div>
+          <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#0369a1"></div>Palestra</div>
+          <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#c2410c"></div>Painel</div>
+          <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#64748b"></div>Outro</div>
+          <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#059669"></div>Visita PRIO</div>
+        </div>
+        <div class="cal-nav">
+          <button onclick="calPrev()">‹</button>
+          <h3 id="cal-title"></h3>
+          <button onclick="calNext()">›</button>
+        </div>
+        <div class="cal-grid" id="cal-grid"></div>
+      </div>
+    </section>
+
+    <!-- VISITAS PRIO -->
+        <section class="section" id="sec-visitas">
+      <div class="stats">
+        <div class="stat-card dark"><div class="val" id="vis-total">15</div><div class="lbl">Visitas planejadas</div></div>
+        <div class="stat-card" style="border-left:4px solid #16a34a"><div class="val green" id="vis-conf">—</div><div class="lbl">Confirmadas</div></div>
+        <div class="stat-card"><div class="val" id="vis-upcoming">9>—</div><div class="lbl">Próximas</div></div>
+        <div class="stat-card"><div class="val" id="st-inscritos">0</div><div class="lbl">Inscritos (Forms)</div></div>
+      </div>
+      <div class="import-bar">
+        <div>
+          <div class="lbl">📥 Importar respostas do Microsoft Forms</div>
+          <div class="hint">Baixe o Excel das respostas no Forms → clique em Importar</div>
+        </div>
+        <div class="file-btn">
+          <button class="btn btn-primary btn-sm">📂 Importar Excel</button>
+          <input type="file" id="forms-file" accept=".xlsx,.xls" onchange="handleFormsFile(this)">
+        </div>
+        <span class="import-status" id="import-status">✓ Importado com sucesso</span>
+        <button class="btn btn-ghost btn-sm" onclick="clearImport()" title="Limpar dados importados">✕ Limpar</button>
+      </div>
+      <div class="import-summary" id="import-summary"></div>
+      <div class="search-bar">
+        <input type="text" id="search-vis" placeholder="🔍 Buscar visita..." oninput="renderVisCards()">
+        <select id="filter-vis-tipo" onchange="renderVisCards()">
+          <option value="">Todos os tipos</option>
+          <option>G&amp;G</option><option>Engenharia</option><option>Corporativo</option><option>Misto</option><option>Engenharia de Petróleo</option>
+        </select>
+        <select id="filter-vis-status" onchange="renderVisCards()">
+          <option value="">Todos os status</option>
+          <option>Confirmado</option><option>A confirmar</option><option>Em análise</option>
+        </select>
+        <select id="filter-vis-mod" onchange="renderVisCards()">
+          <option value="">Presencial + Online</option>
+          <option>Presencial</option><option>Online</option>
+        </select>
+      </div>
+      <div id="vis-cards-container">
+<div class="vis-card" data-date="2026-02-05" data-inst="UFS" data-tipo="Misto" data-formato="presencial">
+  <div class="vis-date">📅 2026-02-05</div>
+  <div class="vis-inst"><strong>UFS</strong></div>
+  <div class="vis-meta">
+    <div><strong>Estado:</strong> SE</div>
+    <div><strong>Formato:</strong> 🏢 Presencial</div>
+    <div><strong>Curso:</strong> Misto</div>
+    <div><strong>Local:</strong> Sala TBMT</div>
+    <div><strong>Impactados:</strong> 3</div>
+    <div><strong>Palestrantes:</strong> Caroline Santos • Gabriel Ramos • Davis de Godoy</div>
+  </div>
+  <div class="vis-status">✓ Realizada</div>
+</div>
+<div class="vis-card" data-date="2026-03-25" data-inst="UERJ - FGV - UFRJ" data-tipo="Corporativo" data-formato="presencial">
+  <div class="vis-date">📅 2026-03-25</div>
+  <div class="vis-inst"><strong>UERJ - FGV - UFRJ</strong></div>
+  <div class="vis-meta">
+    <div><strong>Estado:</strong> RJ</div>
+    <div><strong>Formato:</strong> 🏢 Presencial</div>
+    <div><strong>Curso:</strong> Corporativo</div>
+    <div><strong>Local:</strong> Auditório</div>
+    <div><strong>Impactados:</strong> 38</div>
+    <div><strong>Palestrantes:</strong> Caroline Santos • Gustavo Hooper • Diego Figueiredo</div>
+  </div>
+  <div class="vis-status">✓ Realizada</div>
+</div>
+<div class="vis-card" data-date="2026-04-10" data-inst="UNICAMP - USP - UFRJ" data-tipo="G&G" data-formato="presencial">
+  <div class="vis-date">📅 2026-04-10</div>
+  <div class="vis-inst"><strong>UNICAMP - USP - UFRJ</strong></div>
+  <div class="vis-meta">
+    <div><strong>Estado:</strong> RJ</div>
+    <div><strong>Formato:</strong> 🏢 Presencial</div>
+    <div><strong>Curso:</strong> G&G</div>
+    <div><strong>Local:</strong> Rooftop</div>
+    <div><strong>Impactados:</strong> 24</div>
+    <div><strong>Palestrantes:</strong> Caroline Santos • Humberto Bovolenta • Marina Luiza Jordão</div>
+  </div>
+  <div class="vis-status">✓ Realizada</div>
+</div>
+<div class="vis-card" data-date="2026-05-21" data-inst="UNIRIO - CEFET - UFRJ" data-tipo="Engenharia" data-formato="presencial">
+  <div class="vis-date">📅 2026-05-21</div>
+  <div class="vis-inst"><strong>UNIRIO - CEFET - UFRJ</strong></div>
+  <div class="vis-meta">
+    <div><strong>Estado:</strong> RJ</div>
+    <div><strong>Formato:</strong> 🏢 Presencial</div>
+    <div><strong>Curso:</strong> Engenharia</div>
+    <div><strong>Local:</strong> Auditório</div>
+    <div><strong>Impactados:</strong> 31</div>
+    <div><strong>Palestrantes:</strong> Ana Luiza Abbiate</div>
+  </div>
+  <div class="vis-status">✓ Realizada</div>
+</div>
+<div class="vis-card" data-date="2026-08-07" data-inst="Texas A&M" data-tipo="Corporativo" data-formato="online">
+  <div class="vis-date">📅 2026-08-07</div>
+  <div class="vis-inst"><strong>Texas A&M</strong></div>
+  <div class="vis-meta">
+    <div><strong>Estado:</strong> EUA</div>
+    <div><strong>Formato:</strong> 🌐 Online</div>
+    <div><strong>Curso:</strong> Corporativo</div>
+    <div><strong>Local:</strong> Auditório</div>
+    <div><strong>Impactados:</strong> 41</div>
+    <div><strong>Palestrantes:</strong> Fernanda Cabral • Gustavo Hooper • Milton Rangel</div>
+  </div>
+  <div class="vis-status">✓ Realizada</div>
+</div>
+<div class="vis-card" data-date="2026-08-12" data-inst="UFRJ - UFF" data-tipo="Engenharia" data-formato="presencial">
+  <div class="vis-date">📅 2026-08-12</div>
+  <div class="vis-inst"><strong>UFRJ - UFF</strong></div>
+  <div class="vis-meta">
+    <div><strong>Estado:</strong> RJ</div>
+    <div><strong>Formato:</strong> 🏢 Presencial</div>
+    <div><strong>Curso:</strong> Engenharia</div>
+    <div><strong>Local:</strong> Auditório</div>
+    <div><strong>Impactados:</strong> 35</div>
+    <div><strong>Palestrantes:</strong> Caroline Santos • Matheus Vieira • Humberto Bovolenta</div>
+  </div>
+  <div class="vis-status">✓ Realizada</div>
+</div>
+<div class="vis-card" data-date="2026-08-19" data-inst="UFR - UFF - UERJ" data-tipo="G&G" data-formato="presencial">
+  <div class="vis-date">📅 2026-08-19</div>
+  <div class="vis-inst"><strong>UFR - UFF - UERJ</strong></div>
+  <div class="vis-meta">
+    <div><strong>Estado:</strong> RJ</div>
+    <div><strong>Formato:</strong> 🏢 Presencial</div>
+    <div><strong>Curso:</strong> G&G</div>
+    <div><strong>Local:</strong> Auditório</div>
+    <div><strong>Impactados:</strong> 0</div>
+    <div><strong>Palestrantes:</strong> Caroline Santos • Manoel Farias</div>
+  </div>
+  <div class="vis-status">📌 Próxima</div>
+</div>
+<div class="vis-card" data-date="2026-08-26" data-inst="ESPM - IBMEC" data-tipo="Corporativo" data-formato="presencial">
+  <div class="vis-date">📅 2026-08-26</div>
+  <div class="vis-inst"><strong>ESPM - IBMEC</strong></div>
+  <div class="vis-meta">
+    <div><strong>Estado:</strong> RJ</div>
+    <div><strong>Formato:</strong> 🏢 Presencial</div>
+    <div><strong>Curso:</strong> Corporativo</div>
+    <div><strong>Local:</strong> Auditório</div>
+    <div><strong>Impactados:</strong> 0</div>
+    <div><strong>Palestrantes:</strong> Caroline Santos • Erika Scheiner • Edson Mosquera</div>
+  </div>
+  <div class="vis-status">📌 Próxima</div>
+</div>
+<div class="vis-card" data-date="2026-09-08" data-inst="UFRJ - UNIRIO - UERJ - PUC - FGV - IBMEC" data-tipo="Corporativo" data-formato="presencial">
+  <div class="vis-date">📅 2026-09-08</div>
+  <div class="vis-inst"><strong>UFRJ - UNIRIO - UERJ - PUC - FGV - IBMEC</strong></div>
+  <div class="vis-meta">
+    <div><strong>Estado:</strong> RJ</div>
+    <div><strong>Formato:</strong> 🏢 Presencial</div>
+    <div><strong>Curso:</strong> Corporativo</div>
+    <div><strong>Local:</strong> Auditório</div>
+    <div><strong>Impactados:</strong> 0</div>
+    <div><strong>Palestrantes:</strong> —</div>
+  </div>
+  <div class="vis-status">📌 Próxima</div>
+</div>
+<div class="vis-card" data-date="2026-09-11" data-inst="UFRJ" data-tipo="Engenharia" data-formato="presencial">
+  <div class="vis-date">📅 2026-09-11</div>
+  <div class="vis-inst"><strong>UFRJ</strong></div>
+  <div class="vis-meta">
+    <div><strong>Estado:</strong> RJ</div>
+    <div><strong>Formato:</strong> 🏢 Presencial</div>
+    <div><strong>Curso:</strong> Engenharia</div>
+    <div><strong>Local:</strong> Auditório</div>
+    <div><strong>Impactados:</strong> 0</div>
+    <div><strong>Palestrantes:</strong> —</div>
+  </div>
+  <div class="vis-status">📌 Próxima</div>
+</div>
+<div class="vis-card" data-date="2026-09-17" data-inst="UFRRJ - UFF - UFRJ" data-tipo="G&G" data-formato="presencial">
+  <div class="vis-date">📅 2026-09-17</div>
+  <div class="vis-inst"><strong>UFRRJ - UFF - UFRJ</strong></div>
+  <div class="vis-meta">
+    <div><strong>Estado:</strong> RJ</div>
+    <div><strong>Formato:</strong> 🏢 Presencial</div>
+    <div><strong>Curso:</strong> G&G</div>
+    <div><strong>Local:</strong> Auditório</div>
+    <div><strong>Impactados:</strong> 0</div>
+    <div><strong>Palestrantes:</strong> —</div>
+  </div>
+  <div class="vis-status">📌 Próxima</div>
+</div>
+<div class="vis-card" data-date="2026-09-22" data-inst="ROG.E" data-tipo="Misto" data-formato="presencial">
+  <div class="vis-date">📅 2026-09-22</div>
+  <div class="vis-inst"><strong>ROG.E</strong></div>
+  <div class="vis-meta">
+    <div><strong>Estado:</strong> —</div>
+    <div><strong>Formato:</strong> 🏢 Presencial</div>
+    <div><strong>Curso:</strong> Misto</div>
+    <div><strong>Local:</strong> Auditório</div>
+    <div><strong>Impactados:</strong> 0</div>
+    <div><strong>Palestrantes:</strong> —</div>
+  </div>
+  <div class="vis-status">📌 Próxima</div>
+</div>
+<div class="vis-card" data-date="2026-09-25" data-inst="IME" data-tipo="Engenharia" data-formato="presencial">
+  <div class="vis-date">📅 2026-09-25</div>
+  <div class="vis-inst"><strong>IME</strong></div>
+  <div class="vis-meta">
+    <div><strong>Estado:</strong> —</div>
+    <div><strong>Formato:</strong> 🏢 Presencial</div>
+    <div><strong>Curso:</strong> Engenharia</div>
+    <div><strong>Local:</strong> Auditório</div>
+    <div><strong>Impactados:</strong> 0</div>
+    <div><strong>Palestrantes:</strong> —</div>
+  </div>
+  <div class="vis-status">📌 Próxima</div>
+</div>
+<div class="vis-card" data-date="2026-10-01" data-inst="" data-tipo="G&G" data-formato="presencial">
+  <div class="vis-date">📅 2026-10-01</div>
+  <div class="vis-inst"><strong></strong></div>
+  <div class="vis-meta">
+    <div><strong>Estado:</strong> —</div>
+    <div><strong>Formato:</strong> 🏢 Presencial</div>
+    <div><strong>Curso:</strong> G&G</div>
+    <div><strong>Local:</strong> Auditório</div>
+    <div><strong>Impactados:</strong> 0</div>
+    <div><strong>Palestrantes:</strong> —</div>
+  </div>
+  <div class="vis-status">📌 Próxima</div>
+</div>
+<div class="vis-card" data-date="2026-10-13" data-inst="" data-tipo="Engenharia" data-formato="presencial">
+  <div class="vis-date">📅 2026-10-13</div>
+  <div class="vis-inst"><strong></strong></div>
+  <div class="vis-meta">
+    <div><strong>Estado:</strong> —</div>
+    <div><strong>Formato:</strong> 🏢 Presencial</div>
+    <div><strong>Curso:</strong> Engenharia</div>
+    <div><strong>Local:</strong> Auditório</div>
+    <div><strong>Impactados:</strong> 0</div>
+    <div><strong>Palestrantes:</strong> —</div>
+  </div>
+  <div class="vis-status">📌 Próxima</div>
+</div>
+</div>
+    </section>
+
+    <!-- CONTATOS -->
+    <section class="section" id="sec-contatos">
+      <div class="search-bar">
+        <input type="text" id="search-cont" placeholder="🔍 Buscar contato...">
+        <select id="filter-grupo" onchange="filterContacts()">
+          <option value="">Todos os grupos</option>
+          <option>G&amp;G</option><option>Engenharia</option><option>Business</option><option>Todos</option>
+        </select>
+        <select id="filter-local" onchange="filterContacts()">
+          <option value="">Todos os locais</option>
+        </select>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Grupo</th><th>Área / Curso</th><th>Universidade</th><th>Organização</th><th>Contato</th><th>Local</th></tr></thead>
+          <tbody id="cont-body"><tr data-grupo="G&G">
+  <td><span class="tag-grupo">G&G</span></td>
+  <td>Geologia + Geofísica</td>
+  <td class="fw">UFRRJ</td>
+  <td>AAPG Student Chapter </td>
+  <td class="small muted">—</td>
+  <td class="small muted">Seropédica - RJ</td>
+</tr><tr data-grupo="G&G">
+  <td><span class="tag-grupo">G&G</span></td>
+  <td>Geologia + Geofísica</td>
+  <td class="fw">UNICAMP</td>
+  <td>AAPG Student Chapter </td>
+  <td class="small muted">aapgunicamp@gmail.com</td>
+  <td class="small muted">Campinas - SP</td>
+</tr><tr data-grupo="G&G">
+  <td><span class="tag-grupo">G&G</span></td>
+  <td>Geologia + Geofísica</td>
+  <td class="fw">UNICAMP</td>
+  <td>SPE</td>
+  <td class="small muted">spe@unicamp.br</td>
+  <td class="small muted">Campinas - SP</td>
+</tr><tr data-grupo="G&G">
+  <td><span class="tag-grupo">G&G</span></td>
+  <td>Geologia + Geofísica</td>
+  <td class="fw">UFF</td>
+  <td>GRADUAÇÃO</td>
+  <td class="small muted">geosociety.uff@gmail.com</td>
+  <td class="small muted">Niterói - RJ</td>
+</tr><tr data-grupo="G&G">
+  <td><span class="tag-grupo">G&G</span></td>
+  <td>Geofísica</td>
+  <td class="fw">UFF</td>
+  <td>Horizonte Geofisica</td>
+  <td class="small muted">contatohorizontegeofisica@gmail.com</td>
+  <td class="small muted">Niterói - RJ</td>
+</tr><tr data-grupo="G&G">
+  <td><span class="tag-grupo">G&G</span></td>
+  <td>Geologia + Geofísica</td>
+  <td class="fw">UFRRJ</td>
+  <td>AAPG Student Chapter </td>
+  <td class="small muted">21 99888-0121/jcostapedro2002@gmail.com</td>
+  <td class="small muted">Seropédica - RJ</td>
+</tr><tr data-grupo="Engenharia ">
+  <td><span class="tag-grupo">Engenharia </span></td>
+  <td>Petróleo</td>
+  <td class="fw">UFRRJ</td>
+  <td>LAEPG</td>
+  <td class="small muted">—</td>
+  <td class="small muted">Seropédica - RJ</td>
+</tr><tr data-grupo="G&G">
+  <td><span class="tag-grupo">G&G</span></td>
+  <td>Geologia + Geofísica</td>
+  <td class="fw">UFRRJ</td>
+  <td>GRADUAÇÃO</td>
+  <td class="small muted">21 98062-3349/cegeur1975@gmail.com</td>
+  <td class="small muted">Seropédica - RJ</td>
+</tr><tr data-grupo="G&G">
+  <td><span class="tag-grupo">G&G</span></td>
+  <td>Geologia + Geofísica</td>
+  <td class="fw">UFF</td>
+  <td>AAPG Student Chapter </td>
+  <td class="small muted">geosociety.uff@gmail.com</td>
+  <td class="small muted">Niterói - RJ</td>
+</tr><tr data-grupo="G&G">
+  <td><span class="tag-grupo">G&G</span></td>
+  <td>Geologia + Geofísica</td>
+  <td class="fw">UFRJ</td>
+  <td>LIGPETRO</td>
+  <td class="small muted">ligpetro@poli.ufrj.br</td>
+  <td class="small muted">Rio de Janeiro - RJ</td>
+</tr><tr data-grupo="G&G">
+  <td><span class="tag-grupo">G&G</span></td>
+  <td>Geologia + Geofísica</td>
+  <td class="fw">UFRJ</td>
+  <td>SPWLA</td>
+  <td class="small muted">Beatriz Jouberth - RH e Logística - jouberthbeatriz@geologia.ufrj.br</td>
+  <td class="small muted">Rio de Janeiro - RJ</td>
+</tr><tr data-grupo="Corporativo">
+  <td><span class="tag-grupo">Corporativo</span></td>
+  <td>Geral</td>
+  <td class="fw">Presbiteriana Mackenzie </td>
+  <td>Mackenzie Jr. </td>
+  <td class="small muted">Gabriel Morawski: 11 91622-8706; Leonardo Gaetti: leonardo.tasinato@mackenzista.com.br</td>
+  <td class="small muted">São Paulo - SP</td>
+</tr><tr data-grupo="Corporativo">
+  <td><span class="tag-grupo">Corporativo</span></td>
+  <td>Geral</td>
+  <td class="fw">FGV</td>
+  <td>NEDC</td>
+  <td class="small muted">Mariana Mourinho: 21 97246-6022; Beralda Lima: beralda.lima@fgv.br</td>
+  <td class="small muted">Rio de Janeiro - RJ</td>
+</tr><tr data-grupo="Corporativo">
+  <td><span class="tag-grupo">Corporativo</span></td>
+  <td>Geral</td>
+  <td class="fw">UFRJ</td>
+  <td>AYRA</td>
+  <td class="small muted">presidente@ayraconsultoria.com; miguel monteiro: 21 97160-2006</td>
+  <td class="small muted">Rio de Janeiro - RJ</td>
+</tr><tr data-grupo="Corporativo">
+  <td><span class="tag-grupo">Corporativo</span></td>
+  <td>Geral</td>
+  <td class="fw">IBMEC</td>
+  <td>GRADUAÇÃO</td>
+  <td class="small muted">Maria Eduarda Barbosa - 21 99332-7397  maria.ebarros@ibmec.edu.br OU Julia Martins e Thais Reges.</td>
+  <td class="small muted">Rio de Janeiro - RJ</td>
+</tr><tr data-grupo="Corporativo">
+  <td><span class="tag-grupo">Corporativo</span></td>
+  <td>Geral</td>
+  <td class="fw">USP</td>
+  <td>FEA</td>
+  <td class="small muted">Yasmin Almeida: yasmin.almeida@feajuniorusp.com; (11) 97382-0383</td>
+  <td class="small muted">São Paulo - SP</td>
+</tr><tr data-grupo="Corporativo">
+  <td><span class="tag-grupo">Corporativo</span></td>
+  <td>Geral</td>
+  <td class="fw">UFPE</td>
+  <td>A.C.E. Consultoria</td>
+  <td class="small muted">Vinicius Marinho: viniciusmarinho@aceconsultoria.com.br; (81) 8695-9817</td>
+  <td class="small muted">Recife - PE</td>
+</tr><tr data-grupo="Corporativo">
+  <td><span class="tag-grupo">Corporativo</span></td>
+  <td>Geral</td>
+  <td class="fw">ESPM</td>
+  <td>Carreira e Mercado</td>
+  <td class="small muted">cristiano@espm.br</td>
+  <td class="small muted">—</td>
+</tr><tr data-grupo="Corporativo">
+  <td><span class="tag-grupo">Corporativo</span></td>
+  <td>Administração</td>
+  <td class="fw">UNIRIO</td>
+  <td>LIMINA CONSULTORIA</td>
+  <td class="small muted">Amanda Ribeiro: 88 8161-2442; Renan Barcelos: 21 99632-8809Gabriel Araujo: 21 96715-6577</td>
+  <td class="small muted">Rio de Janeiro - RJ</td>
+</tr><tr data-grupo="Corporativo">
+  <td><span class="tag-grupo">Corporativo</span></td>
+  <td>Administração</td>
+  <td class="fw">—</td>
+  <td>—</td>
+  <td class="small muted">—</td>
+  <td class="small muted">—</td>
+</tr><tr data-grupo="Corporativo">
+  <td><span class="tag-grupo">Corporativo</span></td>
+  <td>Economia</td>
+  <td class="fw">UERJ</td>
+  <td>GRADUAÇÃO</td>
+  <td class="small muted">Emanuele Ribeiro: 21 99365-9264</td>
+  <td class="small muted">Rio de Janeiro - RJ</td>
+</tr><tr data-grupo="Corporativo">
+  <td><span class="tag-grupo">Corporativo</span></td>
+  <td>Economia</td>
+  <td class="fw">FGV</td>
+  <td>LIGA DE MERCADO FINANCEIRO DA FGV</td>
+  <td class="small muted">Pedro Cardoso Milazzo: pedroavellar2004@gmail.com</td>
+  <td class="small muted">Rio de Janeiro - RJ</td>
+</tr><tr data-grupo="Corporativo">
+  <td><span class="tag-grupo">Corporativo</span></td>
+  <td>Ciências Contábeis</td>
+  <td class="fw">—</td>
+  <td>—</td>
+  <td class="small muted">—</td>
+  <td class="small muted">—</td>
+</tr><tr data-grupo="Corporativo">
+  <td><span class="tag-grupo">Corporativo</span></td>
+  <td>Direito</td>
+  <td class="fw">UNIRIO</td>
+  <td>Petroliga</td>
+  <td class="small muted">—</td>
+  <td class="small muted">Rio de Janeiro - RJ</td>
+</tr><tr data-grupo="Corporativo">
+  <td><span class="tag-grupo">Corporativo</span></td>
+  <td>Direito</td>
+  <td class="fw">UERJ</td>
+  <td>GRADUAÇÃO</td>
+  <td class="small muted">Nathalia Vanin: 21 99021-7697 / 21991074359</td>
+  <td class="small muted">Rio de Janeiro - RJ</td>
+</tr><tr data-grupo="Corporativo">
+  <td><span class="tag-grupo">Corporativo</span></td>
+  <td>Direito</td>
+  <td class="fw">IBMEC/PUC/UFRJ/FGV/UERJ</td>
+  <td>LADME</td>
+  <td class="small muted">henriquesaleitao@gmail.com / ladmeibmec@gmail.com</td>
+  <td class="small muted">—</td>
+</tr><tr data-grupo="Corporativo">
+  <td><span class="tag-grupo">Corporativo</span></td>
+  <td>Direito</td>
+  <td class="fw">UERJ</td>
+  <td>Litis Jr</td>
+  <td class="small muted">21 99107-4359</td>
+  <td class="small muted">Rio de Janeiro - RJ</td>
+</tr><tr data-grupo="Corporativo">
+  <td><span class="tag-grupo">Corporativo</span></td>
+  <td>Comunicação</td>
+  <td class="fw">—</td>
+  <td>—</td>
+  <td class="small muted">—</td>
+  <td class="small muted">—</td>
+</tr><tr data-grupo="Corporativo">
+  <td><span class="tag-grupo">Corporativo</span></td>
+  <td>Comunicação</td>
+  <td class="fw">—</td>
+  <td>—</td>
+  <td class="small muted">—</td>
+  <td class="small muted">—</td>
+</tr><tr data-grupo="Corporativo">
+  <td><span class="tag-grupo">Corporativo</span></td>
+  <td>Engenharia de Produção</td>
+  <td class="fw">—</td>
+  <td>—</td>
+  <td class="small muted">—</td>
+  <td class="small muted">—</td>
+</tr><tr data-grupo="Corporativo">
+  <td><span class="tag-grupo">Corporativo</span></td>
+  <td>Engenharia de Produção</td>
+  <td class="fw">—</td>
+  <td>—</td>
+  <td class="small muted">—</td>
+  <td class="small muted">—</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Geral</td>
+  <td class="fw">UFF</td>
+  <td>META</td>
+  <td class="small muted">Alicealves@metaconsultoria.com; Yan Porto: (21) 98984-9310</td>
+  <td class="small muted">Niterói - RJ</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Geral</td>
+  <td class="fw">CEFET</td>
+  <td>CEFET JR</td>
+  <td class="small muted">presidencia@cefetjr.com</td>
+  <td class="small muted">Rio de Janeiro - RJ</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Geral</td>
+  <td class="fw">UFRJ</td>
+  <td>LIGPETRO</td>
+  <td class="small muted">ligpetro@poli.ufrj.br</td>
+  <td class="small muted">Rio de Janeiro - RJ</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Geral</td>
+  <td class="fw">UFRJ</td>
+  <td>FLUXO</td>
+  <td class="small muted">Guilherme Saad: 21 99009-2531; Gabriela Botelho: 21 96447-0900; João Leote: 21 99996-9696; Pedro: 21 99340-8460</td>
+  <td class="small muted">Rio de Janeiro - RJ</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Geral</td>
+  <td class="fw">—</td>
+  <td>Até o último barril</td>
+  <td class="small muted">ateoultimobarril@gmail.com</td>
+  <td class="small muted">—</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Geral</td>
+  <td class="fw">IME</td>
+  <td>GRADUAÇÃO</td>
+  <td class="small muted">—</td>
+  <td class="small muted">Rio de Janeiro - RJ</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Geral</td>
+  <td class="fw">IME</td>
+  <td>STEM IME</td>
+  <td class="small muted">Maria Luiza: 21 99845-2161</td>
+  <td class="small muted">Rio de Janeiro - RJ</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Geral</td>
+  <td class="fw">ITA</td>
+  <td>CEE ITA</td>
+  <td class="small muted">Pedro Possari: pedro.possari@ceeita.com; (18) 99691-2491</td>
+  <td class="small muted">São José dos Campos - SP</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Geral</td>
+  <td class="fw">UFRJ</td>
+  <td>Escola Politécnica</td>
+  <td class="small muted">Alice Ferruccio: dace@poli.ufrj.br</td>
+  <td class="small muted">Fundão - RJ</td>
+</tr><tr data-grupo="Engenharia ">
+  <td><span class="tag-grupo">Engenharia </span></td>
+  <td>Geral</td>
+  <td class="fw">USP</td>
+  <td>Poliminerva</td>
+  <td class="small muted">Lais: 11 93494-6780; Evelyn Lisandra: 11 98235-7738</td>
+  <td class="small muted">São Paulo - SP</td>
+</tr><tr data-grupo="Engenharia ">
+  <td><span class="tag-grupo">Engenharia </span></td>
+  <td>Geral</td>
+  <td class="fw">UNICAMP</td>
+  <td>Liga Empreendedora</td>
+  <td class="small muted">Ayrton Gabriel: 77 9194-8558 </td>
+  <td class="small muted">São Paulo - SP</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Aeronáutica</td>
+  <td class="fw">—</td>
+  <td>—</td>
+  <td class="small muted">—</td>
+  <td class="small muted">—</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Ambiental</td>
+  <td class="fw">—</td>
+  <td>—</td>
+  <td class="small muted">—</td>
+  <td class="small muted">—</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Automação</td>
+  <td class="fw">—</td>
+  <td>—</td>
+  <td class="small muted">—</td>
+  <td class="small muted">—</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Civil</td>
+  <td class="fw">—</td>
+  <td>—</td>
+  <td class="small muted">—</td>
+  <td class="small muted">—</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Materiais</td>
+  <td class="fw">—</td>
+  <td>—</td>
+  <td class="small muted">—</td>
+  <td class="small muted">—</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Petróleo</td>
+  <td class="fw">UENF</td>
+  <td>GRADUAÇÃO</td>
+  <td class="small muted">Matheus: 21 99958-8849</td>
+  <td class="small muted">Macaé - RJ</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Petróleo</td>
+  <td class="fw">UNICAMP</td>
+  <td>SPE</td>
+  <td class="small muted">spe@unicamp.br</td>
+  <td class="small muted">Campinas - SP</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Petróleo</td>
+  <td class="fw">UFRJ</td>
+  <td>SPE</td>
+  <td class="small muted">Mário Miranda: 21 98265-8800</td>
+  <td class="small muted">Rio de Janeiro - RJ</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Petróleo</td>
+  <td class="fw">UFRJ</td>
+  <td>SPE - PetroTeam</td>
+  <td class="small muted">petrobowl.team@poli.ufrj.br; Luan - 21 98321-0813</td>
+  <td class="small muted">Fundão - RJ</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Petróleo</td>
+  <td class="fw">UERJ</td>
+  <td>SPE</td>
+  <td class="small muted">Mariana: 21 98313-8036 </td>
+  <td class="small muted">Rio de Janeiro - RJ</td>
+</tr><tr data-grupo="Engenharia ">
+  <td><span class="tag-grupo">Engenharia </span></td>
+  <td>Petróleo</td>
+  <td class="fw">UFPel</td>
+  <td>DAKA</td>
+  <td class="small muted">Lorenzo Rodrigues: petroleovirtual@gmail.com</td>
+  <td class="small muted">—</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Petróleo</td>
+  <td class="fw">UFPel</td>
+  <td>SPE</td>
+  <td class="small muted">petroleovirtual@gmail.com; Jeniffer: 19 99886 5514</td>
+  <td class="small muted">Pelotas - RS</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Petróleo</td>
+  <td class="fw">UDESC</td>
+  <td>PETRO JR</td>
+  <td class="small muted">gustavozrosa1002@gmail.com; 48998451414</td>
+  <td class="small muted">Balneário Camboriú - SC</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Petróleo</td>
+  <td class="fw">UNIFEI</td>
+  <td>SPE</td>
+  <td class="small muted">spe@unifei.edu.br</td>
+  <td class="small muted">Itajubá - MG</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Petróleo</td>
+  <td class="fw">UFES</td>
+  <td>SPE</td>
+  <td class="small muted">Henrique Pamponet: spe.saomateus@gmail.com; (73) 99801-6999</td>
+  <td class="small muted">São Mateus - ES</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Produção</td>
+  <td class="fw">UNICAMP</td>
+  <td>Integra</td>
+  <td class="small muted">negocios@integraej.com; Miguel: 62 9821-2005</td>
+  <td class="small muted">Limeira - SP</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Segurança do Trabalho</td>
+  <td class="fw">—</td>
+  <td>—</td>
+  <td class="small muted">—</td>
+  <td class="small muted">—</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Elétrica</td>
+  <td class="fw">—</td>
+  <td>—</td>
+  <td class="small muted">—</td>
+  <td class="small muted">—</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Eletrônica</td>
+  <td class="fw">—</td>
+  <td>—</td>
+  <td class="small muted">—</td>
+  <td class="small muted">—</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Industrial</td>
+  <td class="fw">—</td>
+  <td>—</td>
+  <td class="small muted">—</td>
+  <td class="small muted">—</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Mecânica</td>
+  <td class="fw">—</td>
+  <td>—</td>
+  <td class="small muted">—</td>
+  <td class="small muted">—</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Mecatrônica</td>
+  <td class="fw">USP</td>
+  <td>EESC</td>
+  <td class="small muted">Guilherme Magalhães Viana: magalhaes.viana@usp.br; (18) 98193-8157</td>
+  <td class="small muted">São Carlos - SP</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Metalúrgica</td>
+  <td class="fw">—</td>
+  <td>—</td>
+  <td class="small muted">—</td>
+  <td class="small muted">—</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Nuclear</td>
+  <td class="fw">—</td>
+  <td>—</td>
+  <td class="small muted">—</td>
+  <td class="small muted">—</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Naval</td>
+  <td class="fw">—</td>
+  <td>—</td>
+  <td class="small muted">—</td>
+  <td class="small muted">—</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Química</td>
+  <td class="fw">UFF</td>
+  <td>PETA</td>
+  <td class="small muted">luisabr@id.uff.br</td>
+  <td class="small muted">Niterói - RJ</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Química</td>
+  <td class="fw">UFS</td>
+  <td>—</td>
+  <td class="small muted">79 8807-2001</td>
+  <td class="small muted">Sergipe</td>
+</tr><tr data-grupo="Engenharia">
+  <td><span class="tag-grupo">Engenharia</span></td>
+  <td>Robótica</td>
+  <td class="fw">—</td>
+  <td>—</td>
+  <td class="small muted">—</td>
+  <td class="small muted">—</td>
+</tr><tr data-grupo="Todos">
+  <td><span class="tag-grupo">Todos</span></td>
+  <td>Todos</td>
+  <td class="fw">Todos</td>
+  <td>Vero Solutions</td>
+  <td class="small muted">marc@verosolutions.com.br - katia.cardoso@verosolutions.com.br</td>
+  <td class="small muted">Remoto</td>
+</tr><tr data-grupo="Business">
+  <td><span class="tag-grupo">Business</span></td>
+  <td>—</td>
+  <td class="fw">Universidade de Virginia - EUA</td>
+  <td>Darden School of Business</td>
+  <td class="small muted">claudia@tacb2b.com; renata@tacb2b.com; renata.armonia@fcrlaw.com.br; alex@tacb2b.com; Claudia Tomaselli: 11 98122-5226</td>
+  <td class="small muted">Virginia - EUA</td>
+</tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- BRINDES -->
+    <section class="section" id="sec-brindes">
+      <div class="stats">
+        <div class="stat-card dark"><div class="val">R$ 65.120</div><div class="lbl">Orçamento total</div></div>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr><th rowspan="2">Item</th><th colspan="2">FEA USP</th><th colspan="2">SEMANA FLUXO</th><th colspan="2">UFPE</th><th colspan="2">ITA</th><th colspan="2">UNICAMP</th><th colspan="2">Total</th></tr>
+            <tr><th>Plan.</th><th>Usado</th><th>Plan.</th><th>Usado</th><th>Plan.</th><th>Usado</th><th>Plan.</th><th>Usado</th><th>Plan.</th><th>Usado</th><th>Plan.</th><th>Usado</th></tr>
+          </thead>
+          <tbody><tr><td class="fw">ECOBAG</td><td class="num">350</td><td class="num used">350</td><td class="num">—</td><td class="num used">—</td><td class="num">400</td><td class="num used">—</td><td class="num">200</td><td class="num used">—</td><td class="num">200</td><td class="num used">—</td><td class="num fw blue">1150</td><td class="num fw green">350</td></tr><tr><td class="fw">CHAVEIRO</td><td class="num">350</td><td class="num used">350</td><td class="num">400</td><td class="num used">—</td><td class="num">400</td><td class="num used">—</td><td class="num">150</td><td class="num used">—</td><td class="num">—</td><td class="num used">—</td><td class="num fw blue">1300</td><td class="num fw green">350</td></tr><tr><td class="fw">FOLDER CHAVEIRO</td><td class="num">350</td><td class="num used">350</td><td class="num">400</td><td class="num used">—</td><td class="num">400</td><td class="num used">—</td><td class="num">150</td><td class="num used">—</td><td class="num">—</td><td class="num used">—</td><td class="num fw blue">1300</td><td class="num fw green">350</td></tr><tr><td class="fw">FOLDER</td><td class="num">400</td><td class="num used">400</td><td class="num">800</td><td class="num used">—</td><td class="num">400</td><td class="num used">—</td><td class="num">200</td><td class="num used">—</td><td class="num">—</td><td class="num used">—</td><td class="num fw blue">1800</td><td class="num fw green">400</td></tr><tr><td class="fw">ECOBAG</td><td class="num">11</td><td class="num used">1700</td><td class="num">—</td><td class="num used">—</td><td class="num">—</td><td class="num used">—</td><td class="num">—</td><td class="num used">—</td><td class="num">—</td><td class="num used">—</td><td class="num fw blue">11.04</td><td class="num fw green">1700</td></tr><tr><td class="fw">CHAVEIRO</td><td class="num">13</td><td class="num used">1300</td><td class="num">—</td><td class="num used">—</td><td class="num">—</td><td class="num used">—</td><td class="num">—</td><td class="num used">—</td><td class="num">—</td><td class="num used">—</td><td class="num fw blue">13.48</td><td class="num fw green">1300</td></tr><tr><td class="fw">FOLDER CHAVEIRO</td><td class="num">1</td><td class="num used">1300</td><td class="num">—</td><td class="num used">—</td><td class="num">—</td><td class="num used">—</td><td class="num">—</td><td class="num used">—</td><td class="num">—</td><td class="num used">—</td><td class="num fw blue">1.18</td><td class="num fw green">1300</td></tr><tr><td class="fw">FOLDER</td><td class="num">4</td><td class="num used">1800</td><td class="num">—</td><td class="num used">—</td><td class="num">—</td><td class="num used">—</td><td class="num">—</td><td class="num used">—</td><td class="num">—</td><td class="num used">—</td><td class="num fw blue">4.26</td><td class="num fw green">1800</td></tr><tr><td class="fw">SOMA</td><td class="num">—</td><td class="num used">—</td><td class="num">—</td><td class="num used">65120</td><td class="num">—</td><td class="num used">—</td><td class="num">—</td><td class="num used">—</td><td class="num">—</td><td class="num used">—</td><td class="num fw blue">—</td><td class="num fw green">65120</td></tr><tr><td class="fw">RESTANTE</td><td class="num">—</td><td class="num used">—</td><td class="num">—</td><td class="num used">—</td><td class="num">—</td><td class="num used">—</td><td class="num">—</td><td class="num used">—</td><td class="num">—</td><td class="num used">—</td><td class="num fw blue">—</td><td class="num fw green">—</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- CUSTOS -->
+    <section class="section" id="sec-custos">
+      <div class="stats" id="custos-stats">
+        <div class="stat-card dark"><div class="val" id="cs-prev">R$ 0</div><div class="lbl">Total Previsto</div></div>
+        <div class="stat-card" style="border-left:4px solid #16a34a"><div class="val green" id="cs-real">R$ 0</div><div class="lbl">Total Real</div></div>
+        <div class="stat-card" style="border-left:4px solid #dc2626"><div class="val" id="cs-delta" style="color:#dc2626">R$ 0</div><div class="lbl">Diferença (prev - real)</div></div>
+        <div class="stat-card"><div class="val" id="cs-zerados">0</div><div class="lbl">Sem custo cadastrado</div></div>
+      </div>
+      <p class="small muted" style="margin-bottom:12px">Custos cadastrados via checklist de cada evento. Clique em um evento para editar.</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Evento</th>
+              <th>Tipo</th>
+              <th>Data</th>
+              <th class="num">Contrato Prev.</th>
+              <th class="num">Logística Prev.</th>
+              <th class="num">Brindes Prev.</th>
+              <th class="num" style="background:#eff6ff">Total Prev.</th>
+              <th class="num" style="background:#f0fdf4">Total Real</th>
+              <th class="num">Δ</th>
+            </tr>
+          </thead>
+          <tbody id="custos-body"></tbody>
+          <tfoot id="custos-foot"></tfoot>
+        </table>
+      </div>
+    </section>
+
+    <!-- DECLINADOS -->
+    <section class="section" id="sec-declinados">
+      <div class="stats">
+        <div class="stat-card" style="border-left:4px solid #dc2626"><div class="val" style="color:#dc2626">6</div><div class="lbl">Eventos declinados</div></div>
+      </div>
+      <p class="small muted" style="margin-bottom:12px">Eventos que a equipe optou por não participar. Não aparecem na timeline.</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Evento</th><th>Faculdade</th><th>UF</th><th>Tipo</th><th>Data</th><th>Motivo</th></tr></thead>
+          <tbody><tr>
+  <td class="fw">PETROUFES</td>
+  <td>UFES</td>
+  <td>ES</td>
+  <td><span class="pill pill-palestra">Palestra</span></td>
+  <td class="date-cell">25/Mar</td>
+  <td class="muted small">—</td>
+</tr><tr>
+  <td class="fw">SEMATRON (Semana de Engenharia Mecatrônica)</td>
+  <td>USP</td>
+  <td>SP</td>
+  <td><span class="pill pill-palestra">Palestra</span></td>
+  <td class="date-cell">25/Mai</td>
+  <td class="muted small">Focado apenas para automação, com temas não alinhados com a PRIO; Logística para São Carlos/SP vai ser caro x quantidade de alunos atingidos</td>
+</tr><tr>
+  <td class="fw">XIV Workshop de Petróleo da SPE</td>
+  <td>USP</td>
+  <td>SP</td>
+  <td><span class="pill pill-palestra">Palestra</span></td>
+  <td class="date-cell">Novembro</td>
+  <td class="muted small">Custo alto para poucos estudantes</td>
+</tr><tr>
+  <td class="fw">27º Encontro da Engenharia de Produção</td>
+  <td>UENF</td>
+  <td>RJ</td>
+  <td><span class="pill pill-palestra">Palestra</span></td>
+  <td class="date-cell">31/Ago</td>
+  <td class="muted small">1 hora ou 1 hora e meia; Ideal fazer terça ou quinta (10h ou 14h). Na semana da Fluxo</td>
+</tr><tr>
+  <td class="fw">Feira de Carreira da Politécnica-UFRJ</td>
+  <td>UFRJ</td>
+  <td>RJ</td>
+  <td><span class="pill pill-feira">Feira</span></td>
+  <td class="date-cell">10/Mar</td>
+  <td class="muted small">Participação na Semana Fluxo é prioridade (já conhecemos e somos conhecidos por isso); Custo do espaço é alto; Evento acontece no início do ano</td>
+</tr><tr>
+  <td class="fw">Palestras de Férias</td>
+  <td>UFRJ</td>
+  <td>RJ</td>
+  <td><span class="pill pill-palestra">Palestra</span></td>
+  <td class="date-cell">Fevereiro/Março</td>
+  <td class="muted small">Time de Petrofísicos da PRIO não possuiam disponibilidade</td>
+</tr></tbody>
+        </table>
+      </div>
+    </section>
+
   </div>
 </div>
 
-<div class="content" id="sec-visitas">
-  <h2 class="section-title">🏢 Visitas PRIO</h2>
-  <div class="grid" id="vis-grid"></div>
-</div>
-
-<div class="content" id="sec-convites">
-  <h2 class="section-title">✉️ Convites Recebidos</h2>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr><th>Evento</th><th>Data</th><th>Participação</th><th>Motivo</th></tr>
-      </thead>
-      <tbody id="conv-tbody"></tbody>
-    </table>
+<!-- MODAL CHECKLIST EVENTO -->
+<div class="modal-bg" id="modal-ev" onclick="if(event.target===this)closeModal('ev')">
+  <div class="modal">
+    <div class="modal-title" id="mev-title"></div>
+    <div class="modal-sub">Checklist do evento externo</div>
+    <div class="cl-items" id="mev-items"></div>
+    <div class="cost-section">
+      <h4>💰 Custos (R$)</h4>
+      <div class="cost-grid">
+        <div class="cost-field"><label>Contrato Prev.</label><input type="number" id="c-prev-contrato" placeholder="0" oninput="updateCostTotal()"></div>
+        <div class="cost-field"><label>Logística Prev.</label><input type="number" id="c-prev-logistica" placeholder="0" oninput="updateCostTotal()"></div>
+        <div class="cost-field"><label>Brindes Prev.</label><input type="number" id="c-prev-brinde" placeholder="0" oninput="updateCostTotal()"></div>
+        <div class="cost-field"><label>Contrato Real</label><input type="number" id="c-real-contrato" placeholder="0" oninput="updateCostTotal()"></div>
+        <div class="cost-field"><label>Logística Real</label><input type="number" id="c-real-logistica" placeholder="0" oninput="updateCostTotal()"></div>
+        <div class="cost-field"><label>Brindes Real</label><input type="number" id="c-real-brinde" placeholder="0" oninput="updateCostTotal()"></div>
+      </div>
+      <div class="cost-total">
+        <span class="lbl">Total Previsto: <b id="ct-prev">R$ 0</b></span>
+        <span class="lbl">Total Real: <b id="ct-real">R$ 0</b></span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <span class="cl-prog" id="mev-prog"></span>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost" onclick="closeModal('ev')">Fechar</button>
+        <button class="btn btn-primary" onclick="saveChecklist('ev')">Salvar</button>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="content" id="sec-contatos">
-  <h2 class="section-title">👥 Contatos</h2>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr><th>Nome</th><th>Instituição</th><th>Presente</th></tr>
-      </thead>
-      <tbody id="cont-tbody"></tbody>
-    </table>
+<!-- MODAL CHECKLIST VISITA -->
+<div class="modal-bg" id="modal-vis" onclick="if(event.target===this)closeModal('vis')">
+  <div class="modal">
+    <div class="modal-title" id="mvis-title"></div>
+    <div class="modal-sub">Checklist de visita à PRIO</div>
+    <div class="cl-items" id="mvis-items"></div>
+    <div class="modal-footer">
+      <span class="cl-prog" id="mvis-prog"></span>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost" onclick="closeModal('vis')">Fechar</button>
+        <button class="btn btn-primary" onclick="saveChecklist('vis')">Salvar</button>
+      </div>
+    </div>
   </div>
 </div>
-
-<div class="content" id="sec-custos">
-  <h2 class="section-title">💰 Custos & Orçamento</h2>
-  <div class="kpi-grid" id="kpi-grid"></div>
-</div>
-
-</main>
 
 <script>
-const DADOS = {
-  eventos: [
-    {data:'2026-02-05',evento:'Visita PRIO',tipo:'Visita PRIO',estado:'SE',n_impactados:3,local:'Sala TBMT',curso:'Misto',inst:'UFS',pal_rh:'Caroline Santos',online:false},
-    {data:'2026-03-25',evento:'Visita PRIO',tipo:'Visita PRIO',estado:'RJ',n_impactados:38,local:'Auditório',curso:'Corporativo',inst:'UERJ / FGV / UFRJ',pal_rh:'Caroline Santos',online:false},
-    {data:'2026-03-26',evento:'Feira Técnica SENAI',tipo:'Feira',estado:'RJ',n_impactados:200,local:'Campus SENAI',curso:'',inst:'SENAI',pal_rh:'',online:false},
-    {data:'2026-05-21',evento:'Feira de Recrutamento',tipo:'Feira',estado:'SP',n_impactados:3400,local:'FEA USP',curso:'Business / Engenharias',inst:'USP',pal_rh:'',online:false},
-    {data:'2026-08-15',evento:'Feira de Carreiras ITA',tipo:'Feira',estado:'SP',n_impactados:2100,local:'Campus ITA',curso:'Engenharias',inst:'ITA',pal_rh:'',online:false},
-    {data:'2026-09-22',evento:'UFPE no Mercado',tipo:'Feira',estado:'PE',n_impactados:150,local:'Campus UFPE',curso:'Business',inst:'UFPE',pal_rh:'',online:false},
-    {data:'2026-08-07',evento:'Visita Texas A&M',tipo:'Visita PRIO',estado:'EUA',n_impactados:25,local:'Auditório PRIO',curso:'Engenharias',inst:'Texas A&M',pal_rh:'Carol',online:true},
-  ],
-  convites: [
-    {evento:'UFPE no Mercado',data:'2026-09-22',participacao:'Sim',motivo:''},
-    {evento:'Feira de Carreiras ITA',data:'2026-08-15',participacao:'Sim',motivo:''},
-    {evento:'Feira de Recrutamento',data:'2026-05-21',participacao:'Sim',motivo:''},
-    {evento:'Conecta',data:'2026-06-10',participacao:'Não',motivo:'Conflito de agenda'},
-    {evento:'Semana Ayra',data:'2026-07-08',participacao:'Não',motivo:'Recursos limitados'},
-    {evento:'Workshop Semec',data:'2026-11-15',participacao:'Sim',motivo:''},
-  ],
-  visitantes: [
-    {nome:'Matheus Alves Silva Figueiredo',faculdade:'UFS',presente:'Sim'},
-    {nome:'Irandi de Jesus Silva',faculdade:'UFS',presente:'Sim'},
-    {nome:'Miguel Lucas Santana Freire',faculdade:'UFS',presente:'Sim'},
-    {nome:'Heitor Felipe Camelo Aguiar',faculdade:'UFRJ',presente:'Não'},
-    {nome:'Felipe de Araújo Pereira',faculdade:'UFRJ',presente:'Sim'},
-    {nome:'Carolina Martins',faculdade:'USP',presente:'Sim'},
-    {nome:'Bruno Costa',faculdade:'UFRJ',presente:'Não'},
-  ],
-  orcamento: 350000,
-  utilizado: 319310.73,
-};
+const EV_DATA = [{"id": 1, "evento": "Feira Técnica SENAI", "date": "2026-03-26", "tipo": "Feira", "est": "", "part": "", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 2, "evento": "Petrogames UFRJ", "date": "2026-04-11", "tipo": "Outro", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 3, "evento": "CONECTA IBMEC", "date": "2026-04-28", "tipo": "Feira", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 4, "evento": "Petrogames UFRJ", "date": "2026-05-14", "tipo": "Outro", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 5, "evento": "FEIRA FEA USP", "date": "2026-05-21", "tipo": "Feira", "est": "SP", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 6, "evento": "SPEED JOB UFPel", "date": "2026-05-26", "tipo": "Palestra", "est": "RS", "part": "", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 7, "evento": "FEIRA VIRTUAL EMPREGA", "date": "2026-06-01", "tipo": "Painel", "est": "", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 8, "evento": "WORKSHOP GEOSCIENCES UNICAMP", "date": "2026-08-11", "tipo": "Palestra", "est": "SP", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 9, "evento": "FEIRA DE CARREIRAS INTEGRA UNICAMP", "date": "2026-08-12", "tipo": "Feira", "est": "SP", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 10, "evento": "FEIRA DE CARREIRAS ITA", "date": "2026-08-15", "tipo": "Feira", "est": "SP", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 11, "evento": "SEMANA FLUXO UFRJ", "date": "2026-08-31", "tipo": "Feira", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 12, "evento": "CONECTA IBMEC", "date": "2026-09-03", "tipo": "Feira", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 13, "evento": "FEIRA UFPE", "date": "2026-09-22", "tipo": "Feira", "est": "PE", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 14, "evento": "SEMANA AYRA", "date": "2026-09-23", "tipo": "Palestra", "est": "RJ", "part": "Sim", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}, {"id": 15, "evento": "MBA Brasil - EUA", "date": "2026-11-06", "tipo": "Internacional", "est": "", "part": "", "checklist": {"contrato": false, "pagamento": false, "brinde": false, "convidados": false, "palestrante": false, "logistica_ok": false}, "custo": {"prev_contrato": 0, "prev_logistica": 0, "prev_brinde": 0, "real_contrato": 0, "real_logistica": 0, "real_brinde": 0}}];
+const VIS_CARDS = [
+  {idx:0, date:'2026-02-05', dia:'Qui', turno:'Tarde', espaco:'Sala TBMT', modalidade:'Presencial', tipo:'Misto',
+   univ:'UFS', liga:'—', area:'—', qtd:'3', palestrante:'—', status:'Realizada', obs:'—'},
+  {idx:1, date:'2026-03-25', dia:'Qua', turno:'Tarde', espaco:'Auditório', modalidade:'Presencial', tipo:'Corporativo',
+   univ:'UERJ / FGV / UFRJ', liga:'—', area:'—', qtd:'38', palestrante:'—', status:'Realizada', obs:'—'},
+  {idx:2, date:'2026-04-10', dia:'Sex', turno:'Tarde', espaco:'Rooftop', modalidade:'Presencial', tipo:'G&G',
+   univ:'UNICAMP / USP / SPWLA UFRJ', liga:'—', area:'—', qtd:'24', palestrante:'—', status:'Realizada', obs:'—'},
+  {idx:3, date:'2026-05-20', dia:'Seg', turno:'Tarde', espaco:'Auditório', modalidade:'Presencial', tipo:'Misto',
+   univ:'—', liga:'—', area:'—', qtd:'—', palestrante:'—', status:'Realizada', obs:'—'},
+  {idx:4, date:'2026-08-04', dia:'—', turno:'Manhã', espaco:'Online', modalidade:'Online', tipo:'Corporativo',
+   univ:'PUC SP', liga:'PUC Finance', area:'Corporativo', qtd:'—', palestrante:'Tiktin + Jansen', status:'A confirmar', obs:'PUC Finance confirmou viabilidade.'},
+  {idx:5, date:'2026-08-05', dia:'—', turno:'Noite', espaco:'Online', modalidade:'Online', tipo:'Engenharia',
+   univ:'UENF', liga:'EENGE', area:'Eng. Produção / Materiais / Metalúrgica / Civil', qtd:'—', palestrante:'Lucas Ribas', status:'A confirmar', obs:'Falar com o Lucas'},
+  {idx:6, date:'2026-08-12', dia:'—', turno:'Tarde', espaco:'Online', modalidade:'Online', tipo:'Engenharia',
+   univ:'Unicamp', liga:'Liga Empreendedora', area:'Engenharias', qtd:'—', palestrante:'Humberto B. + Grigoletto', status:'Confirmado', obs:'Liga confirmou viabilidade da vaga.'},
+  {idx:7, date:'2026-08-12', dia:'—', turno:'Manhã', espaco:'PRIO', modalidade:'Presencial', tipo:'Engenharia',
+   univ:'UFRJ', liga:'Petrobowl', area:'Engenharias', qtd:'14', palestrante:'—', status:'Confirmado', obs:'Petrobowl confirmou. Falar com os gestores.'},
+  {idx:8, date:'2026-08-19', dia:'—', turno:'Tarde', espaco:'PRIO', modalidade:'Presencial', tipo:'G&G',
+   univ:'UFRJ + UFF', liga:'SPE · Geosociety · AAPG · Ligpetro', area:'G&G', qtd:'20+', palestrante:'—', status:'Confirmado', obs:'Geosociety confirmou viabilidade.'},
+  {idx:9, date:'2026-08-26', dia:'—', turno:'Tarde', espaco:'PRIO', modalidade:'Presencial', tipo:'Corporativo',
+   univ:'FGV + IBMEC', liga:'FGValley · IBMEC Carreiras', area:'Corporativo', qtd:'30+', palestrante:'—', status:'A confirmar', obs:'IBMEC confirmou. FGValley vai confirmar até sexta.'},
+  {idx:10, date:'2026-09-08', dia:'—', turno:'Tarde', espaco:'PRIO', modalidade:'Presencial', tipo:'Corporativo',
+   univ:'UFRJ · UNIRIO · UERJ · PUC · FGV · IBMEC', liga:'Liga Acad. Regulatórios · LADME · LITIS Jr. · PETROLIGA', area:'Corporativo', qtd:'78+', palestrante:'Julia Heymann + Geraldo', status:'Confirmado', obs:'Ladme e Litis Jr. confirmaram viabilidade.'},
+  {idx:11, date:'2026-09-11', dia:'—', turno:'Tarde', espaco:'PRIO', modalidade:'Presencial', tipo:'Engenharia',
+   univ:'UFRJ', liga:'Fluxo Consultoria', area:'Engenharia de Produção', qtd:'—', palestrante:'—', status:'A confirmar', obs:'Fluxo está perguntando qual agenda prevista.'},
+  {idx:12, date:'2026-09-17', dia:'—', turno:'Manhã', espaco:'PRIO', modalidade:'Presencial', tipo:'G&G',
+   univ:'UFRRJ + UFF + UFRJ', liga:'AAPG UFRRJ · Cap. UFF e UFRJ', area:'G&G', qtd:'—', palestrante:'—', status:'Em análise', obs:'—'},
+  {idx:13, date:'2026-09-22', dia:'—', turno:'Tarde', espaco:'PRIO', modalidade:'Presencial', tipo:'Engenharia de Petróleo',
+   univ:'UDESC + UFPEL', liga:'Petro Jr. · DAKA', area:'Eng. de Petróleo', qtd:'54', palestrante:'—', status:'Confirmado', obs:'DAKA e Petro Jr. confirmaram viabilidade.'},
+  {idx:14, date:'2026-09-25', dia:'—', turno:'Tarde', espaco:'PRIO', modalidade:'Presencial', tipo:'—',
+   univ:'IME', liga:'—', area:'—', qtd:'—', palestrante:'—', status:'Em análise', obs:'—'},
+  {idx:15, date:'2026-10-01', dia:'—', turno:'Manhã', espaco:'PRIO', modalidade:'Presencial', tipo:'—',
+   univ:'—', liga:'ROG.E (21-24/Set)', area:'—', qtd:'—', palestrante:'—', status:'Em análise', obs:'—'},
+  {idx:16, date:'2026-10-13', dia:'—', turno:'Tarde', espaco:'PRIO', modalidade:'Presencial', tipo:'—',
+   univ:'—', liga:'—', area:'—', qtd:'—', palestrante:'—', status:'Em análise', obs:'—'},
+];
+const VIS_DATA = [{"faculdade": "UFS", "data": "2026-02-05", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": "UERJ - FGV - UFRJ", "data": "2026-03-25", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": "UNICAMP - USP - SPWLA UFRJ", "data": "2026-04-10", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-05-20", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-08-12", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-08-19", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-08-26", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-09-08", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-09-11", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-09-17", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": "ROG.E (21-24/Set)", "data": "2026-09-22", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": "IME", "data": "2026-09-25", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-10-01", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}, {"faculdade": null, "data": "2026-10-13", "checklist_visita": {"espaco_reservado": false, "convites_enviados": false, "lista_presenca": false, "coffee_break": false, "palestrante_confirmado": false, "roteiro_definido": false}}];
+let evData  = JSON.parse(localStorage.getItem('prioEv3')  || 'null') || EV_DATA;
+let visData = JSON.parse(localStorage.getItem('prioVis3') || 'null') || VIS_DATA;
 
-function goto(sec) {
-  document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
-  document.querySelectorAll('.nav a').forEach(a => a.classList.remove('active'));
-  document.getElementById('sec-' + sec).classList.add('active');
-  document.querySelector(`a[onclick="goto('${sec}')"]`).classList.add('active');
-  render(sec);
+const EV_CL  = {contrato:'📄 Contrato assinado',pagamento:'💳 Pagamento iniciado',brinde:'🎁 Brindes confirmados',convidados:'👥 Convidados definidos',palestrante:'🎤 Palestrante confirmado',logistica_ok:'✈️ Logística ok'};
+const VIS_CL = {espaco_reservado:'🏛️ Espaço reservado',convites_enviados:'📨 Convites enviados',lista_presenca:'📝 Lista de presença preparada',coffee_break:'☕ Coffee break confirmado',palestrante_confirmado:'🎤 Palestrante interno confirmado',roteiro_definido:'📋 Roteiro da visita definido'};
+
+// ── Auto-populate state filters ──────────────────────────────────────────────
+(function(){
+  const states = [...new Set(evData.map(e=>e.est).filter(Boolean))].sort();
+  ['filter-est','cal-filter-est'].forEach(id=>{
+    const sel = document.getElementById(id);
+    if(!sel) return;
+    states.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;sel.appendChild(o);});
+  });
+})();
+
+// ── NAV ──────────────────────────────────────────────────────────────────────
+let curSection = 'timeline';
+function goto(sec, el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('sec-'+sec).classList.add('active');
+  if(el) el.classList.add('active');
+  curSection = sec;
+  const isTL = sec==='timeline';
+  const isCont = sec==='contatos';
+  document.getElementById('topbar-tl').classList.toggle('hidden',!isTL);
+  document.getElementById('topbar-other').classList.toggle('hidden',isTL);
+  document.getElementById('tabs-tl').classList.toggle('hidden',!isTL);
+  document.getElementById('tabs-cont').classList.toggle('hidden',!isCont);
+  const titles={visitas:'Visitas PRIO',contatos:'Contatos',brindes:'Brindes',custos:'Custos por Evento',declinados:'Eventos Declinados'};
+  if(titles[sec]) document.getElementById('topbar-title-other').textContent=titles[sec];
+  if(isTL) applyTL();
+  if(sec==='contatos') buildLocalFilter();
+  if(sec==='custos') setTimeout(renderCustos,0);
 }
 
-function render(sec) {
-  if (sec === 'calendario') renderCalendario();
-  else if (sec === 'visitas') renderVisitas();
-  else if (sec === 'convites') renderConvites();
-  else if (sec === 'contatos') renderContatos();
-  else if (sec === 'custos') renderCustos();
+// ── VIEW TOGGLE (timeline / calendar) ────────────────────────────────────────
+let curView = 'timeline';
+function setView(v){
+  curView = v;
+  document.getElementById('view-timeline').classList.toggle('hidden', v!=='timeline');
+  document.getElementById('view-calendar').classList.toggle('hidden', v!=='calendar');
+  document.getElementById('tabs-tl').classList.toggle('hidden', v!=='timeline');
+  document.getElementById('vbtn-tl').classList.toggle('active', v==='timeline');
+  document.getElementById('vbtn-cal').classList.toggle('active', v==='calendar');
+  if(v==='calendar') renderCalendar();
+  else applyTL();
 }
 
-function renderCalendario() {
-  const tbody = document.getElementById('cal-tbody');
-  tbody.innerHTML = DADOS.eventos.map(e => {
-    const tipo = e.tipo.toLowerCase().replace(/\s/g, '-');
-    return `<tr><td>${e.data}</td><td><strong>${e.evento}</strong></td><td><span class="badge badge-${tipo}">${e.tipo}</span></td><td>${e.estado}</td><td>${e.inst}</td><td>${e.n_impactados}</td><td>${e.local}</td></tr>`;
-  }).join('');
+// ── TIMELINE TABS ─────────────────────────────────────────────────────────────
+let activeTab = 'feira';
+const allCards  = Array.from(document.querySelectorAll('.card'));
+function showTLPanel(tab){
+  ['feira','palestra','outro','internacional','todos'].forEach(t=>document.getElementById('tl-'+t).classList.toggle('hidden',t!==tab));
 }
+document.querySelectorAll('[data-tab]').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('[data-tab]').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  activeTab = t.dataset.tab;
+  showTLPanel(activeTab);
+  applyTL();
+}));
 
-function renderVisitas() {
-  const visitas = DADOS.eventos.filter(e => e.tipo === 'Visita PRIO');
-  const grid = document.getElementById('vis-grid');
-  if (!visitas.length) {
-    grid.innerHTML = '<div class="empty">Nenhuma visita agendada</div>';
-    return;
+function applyTL(){
+  if(curView!=='timeline') return;
+  const q    = document.getElementById('search-tl').value.toLowerCase();
+  const est  = document.getElementById('filter-est').value;
+  const part = document.getElementById('filter-part').value;
+  const ano  = document.getElementById('filter-ano').value;
+  const seenIds = new Set();
+  const counts = {feira:0,palestra:0,outro:0,internacional:0,todos:0,conf:0};
+  allCards.forEach(c=>{
+    const txt  = c.textContent.toLowerCase();
+    const cp   = c.dataset.part||'';
+    const ce   = c.dataset.est||'';
+    const ctab = c.dataset.tab||'';
+    const cdate= c.dataset.date||'';
+    const cano = cdate.slice(0,4);
+    let partOk = true;
+    if(part==='Sim') partOk = cp==='Sim';
+    else if(part==='none') partOk = cp==='';
+    const anoOk = !ano || cano===ano;
+    const ok = (!q||txt.includes(q))&&(!est||ce===est)&&partOk&&anoOk;
+    c.classList.toggle('hidden',!ok);
+    if(ok&&!seenIds.has(c.dataset.id)){
+      seenIds.add(c.dataset.id);
+      counts.todos++;
+      if(ctab==='feira') counts.feira++;
+      else if(ctab==='palestra') counts.palestra++;
+      else if(ctab==='internacional') counts.internacional++;
+      else counts.outro++;
+      if(cp==='Sim') counts.conf++;
+    }
+  });
+  document.querySelectorAll('.tl-panel').forEach(panel=>{
+    const visM=new Set();
+    panel.querySelectorAll('.card:not(.hidden)').forEach(c=>{if(c.dataset.mes)visM.add(c.dataset.mes)});
+    panel.querySelectorAll('.month-sep').forEach(m=>m.classList.toggle('hidden',!visM.has(m.dataset.month)));
+  });
+  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  set('st-conf-main', counts.conf);
+  set('cb-todos',     counts.todos);
+  set('cb-feira',     counts.feira);
+  set('cb-palestra',  counts.palestra);
+  set('cb-outro',     counts.outro);
+  set('cb-internacional', counts.internacional);
+  // update type stat cards (não são cb-, são os cards fixos)
+  document.querySelectorAll('.stat-tipo').forEach(el=>{
+    el.textContent = counts[el.dataset.tipo]||0;
+  });
+}
+function syncAno(v){
+  document.getElementById('filter-ano').value=v;
+  applyTL();
+}
+document.getElementById('search-tl').addEventListener('input',applyTL);
+document.getElementById('filter-est').addEventListener('input',applyTL);
+document.getElementById('filter-part').addEventListener('input',applyTL);
+
+// ── CALENDAR ─────────────────────────────────────────────────────────────────
+const CAL_MONTHS = ["","Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+const VIS_DATES  = ["2026-02-05","2026-03-25","2026-04-10","2026-05-20","2026-08-12","2026-08-19","2026-08-26","2026-09-08","2026-09-11","2026-09-17","2026-09-22","2026-09-25","2026-10-01","2026-10-13"];
+const VIS_LABELS = ["UFS","UERJ/FGV/UFRJ","UNICAMP/USP","—","—","—","—","—","—","—","ROG.E","IME","—","—"];
+let calMonth = 3; // start at March 2026
+
+function renderCalendar(){
+  const tipoF = document.getElementById('cal-filter-tipo').value;
+  const estF  = document.getElementById('cal-filter-est').value;
+  const year  = 2026;
+  document.getElementById('cal-title').textContent = CAL_MONTHS[calMonth]+' '+year;
+  const first = new Date(year, calMonth-1, 1).getDay(); // 0=Sun
+  const days  = new Date(year, calMonth, 0).getDate();
+  const dows  = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  let html = dows.map(d=>`<div class="cal-dow">${d}</div>`).join('');
+  for(let i=0;i<first;i++) html+=`<div class="cal-day empty-day"></div>`;
+  const todayStr = new Date().toISOString().slice(0,10);
+  for(let day=1;day<=days;day++){
+    const iso = `${year}-${String(calMonth).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+    const isToday = iso===todayStr;
+    let evHtml='';
+    // External events
+    if(tipoF!=='visita'){
+      evData.filter(e=>e.date===iso&&(!estF||e.est===estF)).forEach(e=>{
+        const cls = e.tipo.toLowerCase().replace(' ','');
+        const short = e.evento.length>18?e.evento.slice(0,17)+'…':e.evento;
+        evHtml+=`<span class="cal-ev ${cls}" onclick="openChecklist(${e.id})" title="${e.evento}">${short}</span>`;
+      });
+    }
+    // Visits
+    if(tipoF!=='externo'){
+      VIS_DATES.forEach((vd,vi)=>{
+        if(vd===iso){
+          const lbl = VIS_LABELS[vi]||'Visita';
+          evHtml+=`<span class="cal-ev visita" onclick="openVisitaChecklist(${vi})" title="Visita PRIO">🏢 ${lbl}</span>`;
+        }
+      });
+    }
+    html+=`<div class="cal-day${isToday?' today':''}"><div class="cal-day-num">${day}</div>${evHtml}</div>`;
   }
-  grid.innerHTML = visitas.map(v => `<div class="card" style="border-left-color:var(--teal)"><div class="card-title">${v.evento}</div><div class="card-meta"><strong>${v.data}</strong> | ${v.estado}</div><div style="font-size:12px;line-height:1.7"><div><strong>Instituição:</strong> ${v.inst}</div><div><strong>Formato:</strong> ${v.online ? '🌐 Online' : '🏢 Presencial'}</div><div><strong>Curso:</strong> ${v.curso || '—'}</div><div><strong>Local:</strong> ${v.local}</div><div><strong>Impactados:</strong> ${v.n_impactados}</div><div><strong>Palestrantes:</strong> ${v.pal_rh || '—'}</div></div></div>`).join('');
+  document.getElementById('cal-grid').innerHTML=html;
+}
+function calPrev(){ if(calMonth>1)calMonth--; renderCalendar(); }
+function calNext(){ if(calMonth<12)calMonth++; renderCalendar(); }
+
+// ── CONTACTS ─────────────────────────────────────────────────────────────────
+function buildLocalFilter(){
+  const sel = document.getElementById('filter-local');
+  if(sel.options.length>1) return;
+  const locs = new Set();
+  document.querySelectorAll('#cont-body tr td:last-child').forEach(td=>{
+    const t=td.textContent.trim(); if(t&&t!=='—') locs.add(t);
+  });
+  [...locs].sort().forEach(l=>{const o=document.createElement('option');o.value=l;o.textContent=l;sel.appendChild(o);});
+}
+document.getElementById('search-cont').addEventListener('input',filterContacts);
+document.getElementById('filter-grupo').addEventListener('input',filterContacts);
+function filterContacts(){
+  const q   = document.getElementById('search-cont').value.toLowerCase();
+  const gr  = document.getElementById('filter-grupo').value;
+  const loc = document.getElementById('filter-local').value;
+  document.querySelectorAll('#cont-body tr').forEach(r=>{
+    const ok = (!q||r.textContent.toLowerCase().includes(q))&&(!gr||r.dataset.grupo===gr)&&(!loc||r.textContent.includes(loc));
+    r.classList.toggle('hidden',!ok);
+  });
 }
 
-function renderConvites() {
-  const tbody = document.getElementById('conv-tbody');
-  tbody.innerHTML = DADOS.convites.map(c => `<tr><td><strong>${c.evento}</strong></td><td>${c.data}</td><td><span class="badge badge-${c.participacao.toLowerCase()}">${c.participacao}</span></td><td>${c.motivo || '—'}</td></tr>`).join('');
+// Contact tabs
+document.querySelectorAll('[data-ctab]').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('[data-ctab]').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  const gr = t.dataset.ctab==='todos'?'':t.dataset.ctab;
+  document.getElementById('filter-grupo').value=gr;
+  filterContacts();
+}));
+
+// ── CONVITES FILTER ───────────────────────────────────────────────────────────
+document.getElementById('search-conv').addEventListener('input',filterConvites);
+function filterConvites(){
+  const q  = document.getElementById('search-conv').value.toLowerCase();
+  const st = document.getElementById('filter-conv-status').value;
+  document.querySelectorAll('#conv-body tr').forEach(r=>{
+    const ok=(!q||r.textContent.toLowerCase().includes(q))&&(!st||r.dataset.status===st);
+    r.classList.toggle('hidden',!ok);
+  });
 }
 
-function renderContatos() {
-  const tbody = document.getElementById('cont-tbody');
-  tbody.innerHTML = DADOS.visitantes.map(v => `<tr><td>${v.nome}</td><td>${v.faculdade}</td><td><span class="badge badge-${v.presente.toLowerCase()}">${v.presente}</span></td></tr>`).join('');
+// ── CHECKLIST EVENTO ──────────────────────────────────────────────────────────
+let curEvId=null;
+function openChecklist(id){
+  curEvId=id;
+  const e=evData.find(x=>x.id===id); if(!e)return;
+  document.getElementById('mev-title').textContent=e.evento;
+  renderModalItems('mev-items',e.checklist,EV_CL,'mev-prog');
+  const cu=e.custo||{};
+  ['prev-contrato','prev-logistica','prev-brinde','real-contrato','real-logistica','real-brinde'].forEach(k=>{
+    const inp=document.getElementById('c-'+k);
+    if(inp) inp.value=cu[k.replace('-','_')]||'';
+  });
+  updateCostTotal();
+  document.getElementById('modal-ev').classList.add('open');
 }
 
-function renderCustos() {
-  const grid = document.getElementById('kpi-grid');
-  grid.innerHTML = `<div class="kpi" style="border-top-color:var(--blue)"><div class="kpi-val">R$ 350k</div><div class="kpi-label">Orçamento Total</div></div><div class="kpi" style="border-top-color:var(--amber)"><div class="kpi-val">R$ 319k</div><div class="kpi-label">Utilizado</div></div><div class="kpi" style="border-top-color:var(--green)"><div class="kpi-val">R$ 31k</div><div class="kpi-label">Restante</div></div><div class="kpi" style="border-top-color:var(--red)"><div class="kpi-val">91%</div><div class="kpi-label">Consumido do Orçamento</div></div>`;
+function updateCostTotal(){
+  const pv=['prev-contrato','prev-logistica','prev-brinde'].reduce((s,k)=>s+(+document.getElementById('c-'+k)?.value||0),0);
+  const rl=['real-contrato','real-logistica','real-brinde'].reduce((s,k)=>s+(+document.getElementById('c-'+k)?.value||0),0);
+  const fmt=n=>'R$ '+n.toLocaleString('pt-BR');
+  document.getElementById('ct-prev').textContent=fmt(pv);
+  document.getElementById('ct-real').textContent=fmt(rl);
 }
 
-document.addEventListener('DOMContentLoaded', () => renderCalendario());
+// ── CHECKLIST VISITA ──────────────────────────────────────────────────────────
+let curVisIdx=null;
+function openVisitaChecklist(idx){
+  curVisIdx=idx;
+  const v=visData[idx]; if(!v)return;
+  const lbl=VIS_LABELS[idx]||'Visita';
+  document.getElementById('mvis-title').textContent=lbl+' · '+v.data;
+  renderModalItems('mvis-items',v.checklist_visita,VIS_CL,'mvis-prog');
+  document.getElementById('modal-vis').classList.add('open');
+}
+
+function renderModalItems(cid,cl,labels,progId){
+  const el=document.getElementById(cid); el.innerHTML='';
+  Object.keys(labels).forEach(k=>{
+    const done=!!cl[k];
+    const div=document.createElement('div');
+    div.className='cl-item'+(done?' done':'');
+    div.dataset.key=k;
+    div.innerHTML=`<div class="cl-check">${done?'✓':''}</div><span class="cl-item-lbl">${labels[k]}</span>`;
+    div.onclick=()=>{div.classList.toggle('done');div.querySelector('.cl-check').textContent=div.classList.contains('done')?'✓':'';updateProg(cid,progId);};
+    el.appendChild(div);
+  });
+  updateProg(cid,progId);
+}
+
+function updateProg(cid,progId){
+  const items=document.querySelectorAll('#'+cid+' .cl-item');
+  const done=[...items].filter(i=>i.classList.contains('done')).length;
+  document.getElementById(progId).textContent=done+'/'+items.length+' concluídos';
+}
+
+function saveChecklist(type){
+  if(type==='ev'){
+    const e=evData.find(x=>x.id===curEvId); if(!e)return;
+    document.querySelectorAll('#mev-items .cl-item').forEach(item=>{e.checklist[item.dataset.key]=item.classList.contains('done');});
+    if(!e.custo) e.custo={};
+    ['prev_contrato','prev_logistica','prev_brinde','real_contrato','real_logistica','real_brinde'].forEach(k=>{
+      const inp=document.getElementById('c-'+k.replace('_','-'));
+      if(inp) e.custo[k]=+inp.value||0;
+    });
+    localStorage.setItem('prioEv3',JSON.stringify(evData));
+    const card=document.querySelector(`.card[data-id="${curEvId}"]`);
+    if(card){const cl=e.checklist;const d=Object.values(cl).filter(Boolean).length;const t=Object.keys(cl).length;const p=Math.round(d/t*100);card.querySelectorAll('.cl-fill').forEach(f=>f.style.width=p+'%');card.querySelectorAll('.cl-label').forEach(l=>l.textContent=d+'/'+t);}
+    // Update cost display
+    const prev=(e.custo.prev_contrato||0)+(e.custo.prev_logistica||0)+(e.custo.prev_brinde||0);
+    document.querySelectorAll(`.cost-prev[data-id="${curEvId}"]`).forEach(el=>{
+      el.textContent=prev>0?'💰 R$ '+prev.toLocaleString('pt-BR'):'💰 —';
+    });
+  } else {
+    const v=visData[curVisIdx]; if(!v)return;
+    document.querySelectorAll('#mvis-items .cl-item').forEach(item=>{v.checklist_visita[item.dataset.key]=item.classList.contains('done');});
+    localStorage.setItem('prioVis3',JSON.stringify(visData));
+  }
+  closeModal(type);
+}
+function closeModal(t){document.getElementById('modal-'+t).classList.remove('open');}
+
+// ── EXPORT ────────────────────────────────────────────────────────────────────
+function exportReport(){
+  let csv='Evento,Tipo,Data,Estado,Participação,Prev.Total(R$),Real.Total(R$),Checklist\n';
+  evData.forEach(e=>{
+    const cl=Object.values(e.checklist).filter(Boolean).length+'/'+Object.keys(e.checklist).length;
+    const cu=e.custo||{};
+    const prev=(cu.prev_contrato||0)+(cu.prev_logistica||0)+(cu.prev_brinde||0);
+    const real=(cu.real_contrato||0)+(cu.real_logistica||0)+(cu.real_brinde||0);
+    csv+=`"${e.evento}","${e.tipo}","${e.date}","${e.est||''}","${e.part||''}","${prev}","${real}","${cl}"\n`;
+  });
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  a.download='eventos_prio_2026.csv';
+  a.click();
+}
+
+// init
+applyTL();
+
+// ═══════════════════════════════════════════════════════════════
+// VISITAS CARD GRID
+// ═══════════════════════════════════════════════════════════════
+const MABR3 = ["","Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+const DIAS_ABR = {1:"Seg",2:"Ter",3:"Qua",4:"Qui",5:"Sex",6:"Sáb",0:"Dom"};
+
+function renderVisCards(){
+  const today = new Date().toISOString().slice(0,10);
+  const q     = (document.getElementById('search-vis')?.value||'').toLowerCase();
+  const fTipo = document.getElementById('filter-vis-tipo')?.value||'';
+  const fStat = document.getElementById('filter-vis-status')?.value||'';
+  const fMod  = document.getElementById('filter-vis-mod')?.value||'';
+
+  const filtered = VIS_CARDS.filter(v => {
+    if(fTipo && v.tipo !== fTipo) return false;
+    if(fStat && v.status !== fStat) return false;
+    if(fMod && v.modalidade !== fMod) return false;
+    if(q && !(v.univ+v.liga+v.area+v.palestrante+v.obs+v.date).toLowerCase().includes(q)) return false;
+    return true;
+  });
+
+  const upcoming = filtered.filter(v => v.date >= today).sort((a,b)=>a.date.localeCompare(b.date));
+  const past     = filtered.filter(v => v.date < today).sort((a,b)=>b.date.localeCompare(a.date));
+
+  // stats
+  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  set('vis-total',   VIS_CARDS.length);
+  set('vis-conf',    VIS_CARDS.filter(v=>v.status==='Confirmado').length);
+  set('vis-upcoming',upcoming.length);
+
+  let html = '';
+  if(upcoming.length){
+    html += '<div class="vis-sep-row"><span class="vis-sep">▶ Próximas</span><div class="vis-sep-line"></div></div>';
+    html += '<div class="vis-grid">' + upcoming.map(buildCard).join('') + '</div>';
+  }
+  if(past.length){
+    html += '<div class="vis-sep-row"><span class="vis-sep" style="background:var(--bg);color:var(--muted);border-color:var(--border)">✓ Realizadas</span><div class="vis-sep-line"></div></div>';
+    html += '<div class="vis-grid">' + past.map(v=>buildCard(v,true)).join('') + '</div>';
+  }
+  if(!filtered.length) html = '<div class="empty">Nenhuma visita encontrada para os filtros selecionados.</div>';
+  document.getElementById('vis-cards-container').innerHTML = html;
+  // Re-apply badge inject for Forms
+  if(typeof refreshBadges === 'function') refreshBadges();
+}
+
+function buildCard(v, isPast=false){
+  const [y,m,d] = v.date.split('-').map(Number);
+  const jsDate = new Date(y, m-1, d);
+  const diaSemana = v.dia !== '—' ? v.dia : (DIAS_ABR[jsDate.getDay()]||'');
+  const dateStr = `${String(d).padStart(2,'0')}/${MABR3[m]}`;
+
+  const statusBadge = {
+    'Confirmado':  ['confirmado','Confirmado'],
+    'A confirmar': ['confirmar','A confirmar'],
+    'Em análise':  ['analise','Em análise'],
+    'Realizada':   ['realizada','Realizada'],
+  }[v.status]||['analise',v.status];
+  const badgeCls = isPast ? 'realizada' : (v.date === new Date().toISOString().slice(0,10) ? 'upcoming' : statusBadge[0]);
+  const badgeLbl = isPast ? 'Realizada' : statusBadge[1];
+
+  const modCls = v.modalidade === 'Online' ? 'online' : 'presencial';
+  const modIcon = v.modalidade === 'Online' ? '🌐' : '🏛';
+
+  // checklist from VIS_DATA (by date match)
+  const vd = visData ? visData.find(x=>x.data===v.date) : null;
+  let clDone=0, clTotal=6;
+  if(vd) { const vals = Object.values(vd.checklist_visita||{}); clDone=vals.filter(Boolean).length; clTotal=vals.length||6; }
+  const clPct = Math.round(clDone/clTotal*100);
+  const clColor = clPct===100?'#16a34a':clPct>0?'var(--blue)':'var(--border)';
+
+  // Forms participants by date
+  const partCount = typeof formsData !== 'undefined' && formsData
+    ? formsData.filter(r => typeof matchesVisit === 'function' && matchesVisit(r.dataVisita, v.date)).length
+    : 0;
+
+  return `<div class="vis-card${isPast?' past':''}" onclick="openVisCardChecklist('${v.date}')">
+  <span class="vis-card-badge ${badgeCls}">${badgeLbl}</span>
+  <div class="vis-date-row">
+    <div>
+      <div class="vis-date">${dateStr}</div>
+      <div class="vis-date-meta">${diaSemana ? diaSemana+' · ' : ''}${v.turno}${v.espaco&&v.espaco!=='—'?' · '+v.espaco:''}</div>
+    </div>
+    <span class="vis-modality ${modCls}">${modIcon} ${v.modalidade}</span>
+  </div>
+  <div class="vis-title">${v.univ}</div>
+  <div class="vis-liga">${v.liga!=='—'?v.liga:''}</div>
+  <div class="vis-chips">
+    ${v.tipo&&v.tipo!=='—'?`<span class="tag-area">${v.tipo}</span>`:''}
+    ${v.palestrante&&v.palestrante!=='—'?`<span style="font-size:11px;color:var(--muted)">🎤 ${v.palestrante}</span>`:''}
+  </div>
+  ${v.obs&&v.obs!=='—'?`<div class="vis-obs">${v.obs}</div>`:''}
+  <div class="vis-footer">
+    <div style="display:flex;align-items:center;gap:5px;flex:1">
+      <div style="width:80px;height:5px;background:var(--border);border-radius:3px;overflow:hidden">
+        <div style="width:${clPct}%;height:100%;background:${clColor};border-radius:3px;transition:width .3s"></div>
+      </div>
+      <span class="small muted">${clDone}/${clTotal} checklist</span>
+    </div>
+    ${v.qtd&&v.qtd!=='—'?`<span class="small muted">👥 ${v.qtd} esp.</span>`:''}
+    ${partCount>0?`<span class="small" style="color:var(--blue);font-weight:600">📋 ${partCount} inscritos</span>`:''}
+  </div>
+</div>`;
+}
+
+function openVisCardChecklist(date){
+  // Find matching vis in VIS_DATA
+  const idx = VIS_ISO.indexOf(date);
+  if(idx >= 0) openVisitaChecklist(idx);
+  // Also try VIS_CARDS idx for extra dates
+}
+
+// Hook into goto for visitas
+const _gotoVis_orig = goto;
+// render on navigate
+(function patchGoto(){
+  const origGoto = window.goto;
+  window.goto = function(sec, el){
+    origGoto(sec, el);
+    if(sec==='visitas') setTimeout(renderVisCards, 0);
+  };
+})();
+
+// ═══════════════════════════════════════════════════════════════
+// CUSTOS
+// ═══════════════════════════════════════════════════════════════
+const TIPO_PILL = {
+  Feira:'<span class="pill pill-feira">Feira</span>',
+  Palestra:'<span class="pill pill-palestra">Palestra</span>',
+  Painel:'<span class="pill pill-painel">Painel</span>',
+  Internacional:'<span class="pill pill-internacional">Internacional</span>',
+  Outro:'<span class="pill pill-outro">Outro</span>',
+};
+const MABR2 = ["","Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+
+function renderCustos(){
+  const data = JSON.parse(localStorage.getItem('prioEv3')||'null') || evData;
+  const fmt = n => n ? 'R$ '+n.toLocaleString('pt-BR') : '—';
+  const fmtN = n => n ? n.toLocaleString('pt-BR') : '—';
+  let totalPrev=0, totalReal=0, zerados=0;
+  let rows = '';
+  data.forEach(e => {
+    const cu = e.custo||{};
+    const prev = (cu.prev_contrato||0)+(cu.prev_logistica||0)+(cu.prev_brinde||0);
+    const real = (cu.real_contrato||0)+(cu.real_logistica||0)+(cu.real_brinde||0);
+    const delta = prev - real;
+    if(!prev && !real) zerados++;
+    totalPrev += prev; totalReal += real;
+    const [y,m,d] = e.date.split('-').map(Number);
+    const dateStr = `${String(d).padStart(2,'0')}/${MABR2[m]}`;
+    const deltaStyle = delta>0?'color:#16a34a':delta<0?'color:#dc2626':'color:var(--muted)';
+    rows += `<tr style="cursor:pointer" onclick="openChecklist(${e.id})">
+      <td class="fw">${e.evento}</td>
+      <td>${TIPO_PILL[e.tipo]||''}</td>
+      <td class="date-cell">${dateStr}</td>
+      <td class="num small">${fmtN(cu.prev_contrato||0)}</td>
+      <td class="num small">${fmtN(cu.prev_logistica||0)}</td>
+      <td class="num small">${fmtN(cu.prev_brinde||0)}</td>
+      <td class="num" style="background:#eff6ff;font-weight:700">${fmt(prev)}</td>
+      <td class="num" style="background:#f0fdf4;font-weight:700;color:#16a34a">${fmt(real)}</td>
+      <td class="num" style="${deltaStyle};font-weight:600">${delta!==0?(delta>0?'+':'')+delta.toLocaleString('pt-BR'):'—'}</td>
+    </tr>`;
+  });
+  document.getElementById('custos-body').innerHTML = rows;
+  const delta = totalPrev - totalReal;
+  document.getElementById('cs-prev').textContent = 'R$ '+totalPrev.toLocaleString('pt-BR');
+  document.getElementById('cs-real').textContent = 'R$ '+totalReal.toLocaleString('pt-BR');
+  document.getElementById('cs-delta').textContent = (delta>=0?'R$ ':'- R$ ')+Math.abs(delta).toLocaleString('pt-BR');
+  document.getElementById('cs-delta').style.color = delta>=0?'#16a34a':'#dc2626';
+  document.getElementById('cs-zerados').textContent = zerados;
+  // Footer totals
+  document.getElementById('custos-foot').innerHTML = `<tr style="border-top:2px solid var(--border);background:#f8fafc">
+    <td colspan="3" class="fw" style="padding:9px 12px">TOTAL</td>
+    <td class="num" colspan="3" style="padding:9px 12px"></td>
+    <td class="num" style="background:#eff6ff;font-weight:800;padding:9px 12px">R$ ${totalPrev.toLocaleString('pt-BR')}</td>
+    <td class="num" style="background:#f0fdf4;font-weight:800;color:#16a34a;padding:9px 12px">R$ ${totalReal.toLocaleString('pt-BR')}</td>
+    <td class="num" style="${delta>=0?'color:#16a34a':'color:#dc2626'};font-weight:800;padding:9px 12px">${(delta>=0?'+':'')+delta.toLocaleString('pt-BR')}</td>
+  </tr>`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// VISITAS — ordenar próximas primeiro
+// ═══════════════════════════════════════════════════════════════
+(function reorderVisitas(){
+  const today = new Date().toISOString().slice(0,10);
+  const tbody = document.querySelector('#sec-visitas tbody');
+  if(!tbody) return;
+  const rows = Array.from(tbody.querySelectorAll('tr[onclick]'));
+  const upcoming = rows.filter(r => {
+    const idx = +r.getAttribute('onclick').match(/\d+/)[0];
+    return VIS_ISO[idx] >= today;
+  });
+  const past = rows.filter(r => {
+    const idx = +r.getAttribute('onclick').match(/\d+/)[0];
+    return VIS_ISO[idx] < today;
+  });
+  // Clear and re-insert: upcoming first (no dimming), then separator, then past (dimmed)
+  tbody.innerHTML = '';
+  upcoming.forEach(r => tbody.appendChild(r));
+  if(past.length){
+    const sep = document.createElement('tr');
+    sep.innerHTML = `<td colspan="9" style="padding:10px 12px;background:#f8fafc;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;border-top:2px solid var(--border)">✓ Visitas realizadas (${past.length})</td>`;
+    tbody.appendChild(sep);
+    past.forEach(r => { r.style.opacity='.55'; tbody.appendChild(r); });
+  }
+})();
+
+// ═══════════════════════════════════════════════════════════════
+// MICROSOFT FORMS IMPORT
+// ═══════════════════════════════════════════════════════════════
+
+// Visit ISO dates — order matches table rows 0-13
+const VIS_ISO = ["2026-02-05","2026-03-25","2026-04-10","2026-05-20","2026-08-12","2026-08-19","2026-08-26","2026-09-08","2026-09-11","2026-09-17","2026-09-22","2026-09-25","2026-10-01","2026-10-13"];
+const VIS_DISPLAY = ["05/Fev","25/Mar","10/Abr","20/Mai","12/Ago","19/Ago","26/Ago","08/Set","11/Set","17/Set","22/Set","25/Set","01/Out","13/Out"];
+
+// Column mapping saved in localStorage
+// formsMap: {nome, universidade, curso, area, dataVisita, email}
+let formsMap    = JSON.parse(localStorage.getItem('prioFormsMap')  || 'null');
+let formsData   = JSON.parse(localStorage.getItem('prioFormsData') || 'null'); // [{nome,univ,curso,area,dataVisita,email}]
+let formsColHdr = JSON.parse(localStorage.getItem('prioFormsHdr')  || 'null'); // raw column headers from last import
+
+// Inject badge cells into visit table on page load
+(function injectBadgeCells(){
+  const rows = document.querySelectorAll('#sec-visitas tbody tr[onclick]');
+  rows.forEach((tr, idx) => {
+    tr.dataset.visIdx = idx;
+    // insert badge td before last td (checklist)
+    const tds = tr.querySelectorAll('td');
+    const last = tds[tds.length - 1];
+    const td = document.createElement('td');
+    td.id = 'badge-' + idx;
+    td.style.textAlign = 'center';
+    td.innerHTML = `<span class="part-badge no-data" onclick="event.stopPropagation();openParticipantes(${idx})">—</span>`;
+    tr.insertBefore(td, last);
+  });
+  if(formsData) refreshBadges();
+})();
+
+function refreshBadges(){
+  if(!formsData || !formsData.length) return;
+  let totalInscritos = 0;
+  VIS_ISO.forEach((iso, idx) => {
+    const parts = formsData.filter(r => matchesVisit(r.dataVisita, iso));
+    const n = parts.length;
+    totalInscritos += n;
+    const badgeEl = document.querySelector(`#badge-${idx} .part-badge`);
+    if(badgeEl){
+      badgeEl.textContent = n > 0 ? n : '—';
+      badgeEl.className = 'part-badge ' + (n > 0 ? 'has-data' : 'no-data');
+    }
+  });
+  const st = document.getElementById('st-inscritos');
+  if(st) st.textContent = totalInscritos;
+}
+
+// Try to match a free-text visit date to one of our ISO dates
+function matchesVisit(raw, iso){
+  if(!raw) return false;
+  raw = String(raw).toLowerCase().trim();
+  // iso = "2026-08-12" → try "12/08", "12/ago", "agosto", day match
+  const [y,m,d] = iso.split('-').map(Number);
+  const mAbr = ["","jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"][m];
+  const mFull= ["","janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"][m];
+  // date patterns
+  const patterns = [
+    iso,
+    `${d}/${String(m).padStart(2,'0')}`,
+    `${String(d).padStart(2,'0')}/${String(m).padStart(2,'0')}`,
+    `${d}/${mAbr}`,
+    `${String(d).padStart(2,'0')}/${mAbr}`,
+    mAbr, mFull,
+    VIS_DISPLAY[VIS_ISO.indexOf(iso)].toLowerCase(),
+    VIS_LABELS[VIS_ISO.indexOf(iso)] ? VIS_LABELS[VIS_ISO.indexOf(iso)].toLowerCase() : '',
+  ];
+  return patterns.some(p => p && raw.includes(p));
+}
+
+// ── Handle file upload ────────────────────────────────────────────
+function handleFormsFile(input){
+  const file = input.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const wb = XLSX.read(e.target.result, {type:'binary', cellDates:true});
+    const ws = wb.Sheets[wb.SheetNames[0]];
+    const rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:''});
+    if(!rows || rows.length < 2){ alert('Arquivo vazio ou inválido.'); return; }
+    const headers = rows[0].map(h => String(h).trim());
+    formsColHdr = headers;
+    localStorage.setItem('prioFormsHdr', JSON.stringify(headers));
+    if(!formsMap || !headersMatch(headers, formsMap)){
+      openMapModal(headers, rows);
+    } else {
+      processImport(rows, headers, formsMap);
+    }
+  };
+  reader.readAsBinaryString(file);
+  input.value = '';
+}
+
+function headersMatch(headers, map){
+  // check all mapped columns still exist
+  return Object.values(map).every(v => !v || headers.includes(v));
+}
+
+// ── Column mapping modal ──────────────────────────────────────────
+function openMapModal(headers, rawRows){
+  const opts = ['(não importar)', ...headers];
+  const fields = [
+    {key:'nome',       label:'Nome completo'},
+    {key:'universidade',label:'Universidade / Instituição'},
+    {key:'curso',      label:'Curso / Área de estudo'},
+    {key:'area',       label:'Área de interesse PRIO'},
+    {key:'dataVisita', label:'Data da visita'},
+    {key:'email',      label:'E-mail'},
+  ];
+  const saved = formsMap || {};
+  let html = `<div id="modal-map" class="modal-bg open" onclick="if(event.target===this)document.getElementById('modal-map').remove()">
+  <div class="modal map-modal" style="width:520px">
+    <div class="modal-title">🗂️ Mapear colunas do Forms</div>
+    <div class="map-hint">
+      O arquivo tem <b>${rawRows.length - 1} respostas</b> e <b>${headers.length} colunas</b>.
+      Indique qual coluna do Excel corresponde a cada campo. O mapeamento é salvo para futuras importações.
+    </div>`;
+  fields.forEach(f => {
+    const bestGuess = headers.find(h => h.toLowerCase().includes(f.key) || h.toLowerCase().includes(f.label.split('/')[0].toLowerCase().trim())) || '';
+    const cur = saved[f.key] || bestGuess;
+    html += `<div class="map-row"><label>${f.label}</label>
+      <select id="map-${f.key}">${opts.map(o=>`<option value="${o==='(não importar)'?'':o}"${o===cur?' selected':''}>${o}</option>`).join('')}</select>
+    </div>`;
+  });
+  html += `<div class="modal-footer" style="margin-top:16px">
+    <button class="btn btn-ghost" onclick="document.getElementById('modal-map').remove()">Cancelar</button>
+    <button class="btn btn-primary" onclick="applyMap(${JSON.stringify(rawRows).split('"').join("'")} )">Importar</button>
+  </div></div></div>`;
+  document.body.insertAdjacentHTML('beforeend', html);
+  // store rawRows reference for the onclick
+  window._pendingRows = rawRows;
+  document.querySelector('#modal-map .btn-primary').onclick = function(){
+    const map = {};
+    ['nome','universidade','curso','area','dataVisita','email'].forEach(k => {
+      map[k] = document.getElementById('map-'+k).value;
+    });
+    formsMap = map;
+    localStorage.setItem('prioFormsMap', JSON.stringify(map));
+    document.getElementById('modal-map').remove();
+    processImport(window._pendingRows, formsColHdr, map);
+  };
+}
+
+// ── Process and store import ──────────────────────────────────────
+function processImport(rows, headers, map){
+  const getCol = (row, col) => col ? String(row[headers.indexOf(col)] || '').trim() : '';
+  const data = rows.slice(1).map(row => ({
+    nome:        getCol(row, map.nome),
+    univ:        getCol(row, map.universidade),
+    curso:       getCol(row, map.curso),
+    area:        getCol(row, map.area),
+    dataVisita:  getCol(row, map.dataVisita),
+    email:       getCol(row, map.email),
+  })).filter(r => r.nome || r.univ);
+  formsData = data;
+  localStorage.setItem('prioFormsData', JSON.stringify(data));
+  refreshBadges();
+  // Show status
+  const st = document.getElementById('import-status');
+  if(st){ st.classList.add('show'); setTimeout(()=>st.classList.remove('show'), 3000); }
+  const sum = document.getElementById('import-summary');
+  if(sum){
+    const byVisit = VIS_ISO.map((iso,i)=>({date:VIS_DISPLAY[i],n:data.filter(r=>matchesVisit(r.dataVisita,iso)).length})).filter(x=>x.n>0);
+    sum.innerHTML = `✓ <b>${data.length} inscrições</b> importadas. Distribuição por visita: ` +
+      (byVisit.length ? byVisit.map(x=>`<b>${x.date}</b>: ${x.n}`).join(' · ') : 'nenhuma correspondência encontrada — verifique o campo "Data da visita".');
+    sum.classList.add('show');
+  }
+}
+
+// ── Open participants modal ───────────────────────────────────────
+function openParticipantes(idx){
+  const iso = VIS_ISO[idx];
+  const parts = formsData ? formsData.filter(r => matchesVisit(r.dataVisita, iso)) : [];
+  const lbl = VIS_LABELS[idx] || 'Visita ' + VIS_DISPLAY[idx];
+  let html = `<div id="modal-part" class="modal-bg open" onclick="if(event.target===this)closePartModal()">
+  <div class="modal" style="width:540px">
+    <div class="modal-title">👥 Participantes · ${lbl}</div>
+    <div class="modal-sub">${VIS_DISPLAY[idx]} 2026 · ${parts.length} inscrito(s)</div>`;
+  if(parts.length){
+    html += `<input class="part-search" type="text" placeholder="🔍 Buscar participante..." oninput="filterParts(this.value)">
+    <div class="part-list" id="part-list">`;
+    parts.forEach((p,i) => {
+      html += `<div class="part-item" data-idx="${i}">
+        <div style="flex:1">
+          <div class="part-nome">${p.nome||'—'}</div>
+          <div class="part-univ">${p.univ||''} ${p.email?'· '+p.email:''}</div>
+        </div>
+        ${p.curso?`<span class="part-curso">${p.curso}</span>`:''}
+        ${p.area?`<span class="part-area">${p.area}</span>`:''}
+      </div>`;
+    });
+    html += `</div>`;
+  } else {
+    html += `<div class="part-empty">
+      ${formsData ? '⚠️ Nenhum inscrito encontrado para esta data.<br><span style="font-size:11px">Verifique se o campo "Data da visita" no Forms usa <b>' + VIS_DISPLAY[idx] + '</b>.</span>'
+        : '📥 Importe o Excel do Forms para ver os participantes.'}
+    </div>`;
+  }
+  html += `<div class="modal-footer">
+    ${parts.length ? `<button class="btn btn-ghost btn-sm" onclick="exportParts(${idx})">⬇️ Exportar lista</button>` : '<span></span>'}
+    <button class="btn btn-primary" onclick="closePartModal()">Fechar</button>
+  </div></div></div>`;
+  document.body.insertAdjacentHTML('beforeend', html);
+  window._curPartIdx = idx;
+}
+
+function filterParts(q){
+  document.querySelectorAll('#part-list .part-item').forEach(el => {
+    el.style.display = el.textContent.toLowerCase().includes(q.toLowerCase()) ? '' : 'none';
+  });
+}
+
+function closePartModal(){ document.getElementById('modal-part')?.remove(); }
+
+function exportParts(idx){
+  const iso = VIS_ISO[idx];
+  const parts = formsData.filter(r => matchesVisit(r.dataVisita, iso));
+  let csv = 'Nome,Universidade,Curso,Área,Email\n';
+  parts.forEach(p => { csv += `"${p.nome}","${p.univ}","${p.curso}","${p.area}","${p.email}"\n`; });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8'}));
+  a.download = `participantes_${VIS_DISPLAY[idx].replace('/','')}_2026.csv`;
+  a.click();
+}
+
+function clearImport(){
+  if(!confirm('Limpar todos os dados importados do Forms?')) return;
+  formsData = null; formsMap = null; formsColHdr = null;
+  localStorage.removeItem('prioFormsData');
+  localStorage.removeItem('prioFormsMap');
+  localStorage.removeItem('prioFormsHdr');
+  document.querySelectorAll('.part-badge').forEach(b => { b.textContent='—'; b.className='part-badge no-data'; });
+  const st = document.getElementById('st-inscritos'); if(st) st.textContent='0';
+  const sum = document.getElementById('import-summary'); if(sum) sum.classList.remove('show');
+}
 </script>
-
 </body>
 </html>
