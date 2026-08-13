@@ -4,7 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Timeline Eventos Atração PRIO</title>
-<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js">
+function openCard(id) {
+  const card = document.querySelector(`[data-id="\${id}"]`);
+  if(card) {
+    const title = card.querySelector('.card-title')?.textContent || 'Evento';
+    const info = card.textContent;
+    alert(`${title}\n\n${info}`);
+  }
+}
+</script>
 <style>
 :root{--blue:#1d4ed8;--blue-d:#1e3a8a;--blue-l:#eff6ff;--blue-m:#dbeafe;--text:#111827;--muted:#6b7280;--border:#e5e7eb;--bg:#f3f4f6;--white:#fff;--radius:10px;--sidebar:230px}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -227,6 +236,27 @@ tbody td{padding:9px 12px;vertical-align:middle}
 .vis-card .vis-meta{font-size:12px;line-height:1.6;margin-bottom:8px}
 .vis-card .vis-meta div{margin:2px 0}
 .vis-card .vis-status{font-size:11px;font-weight:600;color:#16a34a;padding-top:6px;border-top:1px solid var(--border);margin-top:6px}
+
+.card{cursor:pointer}
+.card:hover{box-shadow:0 4px 16px rgba(29,78,216,.12);border-color:#60a5fa}
+.vis-section{margin-bottom:20px}
+.vis-section h3{font-size:13px;font-weight:700;color:var(--blue-d);margin-bottom:10px;text-transform:uppercase}
+.vis-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.vis-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:12px;border-left:4px solid #16a34a}
+.vis-card .vis-top{font-size:12px;color:var(--muted);margin-bottom:6px}
+.vis-card .vis-inst{font-weight:700;font-size:13px;margin-bottom:6px}
+.vis-card .vis-info{font-size:12px;line-height:1.6;color:var(--text)}
+.vis-card .vis-info div{margin:3px 0}
+.cost-table{overflow-x:auto}
+.cost-table table{width:100%;border-collapse:collapse;font-size:12px}
+.cost-table thead{background:#f8fafc;border-bottom:1px solid var(--border)}
+.cost-table th{padding:8px;text-align:left;font-weight:600}
+.cost-table td{padding:8px;border-bottom:1px solid var(--border)}
+.cost-table .num{text-align:right;font-family:monospace}
+.cost-table .positive{color:#16a34a}
+.cost-table .negative{color:#dc2626}
+.empty{color:var(--muted);font-style:italic;padding:20px 0;text-align:center}
+
 </style>
 </head>
 <body>
@@ -299,7 +329,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
 
       <!-- TIMELINE VIEW -->
       <div id="view-timeline">
-        <div id="tl-feira" class="tl-panel"><div class="month-sep" data-month="Março"><span class="month-label">Março 2026</span><div class="month-line"></div></div><div class="card" data-id="1" data-part="" data-tab="feira" data-mes="Março" data-date="2026-03-26" data-est="">
+        <div id="tl-feira" class="tl-panel"><div class="month-sep" data-month="Março"><span class="month-label">Março 2026</span><div class="month-line"></div></div><div class="card" data-id="1" data-part="" data-tab="feira" data-mes="Março" data-date="2026-03-26" data-est="" onclick="openCard(1)">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">26/Mar</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -316,7 +346,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Abril"><span class="month-label">Abril 2026</span><div class="month-line"></div></div><div class="card" data-id="3" data-part="Sim" data-tab="feira" data-mes="Abril" data-date="2026-04-28" data-est="RJ">
+</div><div class="month-sep" data-month="Abril"><span class="month-label">Abril 2026</span><div class="month-line"></div></div><div class="card" data-id="3" data-part="Sim" data-tab="feira" data-mes="Abril" data-date="2026-04-28" data-est="RJ" onclick="openCard(3)">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">28/Abr</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -333,7 +363,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="5" data-part="Sim" data-tab="feira" data-mes="Maio" data-date="2026-05-21" data-est="SP">
+</div><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="5" data-part="Sim" data-tab="feira" data-mes="Maio" data-date="2026-05-21" data-est="SP" onclick="openCard(5)">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">21/Mai</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -350,7 +380,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="9" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-12" data-est="SP">
+</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="9" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-12" data-est="SP" onclick="openCard(9)">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">12/Ago</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -367,7 +397,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
-</div><div class="card" data-id="10" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-15" data-est="SP">
+</div><div class="card" data-id="10" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-15" data-est="SP" onclick="openCard(10)">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">15/Ago</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -384,7 +414,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
-</div><div class="card" data-id="11" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-31" data-est="RJ">
+</div><div class="card" data-id="11" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-31" data-est="RJ" onclick="openCard(11)">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">31/Ago</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -401,7 +431,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="12" data-part="Sim" data-tab="feira" data-mes="Setembro" data-date="2026-09-03" data-est="RJ">
+</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="12" data-part="Sim" data-tab="feira" data-mes="Setembro" data-date="2026-09-03" data-est="RJ" onclick="openCard(12)">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">03/Set</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -418,7 +448,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
-</div><div class="card" data-id="13" data-part="Sim" data-tab="feira" data-mes="Setembro" data-date="2026-09-22" data-est="PE">
+</div><div class="card" data-id="13" data-part="Sim" data-tab="feira" data-mes="Setembro" data-date="2026-09-22" data-est="PE" onclick="openCard(13)">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">22/Set</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -436,7 +466,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
     </div>
   </div>
 </div></div>
-        <div id="tl-palestra" class="tl-panel  hidden"><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="6" data-part="" data-tab="palestra" data-mes="Maio" data-date="2026-05-26" data-est="RS">
+        <div id="tl-palestra" class="tl-panel  hidden"><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="6" data-part="" data-tab="palestra" data-mes="Maio" data-date="2026-05-26" data-est="RS" onclick="openCard(6)">
   <div class="card-left" style="border-left:4px solid #0369a1">
     <div class="card-date">26/Mai</div>
     <div class="card-dot" style="background:#0369a1"></div>
@@ -453,7 +483,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="8" data-part="Sim" data-tab="palestra" data-mes="Agosto" data-date="2026-08-11" data-est="SP">
+</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="8" data-part="Sim" data-tab="palestra" data-mes="Agosto" data-date="2026-08-11" data-est="SP" onclick="openCard(8)">
   <div class="card-left" style="border-left:4px solid #0369a1">
     <div class="card-date">11/Ago</div>
     <div class="card-dot" style="background:#0369a1"></div>
@@ -470,7 +500,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="14" data-part="Sim" data-tab="palestra" data-mes="Setembro" data-date="2026-09-23" data-est="RJ">
+</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="14" data-part="Sim" data-tab="palestra" data-mes="Setembro" data-date="2026-09-23" data-est="RJ" onclick="openCard(14)">
   <div class="card-left" style="border-left:4px solid #0369a1">
     <div class="card-date">23/Set</div>
     <div class="card-dot" style="background:#0369a1"></div>
@@ -488,7 +518,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
     </div>
   </div>
 </div></div>
-        <div id="tl-outro" class="tl-panel  hidden"><div class="month-sep" data-month="Abril"><span class="month-label">Abril 2026</span><div class="month-line"></div></div><div class="card" data-id="2" data-part="Sim" data-tab="outro" data-mes="Abril" data-date="2026-04-11" data-est="RJ">
+        <div id="tl-outro" class="tl-panel  hidden"><div class="month-sep" data-month="Abril"><span class="month-label">Abril 2026</span><div class="month-line"></div></div><div class="card" data-id="2" data-part="Sim" data-tab="outro" data-mes="Abril" data-date="2026-04-11" data-est="RJ" onclick="openCard(2)">
   <div class="card-left" style="border-left:4px solid #64748b">
     <div class="card-date">11/Abr</div>
     <div class="card-dot" style="background:#64748b"></div>
@@ -505,7 +535,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="4" data-part="Sim" data-tab="outro" data-mes="Maio" data-date="2026-05-14" data-est="RJ">
+</div><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="4" data-part="Sim" data-tab="outro" data-mes="Maio" data-date="2026-05-14" data-est="RJ" onclick="openCard(4)">
   <div class="card-left" style="border-left:4px solid #64748b">
     <div class="card-date">14/Mai</div>
     <div class="card-dot" style="background:#64748b"></div>
@@ -522,7 +552,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Junho"><span class="month-label">Junho 2026</span><div class="month-line"></div></div><div class="card" data-id="7" data-part="Sim" data-tab="outro" data-mes="Junho" data-date="2026-06-01" data-est="">
+</div><div class="month-sep" data-month="Junho"><span class="month-label">Junho 2026</span><div class="month-line"></div></div><div class="card" data-id="7" data-part="Sim" data-tab="outro" data-mes="Junho" data-date="2026-06-01" data-est="" onclick="openCard(7)">
   <div class="card-left" style="border-left:4px solid #c2410c">
     <div class="card-date">01/Jun</div>
     <div class="card-dot" style="background:#c2410c"></div>
@@ -540,7 +570,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
     </div>
   </div>
 </div>
-        <div id="tl-internacional" class="tl-panel  hidden"><div class="month-sep" data-month="Novembro"><span class="month-label">Novembro 2026</span><div class="month-line"></div></div><div class="card" data-id="15" data-part="" data-tab="internacional" data-mes="Novembro" data-date="2026-11-06" data-est="">
+        <div id="tl-internacional" class="tl-panel  hidden"><div class="month-sep" data-month="Novembro"><span class="month-label">Novembro 2026</span><div class="month-line"></div></div><div class="card" data-id="15" data-part="" data-tab="internacional" data-mes="Novembro" data-date="2026-11-06" data-est="" onclick="openCard(15)">
   <div class="card-left" style="border-left:4px solid #64748b">
     <div class="card-date">06/Nov</div>
     <div class="card-dot" style="background:#64748b"></div>
@@ -558,7 +588,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
     </div>
   </div>
 </div></div></div>
-        <div id="tl-todos" class="tl-panel  hidden"><div class="month-sep" data-month="Março"><span class="month-label">Março 2026</span><div class="month-line"></div></div><div class="card" data-id="1" data-part="" data-tab="feira" data-mes="Março" data-date="2026-03-26" data-est="">
+        <div id="tl-todos" class="tl-panel  hidden"><div class="month-sep" data-month="Março"><span class="month-label">Março 2026</span><div class="month-line"></div></div><div class="card" data-id="1" data-part="" data-tab="feira" data-mes="Março" data-date="2026-03-26" data-est="" onclick="openCard(1)">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">26/Mar</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -575,7 +605,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Abril"><span class="month-label">Abril 2026</span><div class="month-line"></div></div><div class="card" data-id="2" data-part="Sim" data-tab="outro" data-mes="Abril" data-date="2026-04-11" data-est="RJ">
+</div><div class="month-sep" data-month="Abril"><span class="month-label">Abril 2026</span><div class="month-line"></div></div><div class="card" data-id="2" data-part="Sim" data-tab="outro" data-mes="Abril" data-date="2026-04-11" data-est="RJ" onclick="openCard(2)">
   <div class="card-left" style="border-left:4px solid #64748b">
     <div class="card-date">11/Abr</div>
     <div class="card-dot" style="background:#64748b"></div>
@@ -592,7 +622,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
-</div><div class="card" data-id="3" data-part="Sim" data-tab="feira" data-mes="Abril" data-date="2026-04-28" data-est="RJ">
+</div><div class="card" data-id="3" data-part="Sim" data-tab="feira" data-mes="Abril" data-date="2026-04-28" data-est="RJ" onclick="openCard(3)">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">28/Abr</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -609,7 +639,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="4" data-part="Sim" data-tab="outro" data-mes="Maio" data-date="2026-05-14" data-est="RJ">
+</div><div class="month-sep" data-month="Maio"><span class="month-label">Maio 2026</span><div class="month-line"></div></div><div class="card" data-id="4" data-part="Sim" data-tab="outro" data-mes="Maio" data-date="2026-05-14" data-est="RJ" onclick="openCard(4)">
   <div class="card-left" style="border-left:4px solid #64748b">
     <div class="card-date">14/Mai</div>
     <div class="card-dot" style="background:#64748b"></div>
@@ -626,7 +656,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
-</div><div class="card" data-id="5" data-part="Sim" data-tab="feira" data-mes="Maio" data-date="2026-05-21" data-est="SP">
+</div><div class="card" data-id="5" data-part="Sim" data-tab="feira" data-mes="Maio" data-date="2026-05-21" data-est="SP" onclick="openCard(5)">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">21/Mai</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -643,7 +673,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
-</div><div class="card" data-id="6" data-part="" data-tab="palestra" data-mes="Maio" data-date="2026-05-26" data-est="RS">
+</div><div class="card" data-id="6" data-part="" data-tab="palestra" data-mes="Maio" data-date="2026-05-26" data-est="RS" onclick="openCard(6)">
   <div class="card-left" style="border-left:4px solid #0369a1">
     <div class="card-date">26/Mai</div>
     <div class="card-dot" style="background:#0369a1"></div>
@@ -660,7 +690,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Junho"><span class="month-label">Junho 2026</span><div class="month-line"></div></div><div class="card" data-id="7" data-part="Sim" data-tab="outro" data-mes="Junho" data-date="2026-06-01" data-est="">
+</div><div class="month-sep" data-month="Junho"><span class="month-label">Junho 2026</span><div class="month-line"></div></div><div class="card" data-id="7" data-part="Sim" data-tab="outro" data-mes="Junho" data-date="2026-06-01" data-est="" onclick="openCard(7)">
   <div class="card-left" style="border-left:4px solid #c2410c">
     <div class="card-date">01/Jun</div>
     <div class="card-dot" style="background:#c2410c"></div>
@@ -677,7 +707,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="8" data-part="Sim" data-tab="palestra" data-mes="Agosto" data-date="2026-08-11" data-est="SP">
+</div><div class="month-sep" data-month="Agosto"><span class="month-label">Agosto 2026</span><div class="month-line"></div></div><div class="card" data-id="8" data-part="Sim" data-tab="palestra" data-mes="Agosto" data-date="2026-08-11" data-est="SP" onclick="openCard(8)">
   <div class="card-left" style="border-left:4px solid #0369a1">
     <div class="card-date">11/Ago</div>
     <div class="card-dot" style="background:#0369a1"></div>
@@ -694,7 +724,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
-</div><div class="card" data-id="9" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-12" data-est="SP">
+</div><div class="card" data-id="9" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-12" data-est="SP" onclick="openCard(9)">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">12/Ago</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -711,7 +741,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
-</div><div class="card" data-id="10" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-15" data-est="SP">
+</div><div class="card" data-id="10" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-15" data-est="SP" onclick="openCard(10)">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">15/Ago</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -728,7 +758,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
-</div><div class="card" data-id="11" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-31" data-est="RJ">
+</div><div class="card" data-id="11" data-part="Sim" data-tab="feira" data-mes="Agosto" data-date="2026-08-31" data-est="RJ" onclick="openCard(11)">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">31/Ago</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -745,7 +775,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="12" data-part="Sim" data-tab="feira" data-mes="Setembro" data-date="2026-09-03" data-est="RJ">
+</div><div class="month-sep" data-month="Setembro"><span class="month-label">Setembro 2026</span><div class="month-line"></div></div><div class="card" data-id="12" data-part="Sim" data-tab="feira" data-mes="Setembro" data-date="2026-09-03" data-est="RJ" onclick="openCard(12)">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">03/Set</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -762,7 +792,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
-</div><div class="card" data-id="13" data-part="Sim" data-tab="feira" data-mes="Setembro" data-date="2026-09-22" data-est="PE">
+</div><div class="card" data-id="13" data-part="Sim" data-tab="feira" data-mes="Setembro" data-date="2026-09-22" data-est="PE" onclick="openCard(13)">
   <div class="card-left" style="border-left:4px solid #7c3aed">
     <div class="card-date">22/Set</div>
     <div class="card-dot" style="background:#7c3aed"></div>
@@ -779,7 +809,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
-</div><div class="card" data-id="14" data-part="Sim" data-tab="palestra" data-mes="Setembro" data-date="2026-09-23" data-est="RJ">
+</div><div class="card" data-id="14" data-part="Sim" data-tab="palestra" data-mes="Setembro" data-date="2026-09-23" data-est="RJ" onclick="openCard(14)">
   <div class="card-left" style="border-left:4px solid #0369a1">
     <div class="card-date">23/Set</div>
     <div class="card-dot" style="background:#0369a1"></div>
@@ -796,7 +826,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
-</div><div class="month-sep" data-month="Novembro"><span class="month-label">Novembro 2026</span><div class="month-line"></div></div><div class="card" data-id="15" data-part="" data-tab="internacional" data-mes="Novembro" data-date="2026-11-06" data-est="">
+</div><div class="month-sep" data-month="Novembro"><span class="month-label">Novembro 2026</span><div class="month-line"></div></div><div class="card" data-id="15" data-part="" data-tab="internacional" data-mes="Novembro" data-date="2026-11-06" data-est="" onclick="openCard(15)">
   <div class="card-left" style="border-left:4px solid #64748b">
     <div class="card-date">06/Nov</div>
     <div class="card-dot" style="background:#64748b"></div>
@@ -866,24 +896,172 @@ tbody td{padding:9px 12px;vertical-align:middle}
         <button class="btn btn-ghost btn-sm" onclick="clearImport()" title="Limpar dados importados">✕ Limpar</button>
       </div>
       <div class="import-summary" id="import-summary"></div>
-      <div class="search-bar">
-        <input type="text" id="search-vis" placeholder="🔍 Buscar visita..." oninput="renderVisCards()">
-        <select id="filter-vis-tipo" onchange="renderVisCards()">
-          <option value="">Todos os tipos</option>
-          <option>G&amp;G</option><option>Engenharia</option><option>Corporativo</option><option>Misto</option><option>Engenharia de Petróleo</option>
-        </select>
-        <select id="filter-vis-status" onchange="renderVisCards()">
-          <option value="">Todos os status</option>
-          <option>Confirmado</option><option>A confirmar</option><option>Em análise</option>
-        </select>
-        <select id="filter-vis-mod" onchange="renderVisCards()">
-          <option value="">Presencial + Online</option>
-          <option>Presencial</option><option>Online</option>
-        </select>
-      </div>
-      <div id="vis-cards-container">
-<div class="vis-card" data-date="2026-02-05" data-inst="UFS" data-tipo="Misto" data-formato="presencial">
-  <div class="vis-date">📅 2026-02-05</div>
+      <div id="vis-cards-container"><div class="vis-section"><h3>📌 Próximas Visitas</h3><div class="vis-list"><div class="vis-card">
+  <div class="vis-top">
+    <strong>2026-08-19</strong> | RJ | 🏢 Presencial
+  </div>
+  <div class="vis-inst">UFR - UFF - UERJ</div>
+  <div class="vis-info">
+    <div><strong>Curso:</strong> G&G</div>
+    <div><strong>Local:</strong> Auditório</div>
+    <div><strong>Impactados:</strong> 0</div>
+    <div><strong>Palestrantes:</strong> Caroline Santos • Manoel Farias</div>
+  </div>
+</div><div class="vis-card">
+  <div class="vis-top">
+    <strong>2026-08-26</strong> | RJ | 🏢 Presencial
+  </div>
+  <div class="vis-inst">ESPM - IBMEC</div>
+  <div class="vis-info">
+    <div><strong>Curso:</strong> Corporativo</div>
+    <div><strong>Local:</strong> Auditório</div>
+    <div><strong>Impactados:</strong> 0</div>
+    <div><strong>Palestrantes:</strong> Caroline Santos • Erika Scheiner • Edson Mosquera</div>
+  </div>
+</div><div class="vis-card">
+  <div class="vis-top">
+    <strong>2026-09-08</strong> | RJ | 🏢 Presencial
+  </div>
+  <div class="vis-inst">UFRJ - UNIRIO - UERJ - PUC - FGV - IBMEC</div>
+  <div class="vis-info">
+    <div><strong>Curso:</strong> Corporativo</div>
+    <div><strong>Local:</strong> Auditório</div>
+    <div><strong>Impactados:</strong> 0</div>
+    <div><strong>Palestrantes:</strong> —</div>
+  </div>
+</div><div class="vis-card">
+  <div class="vis-top">
+    <strong>2026-09-11</strong> | RJ | 🏢 Presencial
+  </div>
+  <div class="vis-inst">UFRJ</div>
+  <div class="vis-info">
+    <div><strong>Curso:</strong> Engenharia</div>
+    <div><strong>Local:</strong> Auditório</div>
+    <div><strong>Impactados:</strong> 0</div>
+    <div><strong>Palestrantes:</strong> —</div>
+  </div>
+</div><div class="vis-card">
+  <div class="vis-top">
+    <strong>2026-09-17</strong> | RJ | 🏢 Presencial
+  </div>
+  <div class="vis-inst">UFRRJ - UFF - UFRJ</div>
+  <div class="vis-info">
+    <div><strong>Curso:</strong> G&G</div>
+    <div><strong>Local:</strong> Auditório</div>
+    <div><strong>Impactados:</strong> 0</div>
+    <div><strong>Palestrantes:</strong> —</div>
+  </div>
+</div><div class="vis-card">
+  <div class="vis-top">
+    <strong>2026-09-22</strong> | — | 🏢 Presencial
+  </div>
+  <div class="vis-inst">ROG.E</div>
+  <div class="vis-info">
+    <div><strong>Curso:</strong> Misto</div>
+    <div><strong>Local:</strong> Auditório</div>
+    <div><strong>Impactados:</strong> 0</div>
+    <div><strong>Palestrantes:</strong> —</div>
+  </div>
+</div><div class="vis-card">
+  <div class="vis-top">
+    <strong>2026-09-25</strong> | — | 🏢 Presencial
+  </div>
+  <div class="vis-inst">IME</div>
+  <div class="vis-info">
+    <div><strong>Curso:</strong> Engenharia</div>
+    <div><strong>Local:</strong> Auditório</div>
+    <div><strong>Impactados:</strong> 0</div>
+    <div><strong>Palestrantes:</strong> —</div>
+  </div>
+</div><div class="vis-card">
+  <div class="vis-top">
+    <strong>2026-10-01</strong> | — | 🏢 Presencial
+  </div>
+  <div class="vis-inst"></div>
+  <div class="vis-info">
+    <div><strong>Curso:</strong> G&G</div>
+    <div><strong>Local:</strong> Auditório</div>
+    <div><strong>Impactados:</strong> 0</div>
+    <div><strong>Palestrantes:</strong> —</div>
+  </div>
+</div><div class="vis-card">
+  <div class="vis-top">
+    <strong>2026-10-13</strong> | — | 🏢 Presencial
+  </div>
+  <div class="vis-inst"></div>
+  <div class="vis-info">
+    <div><strong>Curso:</strong> Engenharia</div>
+    <div><strong>Local:</strong> Auditório</div>
+    <div><strong>Impactados:</strong> 0</div>
+    <div><strong>Palestrantes:</strong> —</div>
+  </div>
+</div></div></div><div class="vis-section"><h3>✓ Visitas Realizadas</h3><div class="vis-list"><div class="vis-card">
+  <div class="vis-top">
+    <strong>2026-08-12</strong> | RJ | 🏢 Presencial
+  </div>
+  <div class="vis-inst">UFRJ - UFF</div>
+  <div class="vis-info">
+    <div><strong>Curso:</strong> Engenharia</div>
+    <div><strong>Local:</strong> Auditório</div>
+    <div><strong>Impactados:</strong> 35</div>
+    <div><strong>Palestrantes:</strong> Caroline Santos • Matheus Vieira • Humberto Bovolenta</div>
+  </div>
+</div><div class="vis-card">
+  <div class="vis-top">
+    <strong>2026-08-07</strong> | EUA | 🌐 Online
+  </div>
+  <div class="vis-inst">Texas A&M</div>
+  <div class="vis-info">
+    <div><strong>Curso:</strong> Corporativo</div>
+    <div><strong>Local:</strong> Auditório</div>
+    <div><strong>Impactados:</strong> 41</div>
+    <div><strong>Palestrantes:</strong> Fernanda Cabral • Gustavo Hooper • Milton Rangel</div>
+  </div>
+</div><div class="vis-card">
+  <div class="vis-top">
+    <strong>2026-05-21</strong> | RJ | 🏢 Presencial
+  </div>
+  <div class="vis-inst">UNIRIO - CEFET - UFRJ</div>
+  <div class="vis-info">
+    <div><strong>Curso:</strong> Engenharia</div>
+    <div><strong>Local:</strong> Auditório</div>
+    <div><strong>Impactados:</strong> 31</div>
+    <div><strong>Palestrantes:</strong> Ana Luiza Abbiate</div>
+  </div>
+</div><div class="vis-card">
+  <div class="vis-top">
+    <strong>2026-04-10</strong> | RJ | 🏢 Presencial
+  </div>
+  <div class="vis-inst">UNICAMP - USP - UFRJ</div>
+  <div class="vis-info">
+    <div><strong>Curso:</strong> G&G</div>
+    <div><strong>Local:</strong> Rooftop</div>
+    <div><strong>Impactados:</strong> 24</div>
+    <div><strong>Palestrantes:</strong> Caroline Santos • Humberto Bovolenta • Marina Luiza Jordão</div>
+  </div>
+</div><div class="vis-card">
+  <div class="vis-top">
+    <strong>2026-03-25</strong> | RJ | 🏢 Presencial
+  </div>
+  <div class="vis-inst">UERJ - FGV - UFRJ</div>
+  <div class="vis-info">
+    <div><strong>Curso:</strong> Corporativo</div>
+    <div><strong>Local:</strong> Auditório</div>
+    <div><strong>Impactados:</strong> 38</div>
+    <div><strong>Palestrantes:</strong> Caroline Santos • Gustavo Hooper • Diego Figueiredo</div>
+  </div>
+</div><div class="vis-card">
+  <div class="vis-top">
+    <strong>2026-02-05</strong> | SE | 🏢 Presencial
+  </div>
+  <div class="vis-inst">UFS</div>
+  <div class="vis-info">
+    <div><strong>Curso:</strong> Misto</div>
+    <div><strong>Local:</strong> Sala TBMT</div>
+    <div><strong>Impactados:</strong> 3</div>
+    <div><strong>Palestrantes:</strong> Caroline Santos • Gabriel Ramos • Davis de Godoy</div>
+  </div>
+</div></div></div></div>
   <div class="vis-inst"><strong>UFS</strong></div>
   <div class="vis-meta">
     <div><strong>Estado:</strong> SE</div>
@@ -1621,34 +1799,8 @@ tbody td{padding:9px 12px;vertical-align:middle}
     </section>
 
     <!-- CUSTOS -->
-    <section class="section" id="sec-custos">
-      <div class="stats" id="custos-stats">
-        <div class="stat-card dark"><div class="val" id="cs-prev">R$ 0</div><div class="lbl">Total Previsto</div></div>
-        <div class="stat-card" style="border-left:4px solid #16a34a"><div class="val green" id="cs-real">R$ 0</div><div class="lbl">Total Real</div></div>
-        <div class="stat-card" style="border-left:4px solid #dc2626"><div class="val" id="cs-delta" style="color:#dc2626">R$ 0</div><div class="lbl">Diferença (prev - real)</div></div>
-        <div class="stat-card"><div class="val" id="cs-zerados">0</div><div class="lbl">Sem custo cadastrado</div></div>
-      </div>
-      <p class="small muted" style="margin-bottom:12px">Custos cadastrados via checklist de cada evento. Clique em um evento para editar.</p>
-      <div class="tbl-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Evento</th>
-              <th>Tipo</th>
-              <th>Data</th>
-              <th class="num">Contrato Prev.</th>
-              <th class="num">Logística Prev.</th>
-              <th class="num">Brindes Prev.</th>
-              <th class="num" style="background:#eff6ff">Total Prev.</th>
-              <th class="num" style="background:#f0fdf4">Total Real</th>
-              <th class="num">Δ</th>
-            </tr>
-          </thead>
-          <tbody id="custos-body"></tbody>
-          <tfoot id="custos-foot"></tfoot>
-        </table>
-      </div>
-    </section>
+    <section class="section" id="sec-custos"><div class="stats"><div class="stat-card"><div class="val">R$ 350k</div><div class="lbl">Orçamento Total</div></div><div class="stat-card"><div class="val">R$ 319k</div><div class="lbl">Utilizado</div></div></div><div class="cost-table"><table><thead><tr><th>Evento</th><th>Orçado</th><th>Real</th><th>Desvio</th></tr></thead><tbody><tr><td>1ST INDUSTRY
+ACADEMIA PARTNERSHIP WORKSHOP IN GEOSCIENCES FOR OIL & GAS</td><td class="num">R$ 0</td><td class="num">R$ 0</td><td class="num positive">—</td></tr><tr><td>21° FEIRA DE CARREIRAS</td><td class="num">R$ 0</td><td class="num">R$ 0</td><td class="num positive">—</td></tr><tr><td>27º ENCONTRO DA ENGENHARIA DE PRODUÇÃO</td><td class="num">R$ 0</td><td class="num">R$ 3,000</td><td class="num negative">+3000</td></tr><tr><td>CONECTA</td><td class="num">R$ 0</td><td class="num">R$ 100</td><td class="num negative">+100</td></tr><tr><td>CONFERÊNCIA DE CARREIRA</td><td class="num">R$ 0</td><td class="num">R$ 64,800</td><td class="num negative">+64800</td></tr><tr><td>EVENTO INTERAÇÃO</td><td class="num">R$ 0</td><td class="num">R$ 3,950</td><td class="num negative">+3950</td></tr><tr><td>FEIRA DE CARREIRA DA POLITÉCNICA-UFRJ</td><td class="num">R$ 0</td><td class="num">R$ 90,000</td><td class="num negative">+90000</td></tr><tr><td>FEIRA DE CARREIRAS</td><td class="num">R$ 0</td><td class="num">R$ 0</td><td class="num positive">—</td></tr><tr><td>FEIRA DE RECRUTAMENTO E CARREIRA</td><td class="num">R$ 0</td><td class="num">R$ 46,000</td><td class="num negative">+46000</td></tr><tr><td>FEIRA VIRTUAL EMPREGA</td><td class="num">R$ 0</td><td class="num">R$ 0</td><td class="num positive">—</td></tr><tr><td>NX - NETWORKING EXPERIENCE 2026</td><td class="num">R$ 0</td><td class="num">R$ 13,800</td><td class="num negative">+13800</td></tr><tr><td>PALESTRAS DE FÉRIAS</td><td class="num">R$ 0</td><td class="num">R$ 0</td><td class="num positive">—</td></tr><tr><td>PETROUFES</td><td class="num">R$ 0</td><td class="num">R$ 4,605</td><td class="num negative">+4605</td></tr><tr><td>SEMANA AYRA</td><td class="num">R$ 0</td><td class="num">R$ 0</td><td class="num positive">—</td></tr><tr><td>SEMANA DA PETROFÍSICA</td><td class="num">R$ 0</td><td class="num">R$ 0</td><td class="num positive">—</td></tr><tr><td>SEMATRON (SEMANA DE ENGENHARIA MECATRÔNICA)</td><td class="num">R$ 0</td><td class="num">R$ 8,800</td><td class="num negative">+8800</td></tr><tr><td>SPEED JOB</td><td class="num">R$ 0</td><td class="num">R$ 0</td><td class="num positive">—</td></tr><tr><td>SPETRO XVI UFRJ</td><td class="num">R$ 0</td><td class="num">R$ 44,100</td><td class="num negative">+44100</td></tr><tr><td>UFPE NO MERCADO</td><td class="num">R$ 0</td><td class="num">R$ 13,000</td><td class="num negative">+13000</td></tr><tr><td>WORKSHOP INTEGRATIVO WI</td><td class="num">R$ 0</td><td class="num">R$ 33,100</td><td class="num negative">+33100</td></tr><tr><td>XIV WORKSHOP DE PETRÓLEO DA SPE</td><td class="num">R$ 0</td><td class="num">R$ 2,800</td><td class="num negative">+2800</td></tr><tr><td>XV SEGEP CAEP</td><td class="num">R$ 0</td><td class="num">R$ 6,000</td><td class="num negative">+6000</td></tr><tr><td>XXIX SEMEC</td><td class="num">R$ 0</td><td class="num">R$ 15,100</td><td class="num negative">+15100</td></tr></tbody></table></div></section>
 
     <!-- DECLINADOS -->
     <section class="section" id="sec-declinados">
@@ -2542,6 +2694,15 @@ function clearImport(){
   document.querySelectorAll('.part-badge').forEach(b => { b.textContent='—'; b.className='part-badge no-data'; });
   const st = document.getElementById('st-inscritos'); if(st) st.textContent='0';
   const sum = document.getElementById('import-summary'); if(sum) sum.classList.remove('show');
+}
+
+function openCard(id) {
+  const card = document.querySelector(`[data-id="\${id}"]`);
+  if(card) {
+    const title = card.querySelector('.card-title')?.textContent || 'Evento';
+    const info = card.textContent;
+    alert(`${title}\n\n${info}`);
+  }
 }
 </script>
 </body>
