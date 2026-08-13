@@ -101,7 +101,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
 
 /* ── Badges ── */
 .ebadge{font-size:11px;font-weight:700;color:#fff;padding:2px 7px;border-radius:4px}
-.nbadge{font-size:11px;font-weight:700;color:#fff;padding:2px 7px;border-radius:4px}
+
 .tbadge{font-size:11px;font-weight:700;color:#fff;padding:2px 7px;border-radius:4px}
 .pbadge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px}
 .pb-sim{background:#dcfce7;color:#16a34a}
@@ -989,10 +989,6 @@ tr.hidden{display:none}
       <option value="Não">Recusados</option>
       <option value="Em análise">Em análise</option>
     </select>
-    <select id="conv-nivel" onchange="applyConv()">
-      <option value="">Nível: Todos</option>
-      <option>Alto</option><option>Médio</option><option>Baixo</option>
-    </select>
     <select id="conv-tipo" onchange="applyConv()">
       <option value="">Tipo: Todos</option>
       <option>Feira</option><option>Palestra</option><option>Painel</option>
@@ -1009,14 +1005,13 @@ tr.hidden{display:none}
     <table id="conv-table">
       <thead>
         <tr>
-          <th>Nível</th><th>Evento</th><th>Faculdade</th><th>Estado</th>
+          <th>Evento</th><th>Faculdade</th><th>Estado</th>
           <th>Tipo</th><th>Data</th><th>Custo Total</th><th>Expectativa Público</th>
           <th>Participação</th><th>Feedback</th>
         </tr>
       </thead>
       <tbody id="conv-tbody">
-<tr data-part="Não" data-nivel="Médio" data-tipo="Feira" data-estado="RJ">
-  <td><span class="nbadge" style="background:#d97706">Médio</span></td>
+<tr data-part="Não" data-tipo="Feira" data-estado="RJ">
   <td class="ev-name">Feira de Carreira da Politécnica-UFRJ</td>
   <td>UFRJ</td>
   <td><span class="ebadge" style="background:#1d4ed8">RJ</span></td>
@@ -1027,8 +1022,7 @@ tr.hidden{display:none}
   <td><span class="pbadge pb-nao">Não</span></td>
   <td class="fb-ok">✓</td>
 </tr>
-<tr data-part="Não" data-nivel="Baixo" data-tipo="Palestra" data-estado="ES">
-  <td><span class="nbadge" style="background:#16a34a">Baixo</span></td>
+<tr data-part="Não" data-tipo="Palestra" data-estado="ES">
   <td class="ev-name">PETROUFES</td>
   <td>UFES</td>
   <td><span class="ebadge" style="background:#64748b">ES</span></td>
@@ -1039,8 +1033,7 @@ tr.hidden{display:none}
   <td><span class="pbadge pb-nao">Não</span></td>
   <td class="fb-ok">✓</td>
 </tr>
-<tr data-part="" data-nivel="Médio" data-tipo="Feira" data-estado="SP">
-  <td><span class="nbadge" style="background:#d97706">Médio</span></td>
+<tr data-part="" data-tipo="Feira" data-estado="SP">
   <td class="ev-name">NX - Networking Experience 2026</td>
   <td>Mackenzie</td>
   <td><span class="ebadge" style="background:#7c3aed">SP</span></td>
@@ -1051,8 +1044,7 @@ tr.hidden{display:none}
   <td><span class="pbadge pb-na">—</span></td>
   <td class="fb-na">—</td>
 </tr>
-<tr data-part="Sim" data-nivel="Médio" data-tipo="Feira" data-estado="RJ">
-  <td><span class="nbadge" style="background:#d97706">Médio</span></td>
+<tr data-part="Sim" data-tipo="Feira" data-estado="RJ">
   <td class="ev-name">Conecta</td>
   <td>IBMEC</td>
   <td><span class="ebadge" style="background:#1d4ed8">RJ</span></td>
@@ -1063,8 +1055,7 @@ tr.hidden{display:none}
   <td><span class="pbadge pb-sim">Sim</span></td>
   <td class="fb-ok">✓</td>
 </tr>
-<tr data-part="Sim" data-nivel="Alto" data-tipo="Feira" data-estado="SP">
-  <td><span class="nbadge" style="background:#dc2626">Alto</span></td>
+<tr data-part="Sim" data-tipo="Feira" data-estado="SP">
   <td class="ev-name">Feira de Recrutamento e Carreira</td>
   <td>USP</td>
   <td><span class="ebadge" style="background:#7c3aed">SP</span></td>
@@ -1075,8 +1066,7 @@ tr.hidden{display:none}
   <td><span class="pbadge pb-sim">Sim</span></td>
   <td class="fb-ok">✓</td>
 </tr>
-<tr data-part="Não" data-nivel="Baixo" data-tipo="Palestra" data-estado="SP">
-  <td><span class="nbadge" style="background:#16a34a">Baixo</span></td>
+<tr data-part="Não" data-tipo="Palestra" data-estado="SP">
   <td class="ev-name">SEMATRON (Semana de Engenharia Mecatrônica)</td>
   <td>USP</td>
   <td><span class="ebadge" style="background:#7c3aed">SP</span></td>
@@ -1087,8 +1077,7 @@ tr.hidden{display:none}
   <td><span class="pbadge pb-nao">Não</span></td>
   <td class="fb-ok">✓</td>
 </tr>
-<tr data-part="" data-nivel="Baixo" data-tipo="Palestra" data-estado="RS">
-  <td><span class="nbadge" style="background:#16a34a">Baixo</span></td>
+<tr data-part="" data-tipo="Palestra" data-estado="RS">
   <td class="ev-name">Speed Job </td>
   <td>UFPel</td>
   <td><span class="ebadge" style="background:#0d9488">RS</span></td>
@@ -1099,8 +1088,7 @@ tr.hidden{display:none}
   <td><span class="pbadge pb-na">—</span></td>
   <td class="fb-na">—</td>
 </tr>
-<tr data-part="Sim" data-nivel="Médio" data-tipo="Painel" data-estado="">
-  <td><span class="nbadge" style="background:#d97706">Médio</span></td>
+<tr data-part="Sim" data-tipo="Painel" data-estado="">
   <td class="ev-name">Feira Virtual Emprega</td>
   <td>N/A</td>
   <td></td>
@@ -1111,8 +1099,7 @@ tr.hidden{display:none}
   <td><span class="pbadge pb-sim">Sim</span></td>
   <td class="fb-ok">✓</td>
 </tr>
-<tr data-part="Não" data-nivel="Alto" data-tipo="Feira" data-estado="SP">
-  <td><span class="nbadge" style="background:#dc2626">Alto</span></td>
+<tr data-part="Não" data-tipo="Feira" data-estado="SP">
   <td class="ev-name">Conferência de Carreira</td>
   <td>—</td>
   <td><span class="ebadge" style="background:#7c3aed">SP</span></td>
@@ -1123,8 +1110,7 @@ tr.hidden{display:none}
   <td><span class="pbadge pb-nao">Não</span></td>
   <td class="fb-ok">✓</td>
 </tr>
-<tr data-part="Sim" data-nivel="Médio" data-tipo="Palestra" data-estado="SP">
-  <td><span class="nbadge" style="background:#d97706">Médio</span></td>
+<tr data-part="Sim" data-tipo="Palestra" data-estado="SP">
   <td class="ev-name">1st Industry
 Academia Partnership Workshop in Geosciences for Oil & Gas</td>
   <td>UNICAMP</td>
@@ -1136,8 +1122,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</td>
   <td><span class="pbadge pb-sim">Sim</span></td>
   <td class="fb-na">—</td>
 </tr>
-<tr data-part="" data-nivel="Alto" data-tipo="Feira" data-estado="SP">
-  <td><span class="nbadge" style="background:#dc2626">Alto</span></td>
+<tr data-part="" data-tipo="Feira" data-estado="SP">
   <td class="ev-name">Feira de Carreiras</td>
   <td>UNICAMP</td>
   <td><span class="ebadge" style="background:#7c3aed">SP</span></td>
@@ -1148,8 +1133,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</td>
   <td><span class="pbadge pb-na">—</span></td>
   <td class="fb-na">—</td>
 </tr>
-<tr data-part="Sim" data-nivel="Alto" data-tipo="Feira" data-estado="SP">
-  <td><span class="nbadge" style="background:#dc2626">Alto</span></td>
+<tr data-part="Sim" data-tipo="Feira" data-estado="SP">
   <td class="ev-name">Feira de Carreiras</td>
   <td>ITA</td>
   <td><span class="ebadge" style="background:#7c3aed">SP</span></td>
@@ -1160,8 +1144,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</td>
   <td><span class="pbadge pb-sim">Sim</span></td>
   <td class="fb-ok">✓</td>
 </tr>
-<tr data-part="Sim" data-nivel="Médio" data-tipo="Feira" data-estado="SP">
-  <td><span class="nbadge" style="background:#d97706">Médio</span></td>
+<tr data-part="Sim" data-tipo="Feira" data-estado="SP">
   <td class="ev-name">XXIX SEMEC</td>
   <td>UNICAMP</td>
   <td><span class="ebadge" style="background:#7c3aed">SP</span></td>
@@ -1172,8 +1155,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</td>
   <td><span class="pbadge pb-sim">Sim</span></td>
   <td class="fb-na">—</td>
 </tr>
-<tr data-part="Não" data-nivel="Alto" data-tipo="Feira" data-estado="SP">
-  <td><span class="nbadge" style="background:#dc2626">Alto</span></td>
+<tr data-part="Não" data-tipo="Feira" data-estado="SP">
   <td class="ev-name">Workshop Integrativo WI</td>
   <td>USP</td>
   <td><span class="ebadge" style="background:#7c3aed">SP</span></td>
@@ -1184,7 +1166,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</td>
   <td><span class="pbadge pb-nao">Não</span></td>
   <td class="fb-ok">✓</td>
 </tr>
-<tr data-part="Não" data-nivel="" data-tipo="Feira" data-estado="SP">
+<tr data-part="Não" data-tipo="Feira" data-estado="SP">
   <td></td>
   <td class="ev-name">21° Feira de Carreiras</td>
   <td>USP</td>
@@ -1196,8 +1178,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</td>
   <td><span class="pbadge pb-nao">Não</span></td>
   <td class="fb-na">—</td>
 </tr>
-<tr data-part="Não" data-nivel="Baixo" data-tipo="Palestra" data-estado="RJ">
-  <td><span class="nbadge" style="background:#16a34a">Baixo</span></td>
+<tr data-part="Não" data-tipo="Palestra" data-estado="RJ">
   <td class="ev-name">27º Encontro da Engenharia de Produção</td>
   <td>UENF</td>
   <td><span class="ebadge" style="background:#1d4ed8">RJ</span></td>
@@ -1208,8 +1189,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</td>
   <td><span class="pbadge pb-nao">Não</span></td>
   <td class="fb-ok">✓</td>
 </tr>
-<tr data-part="Não" data-nivel="Médio" data-tipo="Palestra" data-estado="SP">
-  <td><span class="nbadge" style="background:#d97706">Médio</span></td>
+<tr data-part="Não" data-tipo="Palestra" data-estado="SP">
   <td class="ev-name">XV SEGEP CAEP</td>
   <td>USP</td>
   <td><span class="ebadge" style="background:#7c3aed">SP</span></td>
@@ -1220,8 +1200,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</td>
   <td><span class="pbadge pb-nao">Não</span></td>
   <td class="fb-ok">✓</td>
 </tr>
-<tr data-part="Sim" data-nivel="Médio" data-tipo="Feira" data-estado="RJ">
-  <td><span class="nbadge" style="background:#d97706">Médio</span></td>
+<tr data-part="Sim" data-tipo="Feira" data-estado="RJ">
   <td class="ev-name">Conecta</td>
   <td>IBMEC</td>
   <td><span class="ebadge" style="background:#1d4ed8">RJ</span></td>
@@ -1232,8 +1211,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</td>
   <td><span class="pbadge pb-sim">Sim</span></td>
   <td class="fb-ok">✓</td>
 </tr>
-<tr data-part="Sim" data-nivel="Alto" data-tipo="Feira" data-estado="PE">
-  <td><span class="nbadge" style="background:#dc2626">Alto</span></td>
+<tr data-part="Sim" data-tipo="Feira" data-estado="PE">
   <td class="ev-name">UFPE no Mercado</td>
   <td>UFPE</td>
   <td><span class="ebadge" style="background:#d97706">PE</span></td>
@@ -1244,8 +1222,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</td>
   <td><span class="pbadge pb-sim">Sim</span></td>
   <td class="fb-ok">✓</td>
 </tr>
-<tr data-part="Sim" data-nivel="Médio" data-tipo="Palestra" data-estado="RJ">
-  <td><span class="nbadge" style="background:#d97706">Médio</span></td>
+<tr data-part="Sim" data-tipo="Palestra" data-estado="RJ">
   <td class="ev-name">Semana Ayra</td>
   <td>UFRJ</td>
   <td><span class="ebadge" style="background:#1d4ed8">RJ</span></td>
@@ -1256,7 +1233,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</td>
   <td><span class="pbadge pb-sim">Sim</span></td>
   <td class="fb-na">—</td>
 </tr>
-<tr data-part="Não" data-nivel="" data-tipo="Palestra" data-estado="RJ">
+<tr data-part="Não" data-tipo="Palestra" data-estado="RJ">
   <td></td>
   <td class="ev-name">SPEtro XVI UFRJ</td>
   <td>UFRJ</td>
@@ -1268,8 +1245,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</td>
   <td><span class="pbadge pb-nao">Não</span></td>
   <td class="fb-no">✗</td>
 </tr>
-<tr data-part="Em análise" data-nivel="Médio" data-tipo="Palestra" data-estado="RJ">
-  <td><span class="nbadge" style="background:#d97706">Médio</span></td>
+<tr data-part="Em análise" data-tipo="Palestra" data-estado="RJ">
   <td class="ev-name">Evento Interação</td>
   <td>UFF</td>
   <td><span class="ebadge" style="background:#1d4ed8">RJ</span></td>
@@ -1280,8 +1256,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</td>
   <td><span class="pbadge pb-analise">Em análise</span></td>
   <td class="fb-no">✗</td>
 </tr>
-<tr data-part="Não" data-nivel="Médio" data-tipo="Palestra" data-estado="RJ">
-  <td><span class="nbadge" style="background:#d97706">Médio</span></td>
+<tr data-part="Não" data-tipo="Palestra" data-estado="RJ">
   <td class="ev-name">Palestras de Férias</td>
   <td>UFRJ</td>
   <td><span class="ebadge" style="background:#1d4ed8">RJ</span></td>
@@ -1292,8 +1267,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</td>
   <td><span class="pbadge pb-nao">Não</span></td>
   <td class="fb-no">✗</td>
 </tr>
-<tr data-part="Sim" data-nivel="Médio" data-tipo="Palestra" data-estado="RJ">
-  <td><span class="nbadge" style="background:#d97706">Médio</span></td>
+<tr data-part="Sim" data-tipo="Palestra" data-estado="RJ">
   <td class="ev-name">Semana da Petrofísica</td>
   <td>UFRJ</td>
   <td><span class="ebadge" style="background:#1d4ed8">RJ</span></td>
@@ -1304,8 +1278,7 @@ Academia Partnership Workshop in Geosciences for Oil & Gas</td>
   <td><span class="pbadge pb-sim">Sim</span></td>
   <td class="fb-ok">✓</td>
 </tr>
-<tr data-part="Não" data-nivel="Baixo" data-tipo="Palestra" data-estado="SP">
-  <td><span class="nbadge" style="background:#16a34a">Baixo</span></td>
+<tr data-part="Não" data-tipo="Palestra" data-estado="SP">
   <td class="ev-name">XIV Workshop de Petróleo da SPE</td>
   <td>USP</td>
   <td><span class="ebadge" style="background:#7c3aed">SP</span></td>
@@ -1791,14 +1764,12 @@ function applyTL() {
 // ── Convites filter ───────────────────────────────────────────────────────────
 function applyConv() {
   const part  = document.getElementById('conv-part').value;
-  const nivel = document.getElementById('conv-nivel').value;
   const tipo  = document.getElementById('conv-tipo').value;
   const est   = document.getElementById('conv-est').value;
   const q     = (document.getElementById('conv-search').value||'').toLowerCase();
 
   allConvRows.forEach(r => {
     const ok = (!part  || r.dataset.part  === part)
-            && (!nivel || r.dataset.nivel === nivel)
             && (!tipo  || r.dataset.tipo  === tipo)
             && (!est   || r.dataset.estado=== est)
             && (!q     || r.textContent.toLowerCase().includes(q));
