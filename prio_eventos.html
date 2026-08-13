@@ -3,1798 +3,203 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PRIO · Eventos Marca Empregadora 2026</title>
+<title>PRIO — Marca Empregadora 2026</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --blue:#1d4ed8;--blue-d:#1e3a8a;--blue-l:#dbeafe;
-  --green:#16a34a;--red:#dc2626;--amber:#d97706;
-  --purple:#7c3aed;--teal:#0d9488;
-  --bg:#f1f5f9;--card:#fff;--border:#e2e8f0;
-  --text:#1e293b;--muted:#64748b;--sidebar:#1e3a8a;
-}
+:root{--blue:#1d4ed8;--blue-d:#1e3a8a;--green:#16a34a;--red:#dc2626;--amber:#d97706;--teal:#0d9488;--bg:#f1f5f9;--card:#fff;--text:#1e293b;--muted:#64748b;--border:#e2e8f0}
 body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh}
-
-/* ── Sidebar ── */
-#sidebar{width:220px;min-width:220px;background:var(--sidebar);display:flex;flex-direction:column;position:fixed;top:0;bottom:0;left:0;z-index:100}
-.sb-logo{padding:20px 16px 12px;border-bottom:1px solid rgba(255,255,255,.1)}
-.sb-logo img{height:32px}
-.sb-logo .sb-title{color:#fff;font-size:13px;font-weight:700;letter-spacing:.5px;margin-top:6px}
-.sb-logo .sb-sub{color:rgba(255,255,255,.5);font-size:11px;margin-top:2px}
-.sb-nav{flex:1;padding:12px 0;overflow-y:auto}
-.sb-nav a{display:flex;align-items:center;gap:10px;padding:10px 18px;color:rgba(255,255,255,.75);text-decoration:none;font-size:13px;border-left:3px solid transparent;transition:.15s}
-.sb-nav a:hover{background:rgba(255,255,255,.08);color:#fff}
-.sb-nav a.active{background:rgba(255,255,255,.12);color:#fff;border-left-color:#60a5fa}
-.sb-nav .nav-icon{font-size:16px;width:20px;text-align:center}
-.sb-footer{padding:12px 16px;border-top:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.4);font-size:11px}
-
-/* ── Main ── */
-#main{margin-left:220px;flex:1;display:flex;flex-direction:column;min-height:100vh}
-#topbar{background:#fff;border-bottom:1px solid var(--border);padding:0 24px;height:56px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:90}
-.topbar-title{font-weight:700;font-size:16px;color:var(--blue-d);flex:1}
-.topbar-filters{display:flex;align-items:center;gap:10px}
-.topbar-filters select,.topbar-filters input{border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:13px;color:var(--text);background:#fff}
-.topbar-filters input{min-width:200px}
-.btn-export{background:var(--blue);color:#fff;border:none;border-radius:6px;padding:7px 14px;font-size:13px;cursor:pointer;font-weight:600}
-.btn-export:hover{background:var(--blue-d)}
-
-/* ── Sections ── */
-.section{display:none;flex:1;padding:24px;flex-direction:column;gap:20px}
-.section.active{display:flex}
-.sec-title{font-size:20px;font-weight:700;color:var(--blue-d);margin-bottom:4px}
-.sec-sub{font-size:13px;color:var(--muted)}
-
-/* ── KPI cards ── */
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px}
-.kpi{background:var(--card);border-radius:12px;padding:20px 18px;box-shadow:0 1px 4px rgba(0,0,0,.06);border-top:4px solid var(--blue);position:relative;overflow:hidden}
-.kpi.green{border-top-color:var(--green)}
-.kpi.red{border-top-color:var(--red)}
-.kpi.amber{border-top-color:var(--amber)}
-.kpi.purple{border-top-color:var(--purple)}
-.kpi.teal{border-top-color:var(--teal)}
-.kpi-icon{font-size:28px;margin-bottom:8px}
-.kpi-val{font-size:32px;font-weight:800;color:var(--blue-d);line-height:1}
-.kpi.green .kpi-val{color:var(--green)}
-.kpi.red .kpi-val{color:var(--red)}
-.kpi.amber .kpi-val{color:var(--amber)}
-.kpi.purple .kpi-val{color:var(--purple)}
-.kpi.teal .kpi-val{color:var(--teal)}
-.kpi-label{font-size:12px;color:var(--muted);margin-top:4px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
-
-/* ── Budget bar ── */
-.budget-bar-wrap{background:var(--card);border-radius:12px;padding:20px 24px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-.budget-bar-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.budget-bar-title{font-weight:700;font-size:15px}
-.budget-pct{font-size:22px;font-weight:800;color:var(--amber)}
-.budget-bar{height:16px;background:#e2e8f0;border-radius:99px;overflow:hidden}
-.budget-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#1d4ed8,#7c3aed);transition:width .5s}
-.budget-labels{display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:var(--muted)}
-
-/* ── Timeline ── */
-.tl-filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.tl-tabs{display:flex;gap:4px;flex-wrap:wrap}
-.tl-tab{padding:6px 14px;border-radius:99px;border:1.5px solid var(--border);font-size:12px;font-weight:600;cursor:pointer;background:#fff;transition:.15s;color:var(--muted)}
-.tl-tab.active{background:var(--blue);border-color:var(--blue);color:#fff}
-.tl-tab .tl-tab-ct{display:inline-block;margin-left:5px;background:rgba(255,255,255,.25);border-radius:99px;padding:0 6px;font-size:11px}
-.tl-tab:not(.active) .tl-tab-ct{background:var(--blue-l);color:var(--blue)}
-
-.month-sep{padding:6px 0;margin-top:12px;font-weight:700;font-size:13px;color:var(--blue);text-transform:uppercase;letter-spacing:.8px;border-bottom:2px solid var(--blue-l)}
-.month-sep span{background:var(--blue);color:#fff;padding:2px 10px;border-radius:4px}
-
-.card{background:var(--card);border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:10px;overflow:hidden;transition:.15s}
-.card:hover{box-shadow:0 4px 12px rgba(0,0,0,.1)}
-.card.hidden{display:none}
-.card-header{padding:12px 14px 8px}
-.card-title-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px}
-.card-tipo{font-size:11px;font-weight:700;color:#fff;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.4px}
-.card-date{font-size:12px;color:var(--muted);font-weight:600}
-.card-name{font-size:15px;font-weight:700;color:var(--text)}
-.card-inst{font-size:12px;color:var(--muted);margin-top:2px}
-.card-body{padding:6px 14px 12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.card-local,.card-curso{font-size:12px;color:var(--muted)}
-.imp-badge{background:var(--blue-l);color:var(--blue);font-size:11px;font-weight:700;padding:3px 8px;border-radius:99px}
-.int-flag{background:#6d28d9;color:#fff;font-size:11px;padding:2px 7px;border-radius:4px;font-weight:600}
-.spk{font-size:11px;padding:2px 7px;border-radius:99px;font-weight:600}
-.spk.rh{background:#dbeafe;color:#1d4ed8}
-.spk.t1{background:#ede9fe;color:#7c3aed}
-.spk.t2{background:#d1fae5;color:#065f46}
-
-/* ── Badges ── */
-.ebadge{font-size:11px;font-weight:700;color:#fff;padding:2px 7px;border-radius:4px}
-
-.tbadge{font-size:11px;font-weight:700;color:#fff;padding:2px 7px;border-radius:4px}
-.pbadge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px}
-.pb-sim{background:#dcfce7;color:#16a34a}
-.pb-nao{background:#fee2e2;color:#dc2626}
-.pb-analise{background:#fef9c3;color:#ca8a04}
-.pb-na{background:#f1f5f9;color:#64748b}
-.fb-ok{color:var(--green);font-weight:700}
-.fb-no{color:var(--red)}
-.fb-na{color:var(--muted)}
-
-/* ── Table ── */
-.table-wrap{overflow-x:auto;background:var(--card);border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sidebar{width:220px;background:var(--blue-d);color:#fff;padding:20px;position:fixed;left:0;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;z-index:100}
+.logo{font-size:20px;font-weight:700;margin-bottom:30px}
+.nav{flex:1}
+.nav a{display:block;padding:12px 0;color:rgba(255,255,255,.7);text-decoration:none;font-size:14px;cursor:pointer;border-left:3px solid transparent;padding-left:12px;transition:.15s}
+.nav a:hover,.nav a.active{color:#fff;border-left-color:#60a5fa;background:rgba(255,255,255,.05)}
+.footer{font-size:12px;color:rgba(255,255,255,.5)}
+main{margin-left:220px;flex:1;padding:24px}
+.header{background:var(--card);padding:20px 24px;border-radius:10px;margin-bottom:24px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.header h1{font-size:22px;color:var(--blue-d);margin-bottom:4px}
+.header p{font-size:13px;color:var(--muted)}
+.content{display:none}
+.content.active{display:block}
+.section-title{font-size:16px;font-weight:700;color:var(--blue-d);margin-bottom:16px}
+.table-wrap{background:var(--card);border-radius:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05);overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:13px}
-thead tr{background:var(--blue-d);color:#fff}
-th{padding:11px 12px;text-align:left;font-weight:600;white-space:nowrap;font-size:12px;letter-spacing:.3px}
-td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
-tr:last-child td{border-bottom:none}
-tr:hover td{background:#f8fafc}
-.ev-name{font-weight:600;max-width:220px}
-tr.hidden{display:none}
-
-/* ── Convites filters ── */
-.conv-filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.conv-filters select{border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:13px}
-
-/* ── Summary chips ── */
-.chip-row{display:flex;gap:8px;flex-wrap:wrap}
-.chip{background:#fff;border:1.5px solid var(--border);border-radius:99px;padding:5px 14px;font-size:12px;font-weight:600;cursor:pointer;transition:.15s;color:var(--muted)}
-.chip.active{border-color:var(--blue);color:var(--blue);background:var(--blue-l)}
-.chip .chip-ct{margin-left:5px;background:var(--blue-l);color:var(--blue);border-radius:99px;padding:0 6px;font-size:11px}
-.chip:not(.active) .chip-ct{background:#f1f5f9;color:var(--muted)}
-
-/* ── Visitas ── */
-.vis-section-title{font-weight:700;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid var(--border)}
-.vis-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
-.vis-card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,.06);border-left:4px solid var(--teal)}
-.vis-card.vis-past{border-left-color:#94a3b8;opacity:.85}
-.vis-card-top{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
-.vis-date-badge{background:var(--teal);color:#fff;font-size:12px;font-weight:700;padding:3px 10px;border-radius:6px}
-.vis-past-tag{font-size:11px;color:var(--muted);border:1px solid var(--border);border-radius:99px;padding:2px 8px;margin-left:auto}
-.vis-upcoming-tag{font-size:11px;color:var(--green);border:1.5px solid var(--green);border-radius:99px;padding:2px 8px;background:#dcfce7;margin-left:auto}
-.vis-inst{font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px}
-.vis-meta{display:flex;flex-wrap:wrap;gap:8px;font-size:12px;color:var(--muted);margin-bottom:6px}
-.vis-spks{font-size:12px;color:var(--blue);font-style:italic;border-top:1px solid var(--border);padding-top:8px;margin-top:4px}
-
-/* ── Custos ── */
-.cost-kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
-.cost-kpi{background:var(--card);border-radius:12px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.06);text-align:center}
-.cost-kpi-val{font-size:28px;font-weight:800;color:var(--blue-d)}
-.cost-kpi-label{font-size:12px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.4px;font-weight:600}
-
-/* ── Modal ── */
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:none;justify-content:center;align-items:center}
-.modal-bg.open{display:flex}
-.modal{background:#fff;border-radius:14px;padding:28px;max-width:600px;width:90%;max-height:90vh;overflow-y:auto}
-.modal-title{font-size:17px;font-weight:700;margin-bottom:16px}
-.modal-close{float:right;cursor:pointer;color:var(--muted);font-size:20px}
-
-/* ── Misc ── */
-.empty-msg{color:var(--muted);font-style:italic;padding:20px 0;text-align:center}
-.pill-row{display:flex;gap:6px;flex-wrap:wrap}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-@media(max-width:768px){
-  #sidebar{display:none}
-  #main{margin-left:0}
-  .two-col{grid-template-columns:1fr}
-  .kpi-grid{grid-template-columns:repeat(2,1fr)}
-}
+thead{background:var(--blue);color:#fff}
+th{padding:12px;text-align:left;font-weight:600;font-size:12px;white-space:nowrap}
+td{padding:12px;border-bottom:1px solid var(--border)}
+tr:hover{background:#f8fafc}
+tbody tr:last-child td{border:none}
+.badge{display:inline-block;padding:3px 8px;border-radius:4px;font-size:11px;font-weight:600;color:#fff}
+.badge-feira{background:#1d4ed8}
+.badge-palestra{background:#7c3aed}
+.badge-visita{background:#0d9488}
+.badge-outro{background:#64748b}
+.badge-sim{background:#16a34a}
+.badge-nao{background:#dc2626}
+.badge-analise{background:#d97706}
+.empty{text-align:center;color:var(--muted);padding:40px 20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:24px}
+.card{background:var(--card);border-radius:10px;padding:16px;border-left:4px solid var(--blue);box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.card-title{font-weight:700;margin-bottom:8px;color:var(--text)}
+.card-meta{font-size:12px;color:var(--muted);margin-bottom:8px}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px}
+.kpi{background:var(--card);padding:16px;border-radius:10px;border-top:4px solid var(--blue);box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.kpi-val{font-size:28px;font-weight:800;color:var(--blue-d);margin-bottom:4px}
+.kpi-label{font-size:12px;color:var(--muted);text-transform:uppercase;font-weight:600;letter-spacing:.4px}
+@media(max-width:768px){.sidebar{width:100%;height:auto;position:relative}main{margin:0}.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
-<!-- ════════════════ SIDEBAR ════════════════ -->
-<nav id="sidebar">
-  <div class="sb-logo">
-    <div class="sb-title">🛢 PRIO</div>
-    <div class="sb-sub">Marca Empregadora 2026</div>
+<nav class="sidebar">
+  <div class="logo">🛢 PRIO</div>
+  <div class="nav">
+    <a onclick="goto('calendario')" class="active">📅 Calendário</a>
+    <a onclick="goto('visitas')">🏢 Visitas PRIO</a>
+    <a onclick="goto('convites')">✉️ Convites Recebidos</a>
+    <a onclick="goto('contatos')">👥 Contatos</a>
+    <a onclick="goto('custos')">💰 Custos</a>
   </div>
-  <div class="sb-nav">
-    <a href="#" class="active" onclick="goto('home',this)"><span class="nav-icon">🏠</span> Visão Geral</a>
-    <a href="#" onclick="goto('timeline',this)"><span class="nav-icon">📅</span> Calendário</a>
-    <a href="#" onclick="goto('convites',this)"><span class="nav-icon">✉️</span> Convites Recebidos</a>
-    <a href="#" onclick="goto('visitas',this)"><span class="nav-icon">🏢</span> Visitas PRIO</a>
-    <a href="#" onclick="goto('contatos',this)"><span class="nav-icon">👥</span> Contatos</a>
-    <a href="#" onclick="goto('custos',this)"><span class="nav-icon">💰</span> Custos</a>
-  </div>
-  <div class="sb-footer">Atualizado: Ago 2026</div>
+  <div class="footer">PRIO Eventos<br>2026</div>
 </nav>
 
-<!-- ════════════════ MAIN ════════════════ -->
-<div id="main">
+<main>
 
-<!-- TOP BAR -->
-<div id="topbar">
-  <div class="topbar-title" id="topbar-title">Visão Geral</div>
-  <div class="topbar-filters">
-    <input type="text" id="search-tl" placeholder="🔍 Buscar evento..." oninput="applyTL()">
-    <select id="filter-est" onchange="applyTL()">
-      <option value="">Todos os estados</option>
-      <option>CE</option><option>EUA</option><option>GO</option>
-      <option>MG</option><option>PE</option><option>RJ</option>
-      <option>RS</option><option>SE</option><option>SP</option>
-    </select>
-    <select id="filter-part" onchange="applyTL()">
-      <option value="">Participação: Todos</option>
-      <option value="Sim" selected>Confirmados</option>
-      <option value="Não">Não participamos</option>
-    </select>
-    <select id="filter-ano" onchange="applyTL()">
-      <option value="2026" selected>2026</option>
-      <option value="">Todos os anos</option>
-    </select>
-    <button class="btn-export" onclick="exportReport()">⬇ Exportar</button>
-  </div>
+<div class="header">
+  <h1>Marca Empregadora — 2026</h1>
+  <p>Dashboard de eventos, visitas e participações</p>
 </div>
 
-<!-- ══ HOME ══ -->
-<section class="section active" id="sec-home">
-  <div>
-    <div class="sec-title">Visão Geral — Marca Empregadora 2026</div>
-    <div class="sec-sub">Painel estratégico de eventos, presença e impacto</div>
-  </div>
-
-  <!-- KPI principal -->
-  <div class="kpi-grid">
-    <div class="kpi blue">
-      <div class="kpi-icon">📅</div>
-      <div class="kpi-val">19</div>
-      <div class="kpi-label">Eventos Externos</div>
-    </div>
-    <div class="kpi green">
-      <div class="kpi-icon">✅</div>
-      <div class="kpi-val">10</div>
-      <div class="kpi-label">Participações Confirmadas</div>
-    </div>
-    <div class="kpi red">
-      <div class="kpi-icon">❌</div>
-      <div class="kpi-val">11</div>
-      <div class="kpi-label">Convites Recusados</div>
-    </div>
-    <div class="kpi teal">
-      <div class="kpi-icon">🏢</div>
-      <div class="kpi-val">15</div>
-      <div class="kpi-label">Visitas na PRIO</div>
-    </div>
-    <div class="kpi purple">
-      <div class="kpi-icon">👥</div>
-      <div class="kpi-val">18110</div>
-      <div class="kpi-label">Total Impactados</div>
-    </div>
-    <div class="kpi amber">
-      <div class="kpi-icon">💰</div>
-      <div class="kpi-val">91%</div>
-      <div class="kpi-label">Orçamento Utilizado</div>
-    </div>
-  </div>
-
-  <!-- Budget bar -->
-  <div class="budget-bar-wrap">
-    <div class="budget-bar-header">
-      <div>
-        <div class="budget-bar-title">Orçamento 2026</div>
-        <div style="font-size:13px;color:var(--muted)">Utilizado vs Previsto</div>
-      </div>
-      <div class="budget-pct">91% utilizado</div>
-    </div>
-    <div class="budget-bar">
-      <div class="budget-fill" style="width:91%"></div>
-    </div>
-    <div class="budget-labels">
-      <span>R$ R$ 319.311 utilizado</span>
-      <span>R$ R$ 30.689 restante</span>
-      <span>R$ R$ 350.000 total</span>
-    </div>
-  </div>
-
-  <!-- Breakdown -->
-  <div class="two-col">
-    <div class="table-wrap">
-      <div style="padding:16px 16px 8px;font-weight:700;font-size:14px">Eventos por Tipo</div>
-      <table>
-        <thead><tr><th>Tipo</th><th>Qtd</th><th>Impactados</th></tr></thead>
-        <tbody>
-          <tr><td>🏛 Feira</td><td><strong>11</strong></td><td>17397</td></tr>
-          <tr><td>🎤 Palestra / Painel</td><td><strong>6</strong></td><td>391</td></tr>
-          <tr><td>🏢 Visita na PRIO</td><td><strong>15</strong></td><td>172</td></tr>
-          <tr><td>🤝 Patrocínio</td><td><strong>2</strong></td><td>150</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="table-wrap">
-      <div style="padding:16px 16px 8px;font-weight:700;font-size:14px">Convites Recebidos</div>
-      <table>
-        <thead><tr><th>Status</th><th>Qtd</th><th>%</th></tr></thead>
-        <tbody>
-          <tr><td>✅ Confirmados</td><td><strong style="color:var(--green)">10</strong></td><td>40%</td></tr>
-          <tr><td>❌ Recusados</td><td><strong style="color:var(--red)">11</strong></td><td>44%</td></tr>
-          <tr><td>🔄 Em análise</td><td><strong style="color:var(--amber)">1</strong></td><td>4%</td></tr>
-          <tr><td>— Pendente</td><td><strong style="color:var(--muted)">3</strong></td><td>—</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Top estados -->
+<div class="content active" id="sec-calendario">
+  <h2 class="section-title">📅 Calendário de Eventos</h2>
   <div class="table-wrap">
-    <div style="padding:16px 16px 8px;font-weight:700;font-size:14px">Presença por Estado</div>
-    <div style="padding:8px 16px 16px;display:flex;gap:10px;flex-wrap:wrap">
-      <div style="text-align:center;background:var(--blue-l);border-radius:10px;padding:12px 16px;min-width:80px"><div style="font-size:20px;font-weight:800;color:var(--blue)">17</div><div style="font-size:12px;color:var(--muted);font-weight:600">RJ</div></div><div style="text-align:center;background:var(--blue-l);border-radius:10px;padding:12px 16px;min-width:80px"><div style="font-size:20px;font-weight:800;color:var(--blue)">7</div><div style="font-size:12px;color:var(--muted);font-weight:600">SP</div></div><div style="text-align:center;background:var(--blue-l);border-radius:10px;padding:12px 16px;min-width:80px"><div style="font-size:20px;font-weight:800;color:var(--blue)">2</div><div style="font-size:12px;color:var(--muted);font-weight:600">EUA</div></div><div style="text-align:center;background:var(--blue-l);border-radius:10px;padding:12px 16px;min-width:80px"><div style="font-size:20px;font-weight:800;color:var(--blue)">1</div><div style="font-size:12px;color:var(--muted);font-weight:600">SE</div></div><div style="text-align:center;background:var(--blue-l);border-radius:10px;padding:12px 16px;min-width:80px"><div style="font-size:20px;font-weight:800;color:var(--blue)">1</div><div style="font-size:12px;color:var(--muted);font-weight:600">RS</div></div><div style="text-align:center;background:var(--blue-l);border-radius:10px;padding:12px 16px;min-width:80px"><div style="font-size:20px;font-weight:800;color:var(--blue)">1</div><div style="font-size:12px;color:var(--muted);font-weight:600">PE</div></div><div style="text-align:center;background:var(--blue-l);border-radius:10px;padding:12px 16px;min-width:80px"><div style="font-size:20px;font-weight:800;color:var(--blue)">1</div><div style="font-size:12px;color:var(--muted);font-weight:600">Argentina</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ TIMELINE / CALENDÁRIO ══ -->
-<section class="section" id="sec-timeline">
-  <div>
-    <div class="sec-title">Calendário de Eventos 2026</div>
-    <div class="sec-sub">Todos os eventos externos — feiras, palestras, patrocínios, visitas</div>
-  </div>
-  <div class="tl-tabs" id="tl-tabs">
-    <button class="tl-tab active" data-tab="" onclick="setTab('',this)">Todos <span class="tl-tab-ct" id="cb-todos">0</span></button>
-    <button class="tl-tab" data-tab="feira" onclick="setTab('feira',this)">Feiras <span class="tl-tab-ct" id="cb-feira">0</span></button>
-    <button class="tl-tab" data-tab="palestra" onclick="setTab('palestra',this)">Palestras <span class="tl-tab-ct" id="cb-palestra">0</span></button>
-    <button class="tl-tab" data-tab="outro" onclick="setTab('outro',this)">Outros <span class="tl-tab-ct" id="cb-outro">0</span></button>
-    <button class="tl-tab" data-tab="visita" onclick="setTab('visita',this)">Visitas PRIO <span class="tl-tab-ct" id="cb-visita">0</span></button>
-    <button class="tl-tab" data-tab="internacional" onclick="setTab('internacional',this)">🌐 Internacional <span class="tl-tab-ct" id="cb-internacional">0</span></button>
-  </div>
-  <div id="tl-panel">
-<div class="month-sep" data-month="2"><span>Fevereiro 2026</span></div>
-<div class="card" data-id="0" data-tab="visita" data-est="SE" data-date="2026-02-05" data-mes="2" data-part="">
-  <div class="card-header" style="border-left:4px solid #0d9488">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#0d9488">Visita na PRIO</span>
-      
-      <span class="card-date">05/Fev</span>
-      <span class="ebadge" style="background:#0891b2">SE</span>
-    </div>
-    <div class="card-name">Visita PRIO</div>
-    <div class="card-inst">UFS</div>
-  </div>
-  <div class="card-body">
-    <div class="card-local">📍 Sala TBMT</div>
-    <div class="card-curso">🎓 Misto</div>
-    <span class="imp-badge">👥 3 impactados</span>
-    <div class="card-spks"><span class="spk rh">Caroline Santos</span><span class="spk t1">Gabriel Ramos</span><span class="spk t2">Davis de Godoy</span></div>
-  </div>
-</div>
-<div class="month-sep" data-month="3"><span>Março 2026</span></div>
-<div class="card" data-id="1" data-tab="visita" data-est="RJ" data-date="2026-03-25" data-mes="3" data-part="">
-  <div class="card-header" style="border-left:4px solid #0d9488">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#0d9488">Visita na PRIO</span>
-      
-      <span class="card-date">25/Mar</span>
-      <span class="ebadge" style="background:#1d4ed8">RJ</span>
-    </div>
-    <div class="card-name">Visita PRIO</div>
-    <div class="card-inst">UERJ - FGV - UFRJ</div>
-  </div>
-  <div class="card-body">
-    <div class="card-local">📍 Auditório</div>
-    <div class="card-curso">🎓 Corporativo</div>
-    <span class="imp-badge">👥 38 impactados</span>
-    <div class="card-spks"><span class="spk rh">Caroline Santos</span><span class="spk t1">Gustavo Hooper</span><span class="spk t2">Diego Figueiredo</span></div>
-  </div>
-</div>
-<div class="card" data-id="2" data-tab="feira" data-est="RJ" data-date="2026-03-26" data-mes="3" data-part="Sim">
-  <div class="card-header" style="border-left:4px solid #1d4ed8">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#1d4ed8">Feira</span>
-      
-      <span class="card-date">26/Mar</span>
-      <span class="ebadge" style="background:#1d4ed8">RJ</span>
-    </div>
-    <div class="card-name">Feira Técnica SENAI</div>
-    <div class="card-inst">SENAI</div>
-  </div>
-  <div class="card-body">
-    
-    
-    <span class="imp-badge">👥 200 impactados</span>
-    <div class="card-spks"><span class="spk rh">Caroline Santos</span></div>
-  </div>
-</div>
-<div class="month-sep" data-month="4"><span>Abril 2026</span></div>
-<div class="card" data-id="3" data-tab="visita" data-est="RJ" data-date="2026-04-10" data-mes="4" data-part="">
-  <div class="card-header" style="border-left:4px solid #0d9488">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#0d9488">Visita na PRIO</span>
-      
-      <span class="card-date">10/Abr</span>
-      <span class="ebadge" style="background:#1d4ed8">RJ</span>
-    </div>
-    <div class="card-name">Visita PRIO</div>
-    <div class="card-inst">UNICAMP - USP - UFRJ</div>
-  </div>
-  <div class="card-body">
-    <div class="card-local">📍 Rooftop</div>
-    <div class="card-curso">🎓 G&G</div>
-    <span class="imp-badge">👥 24 impactados</span>
-    <div class="card-spks"><span class="spk rh">Caroline Santos</span><span class="spk t1">Humberto Bovolenta</span><span class="spk t2">Marina Luiza Jordão</span></div>
-  </div>
-</div>
-<div class="card" data-id="4" data-tab="outro" data-est="RJ" data-date="2026-04-11" data-mes="4" data-part="Sim">
-  <div class="card-header" style="border-left:4px solid #059669">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#059669">Patrocínio</span>
-      
-      <span class="card-date">11/Abr</span>
-      <span class="ebadge" style="background:#1d4ed8">RJ</span>
-    </div>
-    <div class="card-name">Petrogames UFRJ</div>
-    <div class="card-inst">UFRJ</div>
-  </div>
-  <div class="card-body">
-    
-    
-    <span class="imp-badge">👥 50 impactados</span>
-    
-  </div>
-</div>
-<div class="card" data-id="5" data-tab="feira" data-est="RJ" data-date="2026-04-28" data-mes="4" data-part="Sim">
-  <div class="card-header" style="border-left:4px solid #1d4ed8">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#1d4ed8">Feira</span>
-      
-      <span class="card-date">28/Abr</span>
-      <span class="ebadge" style="background:#1d4ed8">RJ</span>
-    </div>
-    <div class="card-name">CONECTA IBMEC</div>
-    <div class="card-inst">IBMEC</div>
-  </div>
-  <div class="card-body">
-    
-    
-    <span class="imp-badge">👥 40 impactados</span>
-    <div class="card-spks"><span class="spk rh">Daniela Gomes</span></div>
-  </div>
-</div>
-<div class="month-sep" data-month="5"><span>Maio 2026</span></div>
-<div class="card" data-id="6" data-tab="outro" data-est="Argentina" data-date="2026-05-14" data-mes="5" data-part="Sim">
-  <div class="card-header" style="border-left:4px solid #059669">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#059669">Patrocínio</span>
-      
-      <span class="card-date">14/Mai</span>
-      <span class="ebadge" style="background:#64748b">Argentina</span>
-    </div>
-    <div class="card-name">Petrogames UFRJ</div>
-    <div class="card-inst">UFRJ</div>
-  </div>
-  <div class="card-body">
-    
-    
-    <span class="imp-badge">👥 100 impactados</span>
-    
-  </div>
-</div>
-<div class="card" data-id="7" data-tab="visita" data-est="RJ" data-date="2026-05-21" data-mes="5" data-part="">
-  <div class="card-header" style="border-left:4px solid #0d9488">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#0d9488">Visita na PRIO</span>
-      
-      <span class="card-date">21/Mai</span>
-      <span class="ebadge" style="background:#1d4ed8">RJ</span>
-    </div>
-    <div class="card-name">Visita PRIO</div>
-    <div class="card-inst">UNIRIO - CEFET - UFRJ</div>
-  </div>
-  <div class="card-body">
-    <div class="card-local">📍 Auditório</div>
-    <div class="card-curso">🎓 Engenharia</div>
-    <span class="imp-badge">👥 31 impactados</span>
-    <div class="card-spks"><span class="spk rh">Ana Luiza Abbiate</span></div>
-  </div>
-</div>
-<div class="card" data-id="8" data-tab="feira" data-est="SP" data-date="2026-05-21" data-mes="5" data-part="Sim">
-  <div class="card-header" style="border-left:4px solid #1d4ed8">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#1d4ed8">Feira</span>
-      
-      <span class="card-date">21/Mai</span>
-      <span class="ebadge" style="background:#7c3aed">SP</span>
-    </div>
-    <div class="card-name">FEIRA FEA USP</div>
-    <div class="card-inst">USP</div>
-  </div>
-  <div class="card-body">
-    
-    
-    <span class="imp-badge">👥 3400 impactados</span>
-    <div class="card-spks"><span class="spk rh">Caroline Santos</span></div>
-  </div>
-</div>
-<div class="card" data-id="9" data-tab="palestra" data-est="RS" data-date="2026-05-26" data-mes="5" data-part="Sim">
-  <div class="card-header" style="border-left:4px solid #7c3aed">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#7c3aed">Palestra</span>
-      
-      <span class="card-date">26/Mai</span>
-      <span class="ebadge" style="background:#0d9488">RS</span>
-    </div>
-    <div class="card-name">SPEED JOB UFPel</div>
-    <div class="card-inst">UFPEL</div>
-  </div>
-  <div class="card-body">
-    
-    
-    <span class="imp-badge">👥 40 impactados</span>
-    
-  </div>
-</div>
-<div class="month-sep" data-month="6"><span>Junho 2026</span></div>
-<div class="card" data-id="10" data-tab="feira" data-est="RJ" data-date="2026-06-01" data-mes="6" data-part="Sim">
-  <div class="card-header" style="border-left:4px solid #1d4ed8">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#1d4ed8">Feira</span>
-      
-      <span class="card-date">01/Jun</span>
-      <span class="ebadge" style="background:#1d4ed8">RJ</span>
-    </div>
-    <div class="card-name">FEIRA VIRTUAL EMPREGA</div>
-    
-  </div>
-  <div class="card-body">
-    
-    
-    <span class="imp-badge">👥 50 impactados</span>
-    
-  </div>
-</div>
-<div class="month-sep" data-month="8"><span>Agosto 2026</span></div>
-<div class="card" data-id="11" data-tab="palestra" data-est="SP" data-date="2026-08-04" data-mes="8" data-part="Sim">
-  <div class="card-header" style="border-left:4px solid #7c3aed">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#7c3aed">Palestra</span>
-      
-      <span class="card-date">04/Ago</span>
-      <span class="ebadge" style="background:#7c3aed">SP</span>
-    </div>
-    <div class="card-name">PALESTRA PUC FINANCE</div>
-    <div class="card-inst">PUC</div>
-  </div>
-  <div class="card-body">
-    <div class="card-local">📍 Online</div>
-    <div class="card-curso">🎓 Corporativo</div>
-    <span class="imp-badge">👥 27 impactados</span>
-    <div class="card-spks"><span class="spk rh">Ana Luiza Abbiate</span><span class="spk t1">Rafael Jansen</span><span class="spk t2">Michael Tiktin</span></div>
-  </div>
-</div>
-<div class="card" data-id="12" data-tab="palestra" data-est="RJ" data-date="2026-08-05" data-mes="8" data-part="Sim">
-  <div class="card-header" style="border-left:4px solid #7c3aed">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#7c3aed">Palestra</span>
-      
-      <span class="card-date">05/Ago</span>
-      <span class="ebadge" style="background:#1d4ed8">RJ</span>
-    </div>
-    <div class="card-name">PALESTRA EENGE UENF</div>
-    <div class="card-inst">UENF</div>
-  </div>
-  <div class="card-body">
-    <div class="card-local">📍 Online</div>
-    <div class="card-curso">🎓 Engenharia</div>
-    <span class="imp-badge">👥 20 impactados</span>
-    <div class="card-spks"><span class="spk rh">Ana Luiza Abbiate</span></div>
-  </div>
-</div>
-<div class="card" data-id="13" data-tab="visita" data-est="EUA" data-date="2026-08-07" data-mes="8" data-part="">
-  <div class="card-header" style="border-left:4px solid #0d9488">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#0d9488">Visita na PRIO</span>
-      <span class="int-flag">🌐 Internacional</span>
-      <span class="card-date">07/Ago</span>
-      <span class="ebadge" style="background:#6d28d9">EUA</span>
-    </div>
-    <div class="card-name">Visita PRIO</div>
-    <div class="card-inst">Texas A&M</div>
-  </div>
-  <div class="card-body">
-    <div class="card-local">📍 Auditório</div>
-    <div class="card-curso">🎓 Corporativo</div>
-    <span class="imp-badge">👥 41 impactados</span>
-    <div class="card-spks"><span class="spk rh">Fernanda Cabral</span><span class="spk t1">Gustavo Hooper</span><span class="spk t2">Milton Rangel</span></div>
-  </div>
-</div>
-<div class="card" data-id="14" data-tab="palestra" data-est="SP" data-date="2026-08-11" data-mes="8" data-part="Sim">
-  <div class="card-header" style="border-left:4px solid #7c3aed">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#7c3aed">Palestra</span>
-      
-      <span class="card-date">11/Ago</span>
-      <span class="ebadge" style="background:#7c3aed">SP</span>
-    </div>
-    <div class="card-name">WORKSHOP GEOSCIENCES UNICAMP</div>
-    <div class="card-inst">UNICAMP</div>
-  </div>
-  <div class="card-body">
-    
-    
-    <span class="imp-badge">👥 150 impactados</span>
-    <div class="card-spks"><span class="spk t1">Felipe Dib</span></div>
-  </div>
-</div>
-<div class="card" data-id="15" data-tab="visita" data-est="RJ" data-date="2026-08-12" data-mes="8" data-part="">
-  <div class="card-header" style="border-left:4px solid #0d9488">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#0d9488">Visita na PRIO</span>
-      
-      <span class="card-date">12/Ago</span>
-      <span class="ebadge" style="background:#1d4ed8">RJ</span>
-    </div>
-    <div class="card-name">Visita PRIO</div>
-    <div class="card-inst">UFRJ - UFF</div>
-  </div>
-  <div class="card-body">
-    <div class="card-local">📍 Auditório</div>
-    <div class="card-curso">🎓 Engenharia</div>
-    <span class="imp-badge">👥 35 impactados</span>
-    <div class="card-spks"><span class="spk rh">Caroline Santos</span><span class="spk t1">Matheus Vieira</span><span class="spk t2">Humberto Bovolenta</span></div>
-  </div>
-</div>
-<div class="card" data-id="16" data-tab="feira" data-est="SP" data-date="2026-08-12" data-mes="8" data-part="Sim">
-  <div class="card-header" style="border-left:4px solid #1d4ed8">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#1d4ed8">Feira</span>
-      
-      <span class="card-date">12/Ago</span>
-      <span class="ebadge" style="background:#7c3aed">SP</span>
-    </div>
-    <div class="card-name">FEIRA DE CARREIRAS INTEGRA UNICAMP</div>
-    <div class="card-inst">UNICAMP</div>
-  </div>
-  <div class="card-body">
-    
-    
-    <span class="imp-badge">👥 200 impactados</span>
-    <div class="card-spks"><span class="spk rh">Daniela Gomes</span></div>
-  </div>
-</div>
-<div class="card" data-id="17" data-tab="palestra" data-est="SP" data-date="2026-08-12" data-mes="8" data-part="Sim">
-  <div class="card-header" style="border-left:4px solid #7c3aed">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#7c3aed">Palestra</span>
-      
-      <span class="card-date">12/Ago</span>
-      <span class="ebadge" style="background:#7c3aed">SP</span>
-    </div>
-    <div class="card-name">PALESTRA LIGA UNICAMP</div>
-    <div class="card-inst">UNICAMP - UFES - IFCE</div>
-  </div>
-  <div class="card-body">
-    <div class="card-local">📍 Online</div>
-    <div class="card-curso">🎓 Engenharia</div>
-    <span class="imp-badge">👥 54 impactados</span>
-    <div class="card-spks"><span class="spk rh">Caroline Santos</span><span class="spk t1">Rodrigo Braga</span></div>
-  </div>
-</div>
-<div class="card" data-id="18" data-tab="feira" data-est="SP" data-date="2026-08-15" data-mes="8" data-part="Sim">
-  <div class="card-header" style="border-left:4px solid #1d4ed8">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#1d4ed8">Feira</span>
-      
-      <span class="card-date">15/Ago</span>
-      <span class="ebadge" style="background:#7c3aed">SP</span>
-    </div>
-    <div class="card-name">FEIRA DE CARREIRAS ITA</div>
-    <div class="card-inst">ITA</div>
-  </div>
-  <div class="card-body">
-    
-    
-    <span class="imp-badge">👥 1782 impactados</span>
-    <div class="card-spks"><span class="spk rh">Daniela Gomes</span></div>
-  </div>
-</div>
-<div class="card" data-id="19" data-tab="feira" data-est="SP" data-date="2026-08-17" data-mes="8" data-part="Sim">
-  <div class="card-header" style="border-left:4px solid #1d4ed8">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#1d4ed8">Feira</span>
-      
-      <span class="card-date">17/Ago</span>
-      <span class="ebadge" style="background:#7c3aed">SP</span>
-    </div>
-    <div class="card-name">FEIRA DE CARREIRAS SEMEC</div>
-    <div class="card-inst">UNICAMP</div>
-  </div>
-  <div class="card-body">
-    
-    <div class="card-curso">🎓 Engenharia</div>
-    <span class="imp-badge">👥 650 impactados</span>
-    <div class="card-spks"><span class="spk rh">Fernanda Cabral</span><span class="spk t1">Lucas Ribas</span></div>
-  </div>
-</div>
-<div class="card" data-id="20" data-tab="visita" data-est="RJ" data-date="2026-08-19" data-mes="8" data-part="">
-  <div class="card-header" style="border-left:4px solid #0d9488">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#0d9488">Visita na PRIO</span>
-      
-      <span class="card-date">19/Ago</span>
-      <span class="ebadge" style="background:#1d4ed8">RJ</span>
-    </div>
-    <div class="card-name">Visita PRIO</div>
-    <div class="card-inst">UFR - UFF - UERJ</div>
-  </div>
-  <div class="card-body">
-    <div class="card-local">📍 Auditório</div>
-    <div class="card-curso">🎓 G&G</div>
-    
-    <div class="card-spks"><span class="spk rh">Caroline Santos</span><span class="spk t1">Manoel Farias</span></div>
-  </div>
-</div>
-<div class="card" data-id="21" data-tab="visita" data-est="RJ" data-date="2026-08-26" data-mes="8" data-part="">
-  <div class="card-header" style="border-left:4px solid #0d9488">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#0d9488">Visita na PRIO</span>
-      
-      <span class="card-date">26/Ago</span>
-      <span class="ebadge" style="background:#1d4ed8">RJ</span>
-    </div>
-    <div class="card-name">Visita PRIO</div>
-    <div class="card-inst">ESPM - IBMEC</div>
-  </div>
-  <div class="card-body">
-    <div class="card-local">📍 Auditório</div>
-    <div class="card-curso">🎓 Corporativo</div>
-    
-    <div class="card-spks"><span class="spk rh">Caroline Santos</span><span class="spk t1">Erika Scheiner</span><span class="spk t2">Edson Mosquera</span></div>
-  </div>
-</div>
-<div class="card" data-id="22" data-tab="feira" data-est="RJ" data-date="2026-08-31" data-mes="8" data-part="Sim">
-  <div class="card-header" style="border-left:4px solid #1d4ed8">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#1d4ed8">Feira</span>
-      
-      <span class="card-date">31/Ago</span>
-      <span class="ebadge" style="background:#1d4ed8">RJ</span>
-    </div>
-    <div class="card-name">SEMANA FLUXO UFRJ</div>
-    <div class="card-inst">UFRJ</div>
-  </div>
-  <div class="card-body">
-    
-    
-    <span class="imp-badge">👥 4675 impactados</span>
-    
-  </div>
-</div>
-<div class="month-sep" data-month="9"><span>Setembro 2026</span></div>
-<div class="card" data-id="23" data-tab="feira" data-est="RJ" data-date="2026-09-03" data-mes="9" data-part="Sim">
-  <div class="card-header" style="border-left:4px solid #1d4ed8">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#1d4ed8">Feira</span>
-      
-      <span class="card-date">03/Set</span>
-      <span class="ebadge" style="background:#1d4ed8">RJ</span>
-    </div>
-    <div class="card-name">CONECTA IBMEC</div>
-    <div class="card-inst">IBMEC</div>
-  </div>
-  <div class="card-body">
-    
-    
-    <span class="imp-badge">👥 100 impactados</span>
-    
-  </div>
-</div>
-<div class="card" data-id="24" data-tab="visita" data-est="RJ" data-date="2026-09-08" data-mes="9" data-part="">
-  <div class="card-header" style="border-left:4px solid #0d9488">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#0d9488">Visita na PRIO</span>
-      
-      <span class="card-date">08/Set</span>
-      <span class="ebadge" style="background:#1d4ed8">RJ</span>
-    </div>
-    <div class="card-name">Visita PRIO</div>
-    <div class="card-inst">UFRJ - UNIRIO - UERJ - PUC - FGV - IBMEC</div>
-  </div>
-  <div class="card-body">
-    <div class="card-local">📍 Auditório</div>
-    <div class="card-curso">🎓 Corporativo</div>
-    
-    
-  </div>
-</div>
-<div class="card" data-id="25" data-tab="visita" data-est="RJ" data-date="2026-09-11" data-mes="9" data-part="">
-  <div class="card-header" style="border-left:4px solid #0d9488">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#0d9488">Visita na PRIO</span>
-      
-      <span class="card-date">11/Set</span>
-      <span class="ebadge" style="background:#1d4ed8">RJ</span>
-    </div>
-    <div class="card-name">Visita PRIO</div>
-    <div class="card-inst">UFRJ</div>
-  </div>
-  <div class="card-body">
-    <div class="card-local">📍 Auditório</div>
-    <div class="card-curso">🎓 Engenharia</div>
-    
-    
-  </div>
-</div>
-<div class="card" data-id="26" data-tab="visita" data-est="RJ" data-date="2026-09-17" data-mes="9" data-part="">
-  <div class="card-header" style="border-left:4px solid #0d9488">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#0d9488">Visita na PRIO</span>
-      
-      <span class="card-date">17/Set</span>
-      <span class="ebadge" style="background:#1d4ed8">RJ</span>
-    </div>
-    <div class="card-name">Visita PRIO</div>
-    <div class="card-inst">UFRRJ - UFF - UFRJ</div>
-  </div>
-  <div class="card-body">
-    <div class="card-local">📍 Auditório</div>
-    <div class="card-curso">🎓 G&G</div>
-    
-    
-  </div>
-</div>
-<div class="card" data-id="27" data-tab="feira" data-est="PE" data-date="2026-09-22" data-mes="9" data-part="Sim">
-  <div class="card-header" style="border-left:4px solid #1d4ed8">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#1d4ed8">Feira</span>
-      
-      <span class="card-date">22/Set</span>
-      <span class="ebadge" style="background:#d97706">PE</span>
-    </div>
-    <div class="card-name">FEIRA UFPE</div>
-    <div class="card-inst">UFPE</div>
-  </div>
-  <div class="card-body">
-    
-    
-    <span class="imp-badge">👥 6000 impactados</span>
-    
-  </div>
-</div>
-<div class="card" data-id="28" data-tab="visita" data-est="" data-date="2026-09-22" data-mes="9" data-part="">
-  <div class="card-header" style="border-left:4px solid #0d9488">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#0d9488">Visita na PRIO</span>
-      
-      <span class="card-date">22/Set</span>
-      
-    </div>
-    <div class="card-name">Visita PRIO</div>
-    <div class="card-inst">ROG.E</div>
-  </div>
-  <div class="card-body">
-    <div class="card-local">📍 Auditório</div>
-    <div class="card-curso">🎓 Misto</div>
-    
-    
-  </div>
-</div>
-<div class="card" data-id="29" data-tab="palestra" data-est="RJ" data-date="2026-09-23" data-mes="9" data-part="Sim">
-  <div class="card-header" style="border-left:4px solid #7c3aed">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#7c3aed">Palestra</span>
-      
-      <span class="card-date">23/Set</span>
-      <span class="ebadge" style="background:#1d4ed8">RJ</span>
-    </div>
-    <div class="card-name">SEMANA AYRA</div>
-    <div class="card-inst">UFRJ</div>
-  </div>
-  <div class="card-body">
-    
-    
-    <span class="imp-badge">👥 100 impactados</span>
-    
-  </div>
-</div>
-<div class="card" data-id="30" data-tab="visita" data-est="" data-date="2026-09-25" data-mes="9" data-part="">
-  <div class="card-header" style="border-left:4px solid #0d9488">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#0d9488">Visita na PRIO</span>
-      
-      <span class="card-date">25/Set</span>
-      
-    </div>
-    <div class="card-name">Visita PRIO</div>
-    <div class="card-inst">IME</div>
-  </div>
-  <div class="card-body">
-    <div class="card-local">📍 Auditório</div>
-    <div class="card-curso">🎓 Engenharia</div>
-    
-    
-  </div>
-</div>
-<div class="month-sep" data-month="10"><span>Outubro 2026</span></div>
-<div class="card" data-id="31" data-tab="visita" data-est="" data-date="2026-10-01" data-mes="10" data-part="">
-  <div class="card-header" style="border-left:4px solid #0d9488">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#0d9488">Visita na PRIO</span>
-      
-      <span class="card-date">01/Out</span>
-      
-    </div>
-    <div class="card-name">Visita PRIO</div>
-    
-  </div>
-  <div class="card-body">
-    <div class="card-local">📍 Auditório</div>
-    <div class="card-curso">🎓 G&G</div>
-    
-    
-  </div>
-</div>
-<div class="card" data-id="32" data-tab="visita" data-est="" data-date="2026-10-13" data-mes="10" data-part="">
-  <div class="card-header" style="border-left:4px solid #0d9488">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#0d9488">Visita na PRIO</span>
-      
-      <span class="card-date">13/Out</span>
-      
-    </div>
-    <div class="card-name">Visita PRIO</div>
-    
-  </div>
-  <div class="card-body">
-    <div class="card-local">📍 Auditório</div>
-    <div class="card-curso">🎓 Engenharia</div>
-    
-    
-  </div>
-</div>
-<div class="month-sep" data-month="11"><span>Novembro 2026</span></div>
-<div class="card" data-id="33" data-tab="internacional" data-est="EUA" data-date="2026-11-06" data-mes="11" data-part="Sim">
-  <div class="card-header" style="border-left:4px solid #1d4ed8">
-    <div class="card-title-row">
-      <span class="card-tipo" style="background:#1d4ed8">Feira</span>
-      <span class="int-flag">🌐 Internacional</span>
-      <span class="card-date">06/Nov</span>
-      <span class="ebadge" style="background:#6d28d9">EUA</span>
-    </div>
-    <div class="card-name">MBA Brasil - EUA</div>
-    
-  </div>
-  <div class="card-body">
-    
-    
-    <span class="imp-badge">👥 300 impactados</span>
-    
-  </div>
-</div>
-  </div>
-</section>
-
-<!-- ══ CONVITES RECEBIDOS ══ -->
-<section class="section" id="sec-convites">
-  <div>
-    <div class="sec-title">✉️ Convites Recebidos 2026</div>
-    <div class="sec-sub">25 convites — 10 confirmados · 11 recusados · 1 em análise</div>
-  </div>
-
-  <!-- Mini KPIs -->
-  <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr)">
-    <div class="kpi green" style="padding:14px 16px">
-      <div class="kpi-val" style="font-size:24px">10</div>
-      <div class="kpi-label">Participações</div>
-    </div>
-    <div class="kpi red" style="padding:14px 16px">
-      <div class="kpi-val" style="font-size:24px">11</div>
-      <div class="kpi-label">Recusados</div>
-    </div>
-    <div class="kpi amber" style="padding:14px 16px">
-      <div class="kpi-val" style="font-size:24px">1</div>
-      <div class="kpi-label">Em Análise</div>
-    </div>
-    <div class="kpi" style="padding:14px 16px">
-      <div class="kpi-val" style="font-size:24px">R$ 74.300</div>
-      <div class="kpi-label">Custo Confirmados</div>
-    </div>
-  </div>
-
-  <!-- Filters -->
-  <div class="conv-filters">
-    <select id="conv-part" onchange="applyConv()">
-      <option value="">Participação: Todas</option>
-      <option value="Sim">Confirmados</option>
-      <option value="Não">Recusados</option>
-      <option value="Em análise">Em análise</option>
-    </select>
-    <select id="conv-tipo" onchange="applyConv()">
-      <option value="">Tipo: Todos</option>
-      <option>Feira</option><option>Palestra</option><option>Painel</option>
-    </select>
-    <select id="conv-est" onchange="applyConv()">
-      <option value="">Estado: Todos</option>
-      <option>CE</option><option>MG</option><option>PE</option>
-      <option>RJ</option><option>RS</option><option>SE</option><option>SP</option>
-    </select>
-    <input type="text" id="conv-search" placeholder="🔍 Buscar..." oninput="applyConv()" style="border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:13px">
-  </div>
-
-  <div class="table-wrap">
-    <table id="conv-table">
+    <table>
       <thead>
-        <tr>
-          <th>Evento</th><th>Faculdade</th><th>Estado</th>
-          <th>Tipo</th><th>Data</th><th>Custo Total</th><th>Expectativa Público</th>
-          <th>Participação</th><th>Feedback</th>
-        </tr>
+        <tr><th>Data</th><th>Evento</th><th>Tipo</th><th>Estado</th><th>Instituição</th><th>Impactados</th><th>Local</th></tr>
       </thead>
-      <tbody id="conv-tbody">
-<tr data-part="Não" data-tipo="Feira" data-estado="RJ">
-  <td class="ev-name">Feira de Carreira da Politécnica-UFRJ</td>
-  <td>UFRJ</td>
-  <td><span class="ebadge" style="background:#1d4ed8">RJ</span></td>
-  <td><span class="tbadge" style="background:#1d4ed8">Feira</span></td>
-  <td>10/Mar</td>
-  <td>R$ 90.000</td>
-  <td>5000</td>
-  <td><span class="pbadge pb-nao">Não</span></td>
-  <td class="fb-ok">✓</td>
-</tr>
-<tr data-part="Não" data-tipo="Palestra" data-estado="ES">
-  <td class="ev-name">PETROUFES</td>
-  <td>UFES</td>
-  <td><span class="ebadge" style="background:#64748b">ES</span></td>
-  <td><span class="tbadge" style="background:#7c3aed">Palestra</span></td>
-  <td>25/Mar</td>
-  <td>R$ 4.605</td>
-  <td>100</td>
-  <td><span class="pbadge pb-nao">Não</span></td>
-  <td class="fb-ok">✓</td>
-</tr>
-<tr data-part="" data-tipo="Feira" data-estado="SP">
-  <td class="ev-name">NX - Networking Experience 2026</td>
-  <td>Mackenzie</td>
-  <td><span class="ebadge" style="background:#7c3aed">SP</span></td>
-  <td><span class="tbadge" style="background:#1d4ed8">Feira</span></td>
-  <td>14/Abr</td>
-  <td>R$ 13.800</td>
-  <td>1000</td>
-  <td><span class="pbadge pb-na">—</span></td>
-  <td class="fb-na">—</td>
-</tr>
-<tr data-part="Sim" data-tipo="Feira" data-estado="RJ">
-  <td class="ev-name">Conecta</td>
-  <td>IBMEC</td>
-  <td><span class="ebadge" style="background:#1d4ed8">RJ</span></td>
-  <td><span class="tbadge" style="background:#1d4ed8">Feira</span></td>
-  <td>28/Abr</td>
-  <td>R$ 100</td>
-  <td>50</td>
-  <td><span class="pbadge pb-sim">Sim</span></td>
-  <td class="fb-ok">✓</td>
-</tr>
-<tr data-part="Sim" data-tipo="Feira" data-estado="SP">
-  <td class="ev-name">Feira de Recrutamento e Carreira</td>
-  <td>USP</td>
-  <td><span class="ebadge" style="background:#7c3aed">SP</span></td>
-  <td><span class="tbadge" style="background:#1d4ed8">Feira</span></td>
-  <td>21/Mai</td>
-  <td>R$ 46.000</td>
-  <td>—</td>
-  <td><span class="pbadge pb-sim">Sim</span></td>
-  <td class="fb-ok">✓</td>
-</tr>
-<tr data-part="Não" data-tipo="Palestra" data-estado="SP">
-  <td class="ev-name">SEMATRON (Semana de Engenharia Mecatrônica)</td>
-  <td>USP</td>
-  <td><span class="ebadge" style="background:#7c3aed">SP</span></td>
-  <td><span class="tbadge" style="background:#7c3aed">Palestra</span></td>
-  <td>25/Mai</td>
-  <td>R$ 8.800</td>
-  <td>200</td>
-  <td><span class="pbadge pb-nao">Não</span></td>
-  <td class="fb-ok">✓</td>
-</tr>
-<tr data-part="" data-tipo="Palestra" data-estado="RS">
-  <td class="ev-name">Speed Job </td>
-  <td>UFPel</td>
-  <td><span class="ebadge" style="background:#0d9488">RS</span></td>
-  <td><span class="tbadge" style="background:#7c3aed">Palestra</span></td>
-  <td>26/Mai</td>
-  <td>R$ 0</td>
-  <td>—</td>
-  <td><span class="pbadge pb-na">—</span></td>
-  <td class="fb-na">—</td>
-</tr>
-<tr data-part="Sim" data-tipo="Painel" data-estado="">
-  <td class="ev-name">Feira Virtual Emprega</td>
-  <td>N/A</td>
-  <td></td>
-  <td><span class="tbadge" style="background:#0891b2">Painel</span></td>
-  <td>01/Jun</td>
-  <td>R$ 0</td>
-  <td>—</td>
-  <td><span class="pbadge pb-sim">Sim</span></td>
-  <td class="fb-ok">✓</td>
-</tr>
-<tr data-part="Não" data-tipo="Feira" data-estado="SP">
-  <td class="ev-name">Conferência de Carreira</td>
-  <td>—</td>
-  <td><span class="ebadge" style="background:#7c3aed">SP</span></td>
-  <td><span class="tbadge" style="background:#1d4ed8">Feira</span></td>
-  <td>10/Ago</td>
-  <td>R$ 64.800</td>
-  <td>500</td>
-  <td><span class="pbadge pb-nao">Não</span></td>
-  <td class="fb-ok">✓</td>
-</tr>
-<tr data-part="Sim" data-tipo="Palestra" data-estado="SP">
-  <td class="ev-name">1st Industry
-Academia Partnership Workshop in Geosciences for Oil & Gas</td>
-  <td>UNICAMP</td>
-  <td><span class="ebadge" style="background:#7c3aed">SP</span></td>
-  <td><span class="tbadge" style="background:#7c3aed">Palestra</span></td>
-  <td>11/Ago</td>
-  <td>R$ 0</td>
-  <td>200</td>
-  <td><span class="pbadge pb-sim">Sim</span></td>
-  <td class="fb-na">—</td>
-</tr>
-<tr data-part="" data-tipo="Feira" data-estado="SP">
-  <td class="ev-name">Feira de Carreiras</td>
-  <td>UNICAMP</td>
-  <td><span class="ebadge" style="background:#7c3aed">SP</span></td>
-  <td><span class="tbadge" style="background:#1d4ed8">Feira</span></td>
-  <td>12/Ago</td>
-  <td>R$ 0</td>
-  <td>—</td>
-  <td><span class="pbadge pb-na">—</span></td>
-  <td class="fb-na">—</td>
-</tr>
-<tr data-part="Sim" data-tipo="Feira" data-estado="SP">
-  <td class="ev-name">Feira de Carreiras</td>
-  <td>ITA</td>
-  <td><span class="ebadge" style="background:#7c3aed">SP</span></td>
-  <td><span class="tbadge" style="background:#1d4ed8">Feira</span></td>
-  <td>15/Ago</td>
-  <td>R$ 0</td>
-  <td>2100</td>
-  <td><span class="pbadge pb-sim">Sim</span></td>
-  <td class="fb-ok">✓</td>
-</tr>
-<tr data-part="Sim" data-tipo="Feira" data-estado="SP">
-  <td class="ev-name">XXIX SEMEC</td>
-  <td>UNICAMP</td>
-  <td><span class="ebadge" style="background:#7c3aed">SP</span></td>
-  <td><span class="tbadge" style="background:#1d4ed8">Feira</span></td>
-  <td>17/Ago</td>
-  <td>R$ 15.100</td>
-  <td>650</td>
-  <td><span class="pbadge pb-sim">Sim</span></td>
-  <td class="fb-na">—</td>
-</tr>
-<tr data-part="Não" data-tipo="Feira" data-estado="SP">
-  <td class="ev-name">Workshop Integrativo WI</td>
-  <td>USP</td>
-  <td><span class="ebadge" style="background:#7c3aed">SP</span></td>
-  <td><span class="tbadge" style="background:#1d4ed8">Feira</span></td>
-  <td>19/Ago</td>
-  <td>R$ 33.100</td>
-  <td>4000</td>
-  <td><span class="pbadge pb-nao">Não</span></td>
-  <td class="fb-ok">✓</td>
-</tr>
-<tr data-part="Não" data-tipo="Feira" data-estado="SP">
-  <td></td>
-  <td class="ev-name">21° Feira de Carreiras</td>
-  <td>USP</td>
-  <td><span class="ebadge" style="background:#7c3aed">SP</span></td>
-  <td><span class="tbadge" style="background:#1d4ed8">Feira</span></td>
-  <td>19/Ago</td>
-  <td>R$ 0</td>
-  <td>1000</td>
-  <td><span class="pbadge pb-nao">Não</span></td>
-  <td class="fb-na">—</td>
-</tr>
-<tr data-part="Não" data-tipo="Palestra" data-estado="RJ">
-  <td class="ev-name">27º Encontro da Engenharia de Produção</td>
-  <td>UENF</td>
-  <td><span class="ebadge" style="background:#1d4ed8">RJ</span></td>
-  <td><span class="tbadge" style="background:#7c3aed">Palestra</span></td>
-  <td>31/Ago</td>
-  <td>R$ 3.000</td>
-  <td>150</td>
-  <td><span class="pbadge pb-nao">Não</span></td>
-  <td class="fb-ok">✓</td>
-</tr>
-<tr data-part="Não" data-tipo="Palestra" data-estado="SP">
-  <td class="ev-name">XV SEGEP CAEP</td>
-  <td>USP</td>
-  <td><span class="ebadge" style="background:#7c3aed">SP</span></td>
-  <td><span class="tbadge" style="background:#7c3aed">Palestra</span></td>
-  <td>31/Ago</td>
-  <td>R$ 6.000</td>
-  <td>400</td>
-  <td><span class="pbadge pb-nao">Não</span></td>
-  <td class="fb-ok">✓</td>
-</tr>
-<tr data-part="Sim" data-tipo="Feira" data-estado="RJ">
-  <td class="ev-name">Conecta</td>
-  <td>IBMEC</td>
-  <td><span class="ebadge" style="background:#1d4ed8">RJ</span></td>
-  <td><span class="tbadge" style="background:#1d4ed8">Feira</span></td>
-  <td>03/Set</td>
-  <td>R$ 100</td>
-  <td>50</td>
-  <td><span class="pbadge pb-sim">Sim</span></td>
-  <td class="fb-ok">✓</td>
-</tr>
-<tr data-part="Sim" data-tipo="Feira" data-estado="PE">
-  <td class="ev-name">UFPE no Mercado</td>
-  <td>UFPE</td>
-  <td><span class="ebadge" style="background:#d97706">PE</span></td>
-  <td><span class="tbadge" style="background:#1d4ed8">Feira</span></td>
-  <td>22/Set</td>
-  <td>R$ 13.000</td>
-  <td>—</td>
-  <td><span class="pbadge pb-sim">Sim</span></td>
-  <td class="fb-ok">✓</td>
-</tr>
-<tr data-part="Sim" data-tipo="Palestra" data-estado="RJ">
-  <td class="ev-name">Semana Ayra</td>
-  <td>UFRJ</td>
-  <td><span class="ebadge" style="background:#1d4ed8">RJ</span></td>
-  <td><span class="tbadge" style="background:#7c3aed">Palestra</span></td>
-  <td>23/Set</td>
-  <td>R$ 0</td>
-  <td>80</td>
-  <td><span class="pbadge pb-sim">Sim</span></td>
-  <td class="fb-na">—</td>
-</tr>
-<tr data-part="Não" data-tipo="Palestra" data-estado="RJ">
-  <td></td>
-  <td class="ev-name">SPEtro XVI UFRJ</td>
-  <td>UFRJ</td>
-  <td><span class="ebadge" style="background:#1d4ed8">RJ</span></td>
-  <td><span class="tbadge" style="background:#7c3aed">Palestra</span></td>
-  <td>23/Set</td>
-  <td>R$ 44.100</td>
-  <td>2000</td>
-  <td><span class="pbadge pb-nao">Não</span></td>
-  <td class="fb-no">✗</td>
-</tr>
-<tr data-part="Em análise" data-tipo="Palestra" data-estado="RJ">
-  <td class="ev-name">Evento Interação</td>
-  <td>UFF</td>
-  <td><span class="ebadge" style="background:#1d4ed8">RJ</span></td>
-  <td><span class="tbadge" style="background:#7c3aed">Palestra</span></td>
-  <td>28/Set</td>
-  <td>R$ 3.950</td>
-  <td>80</td>
-  <td><span class="pbadge pb-analise">Em análise</span></td>
-  <td class="fb-no">✗</td>
-</tr>
-<tr data-part="Não" data-tipo="Palestra" data-estado="RJ">
-  <td class="ev-name">Palestras de Férias</td>
-  <td>UFRJ</td>
-  <td><span class="ebadge" style="background:#1d4ed8">RJ</span></td>
-  <td><span class="tbadge" style="background:#7c3aed">Palestra</span></td>
-  <td>Fevereiro/</td>
-  <td>R$ 0</td>
-  <td>—</td>
-  <td><span class="pbadge pb-nao">Não</span></td>
-  <td class="fb-no">✗</td>
-</tr>
-<tr data-part="Sim" data-tipo="Palestra" data-estado="RJ">
-  <td class="ev-name">Semana da Petrofísica</td>
-  <td>UFRJ</td>
-  <td><span class="ebadge" style="background:#1d4ed8">RJ</span></td>
-  <td><span class="tbadge" style="background:#7c3aed">Palestra</span></td>
-  <td>Maio/Junho</td>
-  <td>R$ 0</td>
-  <td>—</td>
-  <td><span class="pbadge pb-sim">Sim</span></td>
-  <td class="fb-ok">✓</td>
-</tr>
-<tr data-part="Não" data-tipo="Palestra" data-estado="SP">
-  <td class="ev-name">XIV Workshop de Petróleo da SPE</td>
-  <td>USP</td>
-  <td><span class="ebadge" style="background:#7c3aed">SP</span></td>
-  <td><span class="tbadge" style="background:#7c3aed">Palestra</span></td>
-  <td>Novembro</td>
-  <td>R$ 2.800</td>
-  <td>50</td>
-  <td><span class="pbadge pb-nao">Não</span></td>
-  <td class="fb-ok">✓</td>
-</tr>
-      </tbody>
+      <tbody id="cal-tbody"></tbody>
     </table>
   </div>
-</section>
+</div>
 
-<!-- ══ VISITAS PRIO ══ -->
-<section class="section" id="sec-visitas">
-  <div>
-    <div class="sec-title">🏢 Visitas PRIO 2026</div>
-    <div class="sec-sub">15 visitas realizadas/agendadas · 172 pessoas impactadas</div>
-  </div>
-  <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
-    <div class="kpi teal" style="padding:14px 16px">
-      <div class="kpi-val" style="font-size:24px">9</div>
-      <div class="kpi-label">Visitas Futuras</div>
-    </div>
-    <div class="kpi" style="padding:14px 16px">
-      <div class="kpi-val" style="font-size:24px">6</div>
-      <div class="kpi-label">Realizadas</div>
-    </div>
-    <div class="kpi purple" style="padding:14px 16px">
-      <div class="kpi-val" style="font-size:24px">172</div>
-      <div class="kpi-label">Pessoas Impactadas</div>
-    </div>
-  </div>
+<div class="content" id="sec-visitas">
+  <h2 class="section-title">🏢 Visitas PRIO</h2>
+  <div class="grid" id="vis-grid"></div>
+</div>
 
-  <div class="vis-section-title">📌 Próximas Visitas</div><div class="vis-grid"><div class="vis-card vis-upcoming">
-  <div class="vis-card-top">
-    <span class="vis-date-badge">19/Ago</span>
-    <span class="ebadge" style="background:#1d4ed8">RJ</span>
-    <span class="vis-upcoming-tag">Próxima</span>
-  </div>
-  <div class="vis-inst">UFR - UFF - UERJ</div>
-  <div class="vis-meta">
-    <span>📍 Auditório</span>
-    
-    <span>🎓 G&G</span>
-  </div>
-  <div class="vis-spks">Caroline Santos  •  Manoel Farias</div>
-</div>
-<div class="vis-card vis-upcoming">
-  <div class="vis-card-top">
-    <span class="vis-date-badge">26/Ago</span>
-    <span class="ebadge" style="background:#1d4ed8">RJ</span>
-    <span class="vis-upcoming-tag">Próxima</span>
-  </div>
-  <div class="vis-inst">ESPM - IBMEC</div>
-  <div class="vis-meta">
-    <span>📍 Auditório</span>
-    
-    <span>🎓 Corporativo</span>
-  </div>
-  <div class="vis-spks">Caroline Santos  •  Erika Scheiner  •  Edson Mosquera</div>
-</div>
-<div class="vis-card vis-upcoming">
-  <div class="vis-card-top">
-    <span class="vis-date-badge">08/Set</span>
-    <span class="ebadge" style="background:#1d4ed8">RJ</span>
-    <span class="vis-upcoming-tag">Próxima</span>
-  </div>
-  <div class="vis-inst">UFRJ - UNIRIO - UERJ - PUC - FGV - IBMEC</div>
-  <div class="vis-meta">
-    <span>📍 Auditório</span>
-    
-    <span>🎓 Corporativo</span>
-  </div>
-  
-</div>
-<div class="vis-card vis-upcoming">
-  <div class="vis-card-top">
-    <span class="vis-date-badge">11/Set</span>
-    <span class="ebadge" style="background:#1d4ed8">RJ</span>
-    <span class="vis-upcoming-tag">Próxima</span>
-  </div>
-  <div class="vis-inst">UFRJ</div>
-  <div class="vis-meta">
-    <span>📍 Auditório</span>
-    
-    <span>🎓 Engenharia</span>
-  </div>
-  
-</div>
-<div class="vis-card vis-upcoming">
-  <div class="vis-card-top">
-    <span class="vis-date-badge">17/Set</span>
-    <span class="ebadge" style="background:#1d4ed8">RJ</span>
-    <span class="vis-upcoming-tag">Próxima</span>
-  </div>
-  <div class="vis-inst">UFRRJ - UFF - UFRJ</div>
-  <div class="vis-meta">
-    <span>📍 Auditório</span>
-    
-    <span>🎓 G&G</span>
-  </div>
-  
-</div>
-<div class="vis-card vis-upcoming">
-  <div class="vis-card-top">
-    <span class="vis-date-badge">22/Set</span>
-    
-    <span class="vis-upcoming-tag">Próxima</span>
-  </div>
-  <div class="vis-inst">ROG.E</div>
-  <div class="vis-meta">
-    <span>📍 Auditório</span>
-    
-    <span>🎓 Misto</span>
-  </div>
-  
-</div>
-<div class="vis-card vis-upcoming">
-  <div class="vis-card-top">
-    <span class="vis-date-badge">25/Set</span>
-    
-    <span class="vis-upcoming-tag">Próxima</span>
-  </div>
-  <div class="vis-inst">IME</div>
-  <div class="vis-meta">
-    <span>📍 Auditório</span>
-    
-    <span>🎓 Engenharia</span>
-  </div>
-  
-</div>
-<div class="vis-card vis-upcoming">
-  <div class="vis-card-top">
-    <span class="vis-date-badge">01/Out</span>
-    
-    <span class="vis-upcoming-tag">Próxima</span>
-  </div>
-  <div class="vis-inst">PRIO</div>
-  <div class="vis-meta">
-    <span>📍 Auditório</span>
-    
-    <span>🎓 G&G</span>
-  </div>
-  
-</div>
-<div class="vis-card vis-upcoming">
-  <div class="vis-card-top">
-    <span class="vis-date-badge">13/Out</span>
-    
-    <span class="vis-upcoming-tag">Próxima</span>
-  </div>
-  <div class="vis-inst">PRIO</div>
-  <div class="vis-meta">
-    <span>📍 Auditório</span>
-    
-    <span>🎓 Engenharia</span>
-  </div>
-  
-</div></div>
-
-  <div class="vis-section-title">📂 Visitas Realizadas</div>
-  <div class="vis-grid">
-<div class="vis-card vis-past">
-  <div class="vis-card-top">
-    <span class="vis-date-badge">12/Ago</span>
-    <span class="ebadge" style="background:#1d4ed8">RJ</span>
-    <span class="vis-past-tag">Realizada</span>
-  </div>
-  <div class="vis-inst">UFRJ - UFF</div>
-  <div class="vis-meta">
-    <span>📍 Auditório</span>
-    <span>👥 35 pessoas</span>
-    <span>🎓 Engenharia</span>
-  </div>
-  <div class="vis-spks">Caroline Santos  •  Matheus Vieira  •  Humberto Bovolenta</div>
-</div>
-<div class="vis-card vis-past">
-  <div class="vis-card-top">
-    <span class="vis-date-badge">07/Ago</span>
-    <span class="ebadge" style="background:#6d28d9">EUA</span>
-    <span class="vis-past-tag">Realizada</span>
-  </div>
-  <div class="vis-inst">Texas A&M</div>
-  <div class="vis-meta">
-    <span>📍 Auditório</span>
-    <span>👥 41 pessoas</span>
-    <span>🎓 Corporativo</span>
-  </div>
-  <div class="vis-spks">Fernanda Cabral  •  Gustavo Hooper  •  Milton Rangel</div>
-</div>
-<div class="vis-card vis-past">
-  <div class="vis-card-top">
-    <span class="vis-date-badge">21/Mai</span>
-    <span class="ebadge" style="background:#1d4ed8">RJ</span>
-    <span class="vis-past-tag">Realizada</span>
-  </div>
-  <div class="vis-inst">UNIRIO - CEFET - UFRJ</div>
-  <div class="vis-meta">
-    <span>📍 Auditório</span>
-    <span>👥 31 pessoas</span>
-    <span>🎓 Engenharia</span>
-  </div>
-  <div class="vis-spks">Ana Luiza Abbiate</div>
-</div>
-<div class="vis-card vis-past">
-  <div class="vis-card-top">
-    <span class="vis-date-badge">10/Abr</span>
-    <span class="ebadge" style="background:#1d4ed8">RJ</span>
-    <span class="vis-past-tag">Realizada</span>
-  </div>
-  <div class="vis-inst">UNICAMP - USP - UFRJ</div>
-  <div class="vis-meta">
-    <span>📍 Rooftop</span>
-    <span>👥 24 pessoas</span>
-    <span>🎓 G&G</span>
-  </div>
-  <div class="vis-spks">Caroline Santos  •  Humberto Bovolenta  •  Marina Luiza Jordão</div>
-</div>
-<div class="vis-card vis-past">
-  <div class="vis-card-top">
-    <span class="vis-date-badge">25/Mar</span>
-    <span class="ebadge" style="background:#1d4ed8">RJ</span>
-    <span class="vis-past-tag">Realizada</span>
-  </div>
-  <div class="vis-inst">UERJ - FGV - UFRJ</div>
-  <div class="vis-meta">
-    <span>📍 Auditório</span>
-    <span>👥 38 pessoas</span>
-    <span>🎓 Corporativo</span>
-  </div>
-  <div class="vis-spks">Caroline Santos  •  Gustavo Hooper  •  Diego Figueiredo</div>
-</div>
-<div class="vis-card vis-past">
-  <div class="vis-card-top">
-    <span class="vis-date-badge">05/Fev</span>
-    <span class="ebadge" style="background:#0891b2">SE</span>
-    <span class="vis-past-tag">Realizada</span>
-  </div>
-  <div class="vis-inst">UFS</div>
-  <div class="vis-meta">
-    <span>📍 Sala TBMT</span>
-    <span>👥 3 pessoas</span>
-    <span>🎓 Misto</span>
-  </div>
-  <div class="vis-spks">Caroline Santos  •  Gabriel Ramos  •  Davis de Godoy</div>
-</div>
-  </div>
-</section>
-
-<!-- ══ CONTATOS ══ -->
-<section class="section" id="sec-contatos">
-  <div>
-    <div class="sec-title">👥 Contatos & Visitantes 2026</div>
-    <div class="sec-sub">76 contatos registrados nas visitas PRIO</div>
-  </div>
-  <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
-    <div class="kpi purple" style="padding:14px 16px">
-      <div class="kpi-val" style="font-size:24px">76</div>
-      <div class="kpi-label">Total de Contatos</div>
-    </div>
-    <div class="kpi green" style="padding:14px 16px">
-      <div class="kpi-val" style="font-size:24px">0</div>
-      <div class="kpi-label">Instituições</div>
-    </div>
-    <div class="kpi blue" style="padding:14px 16px">
-      <div class="kpi-val" style="font-size:24px">0</div>
-      <div class="kpi-label">Cursos</div>
-    </div>
-  </div>
+<div class="content" id="sec-convites">
+  <h2 class="section-title">✉️ Convites Recebidos</h2>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>Nome</th><th>Instituição</th><th>Curso</th><th>Visita</th><th>Área de Interesse</th></tr></thead>
-      <tbody><tr><td>Matheus Alves Silva Figueiredo</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Irandi de Jesus Silva</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Miguel Lucas Santana Freire</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Heitor Felipe Camelo Aguiar</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Andre Luis Pontes Ribeiro</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Breno Cerqueira Araujo</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Pedro Cardoso Milazzo Avellar Leal</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Antonio Pessoa De Macedo Soares</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Pedro Soares de Lima Filho</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Joana Moreira Cabral</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Pedro augusto gouvea folly</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Beatriz Valadão Donnici de Azevedo</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Carolina Meireles Schiefler</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Lethicia Manfioletti Possamai </td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Arthur Caron Lyra</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Felipe Ferreira Gonçalves </td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Eduardo Guerra Marques Silveira</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Kaiky de Souza Brito</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Fabiana Conceição da Silva </td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Beatriz Macedo Amorim</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>João José Machado Gismondi</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Cauê Muzitano Machado</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Felipe Polett Alves</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Felipe Meggetto Allak </td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Miguel Ângelo Cipriano Simão</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Enzo Huckleberry Siqueira Fontes</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>João Guerra Machado</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Letícia Benevides Viana</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>João Pedro Calicchio</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Juliana Rebouças Siqueira</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Nina Ribeiro da Costa Werner</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Gabriel Ché Silva</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>JOÃO PEDRO DANTAS PEREIRA</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Pedro Cruz Sousa</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Gabriel Vega Colafranceschi</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Maria Vitória Pereira Soares </td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Valter Henrique dos Santos Gomes</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Guilherme Bueno</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Gabriel Porto Muylaert</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Arthur Freitas da Silva Ramos</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Gilberto Pinheiro dos Santos Neto</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Antonio Luís Marzo Japiassú </td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Matheus da Rocha Teixeira</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>João Pedro Veríssimo Cardoso</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Giovanna Dias Lourenço </td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Kaiky de Souza Brito</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Paula Motta </td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Raimundo Nonato Holanda Costa Filho</td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>José Jonas Maurício da Silva </td><td>—</td><td>—</td><td></td><td>—</td></tr>
-<tr><td>Maria Eduarda Oliveira de Lima </td><td>—</td><td>—</td><td></td><td>—</td></tr></tbody>
+      <thead>
+        <tr><th>Evento</th><th>Data</th><th>Participação</th><th>Motivo</th></tr>
+      </thead>
+      <tbody id="conv-tbody"></tbody>
     </table>
   </div>
-  <div style="color:var(--muted);font-size:13px;text-align:center;padding:8px">Exibindo 50 de 76 contatos</div>
-</section>
+</div>
 
-<!-- ══ CUSTOS ══ -->
-<section class="section" id="sec-custos">
-  <div>
-    <div class="sec-title">💰 Custos & Orçamento 2026</div>
-    <div class="sec-sub">Controle financeiro de participações — Orçamento G&A Gestão de Talentos</div>
-  </div>
-  <div class="cost-kpi-grid">
-    <div class="cost-kpi" style="border-top:4px solid var(--blue)">
-      <div class="cost-kpi-val" style="color:var(--blue)">R$ 350.000</div>
-      <div class="cost-kpi-label">Orçamento Total</div>
-    </div>
-    <div class="cost-kpi" style="border-top:4px solid var(--amber)">
-      <div class="cost-kpi-val" style="color:var(--amber)">R$ 319.311</div>
-      <div class="cost-kpi-label">Utilizado</div>
-    </div>
-    <div class="cost-kpi" style="border-top:4px solid var(--green)">
-      <div class="cost-kpi-val" style="color:var(--green)">R$ 30.689</div>
-      <div class="cost-kpi-label">Saldo Restante</div>
-    </div>
-    <div class="cost-kpi" style="border-top:4px solid var(--red)">
-      <div class="cost-kpi-val" style="color:var(--red)">91%</div>
-      <div class="cost-kpi-label">% Consumido</div>
-    </div>
-  </div>
-  <div class="budget-bar-wrap">
-    <div class="budget-bar-header">
-      <div class="budget-bar-title">Utilização do Orçamento 2026</div>
-      <div class="budget-pct">91%</div>
-    </div>
-    <div class="budget-bar">
-      <div class="budget-fill" style="width:91%"></div>
-    </div>
-    <div class="budget-labels">
-      <span>R$ 0</span>
-      <span style="margin-left:91%;transform:translateX(-50%);position:absolute">R$ 319.311</span>
-      <span>R$ 350.000</span>
-    </div>
-  </div>
-
+<div class="content" id="sec-contatos">
+  <h2 class="section-title">👥 Contatos</h2>
   <div class="table-wrap">
-    <div style="padding:16px 16px 8px;font-weight:700;font-size:14px">Custo por Evento Confirmado</div>
     <table>
-      <thead><tr><th>Evento</th><th>Estado</th><th>Tipo</th><th>Custo Total</th><th>Qtd PRIO</th></tr></thead>
-      <tbody>
-        <tr><td class='ev-name'>Feira de Recrutamento e Carreira</td><td><span class="ebadge" style="background:#7c3aed">SP</span></td><td><span class="tbadge" style="background:#1d4ed8">Feira</span></td><td><strong>R$ 46.000</strong></td><td>3</td></tr><tr><td class='ev-name'>XXIX SEMEC</td><td><span class="ebadge" style="background:#7c3aed">SP</span></td><td><span class="tbadge" style="background:#1d4ed8">Feira</span></td><td><strong>R$ 15.100</strong></td><td>2</td></tr><tr><td class='ev-name'>UFPE no Mercado</td><td><span class="ebadge" style="background:#d97706">PE</span></td><td><span class="tbadge" style="background:#1d4ed8">Feira</span></td><td><strong>R$ 13.000</strong></td><td>3</td></tr><tr><td class='ev-name'>Conecta</td><td><span class="ebadge" style="background:#1d4ed8">RJ</span></td><td><span class="tbadge" style="background:#1d4ed8">Feira</span></td><td><strong>R$ 100</strong></td><td>1</td></tr><tr><td class='ev-name'>Conecta</td><td><span class="ebadge" style="background:#1d4ed8">RJ</span></td><td><span class="tbadge" style="background:#1d4ed8">Feira</span></td><td><strong>R$ 100</strong></td><td>1</td></tr><tr><td class='ev-name'>Feira de Carreiras</td><td><span class="ebadge" style="background:#7c3aed">SP</span></td><td><span class="tbadge" style="background:#1d4ed8">Feira</span></td><td><strong>R$ 0</strong></td><td>—</td></tr><tr><td class='ev-name'>Semana da Petrofísica</td><td><span class="ebadge" style="background:#1d4ed8">RJ</span></td><td><span class="tbadge" style="background:#7c3aed">Palestra</span></td><td><strong>R$ 0</strong></td><td>1</td></tr><tr><td class='ev-name'>Feira Virtual Emprega</td><td></td><td><span class="tbadge" style="background:#0891b2">Painel</span></td><td><strong>R$ 0</strong></td><td>1</td></tr><tr><td class='ev-name'>Semana Ayra</td><td><span class="ebadge" style="background:#1d4ed8">RJ</span></td><td><span class="tbadge" style="background:#7c3aed">Palestra</span></td><td><strong>R$ 0</strong></td><td>—</td></tr><tr><td class='ev-name'>1st Industry
-Academia Partnership Workshop in Geosciences for Oil & Gas</td><td><span class="ebadge" style="background:#7c3aed">SP</span></td><td><span class="tbadge" style="background:#7c3aed">Palestra</span></td><td><strong>R$ 0</strong></td><td>1</td></tr>
-      </tbody>
+      <thead>
+        <tr><th>Nome</th><th>Instituição</th><th>Presente</th></tr>
+      </thead>
+      <tbody id="cont-tbody"></tbody>
     </table>
   </div>
+</div>
 
-  <div class="table-wrap">
-    <div style="padding:16px 16px 8px;font-weight:700;font-size:14px">Desvio Mensal Previsto × Real</div>
-    <table>
-      <thead><tr><th>Período</th><th>Previsto</th><th>Real</th><th>Desvio</th></tr></thead>
-      <tbody>
-        <tr><td>Janeiro</td><td>R$ 0</td><td>R$ 0</td><td>R$ 0</td></tr>
-        <tr><td>Fevereiro</td><td>R$ 0</td><td>R$ 0</td><td>R$ 0</td></tr>
-        <tr><td>Março</td><td>R$ 0</td><td>R$ 0</td><td>R$ 0</td></tr>
-        <tr><td>Abril</td><td>R$ 49.858</td><td>R$ 21.729</td><td style="color:var(--green)">-R$ 28.129</td></tr>
-        <tr><td>Maio</td><td>R$ 30.600</td><td>R$ 34.391</td><td style="color:var(--red)">+R$ 3.791</td></tr>
-        <tr><td>Junho</td><td>R$ 0</td><td>R$ 98.197</td><td style="color:var(--red)">+R$ 98.197</td></tr>
-        <tr><td>Julho</td><td>R$ 66.800</td><td>R$ 1.000</td><td style="color:var(--green)">-R$ 65.800</td></tr>
-        <tr><td>Agosto</td><td>R$ 83.654</td><td>R$ 0</td><td style="color:var(--amber)">Pendente</td></tr>
-        <tr><td>Setembro</td><td>R$ 84.348</td><td>R$ 0</td><td style="color:var(--amber)">Pendente</td></tr>
-        <tr><td>Outubro</td><td>R$ 4.050</td><td>R$ 0</td><td style="color:var(--amber)">Pendente</td></tr>
-        <tr><td>Novembro</td><td>R$ 0</td><td>R$ 0</td><td>—</td></tr>
-      </tbody>
-    </table>
-  </div>
-</section>
+<div class="content" id="sec-custos">
+  <h2 class="section-title">💰 Custos & Orçamento</h2>
+  <div class="kpi-grid" id="kpi-grid"></div>
+</div>
 
-</div><!-- /main -->
+</main>
 
 <script>
-// ── Data ──────────────────────────────────────────────────────────────────────
-const allCards = Array.from(document.querySelectorAll('#tl-panel .card'));
-const allConvRows = Array.from(document.querySelectorAll('#conv-tbody tr'));
+const DADOS = {
+  eventos: [
+    {data:'2026-02-05',evento:'Visita PRIO',tipo:'Visita PRIO',estado:'SE',n_impactados:3,local:'Sala TBMT',curso:'Misto',inst:'UFS',pal_rh:'Caroline Santos',online:false},
+    {data:'2026-03-25',evento:'Visita PRIO',tipo:'Visita PRIO',estado:'RJ',n_impactados:38,local:'Auditório',curso:'Corporativo',inst:'UERJ / FGV / UFRJ',pal_rh:'Caroline Santos',online:false},
+    {data:'2026-03-26',evento:'Feira Técnica SENAI',tipo:'Feira',estado:'RJ',n_impactados:200,local:'Campus SENAI',curso:'',inst:'SENAI',pal_rh:'',online:false},
+    {data:'2026-05-21',evento:'Feira de Recrutamento',tipo:'Feira',estado:'SP',n_impactados:3400,local:'FEA USP',curso:'Business / Engenharias',inst:'USP',pal_rh:'',online:false},
+    {data:'2026-08-15',evento:'Feira de Carreiras ITA',tipo:'Feira',estado:'SP',n_impactados:2100,local:'Campus ITA',curso:'Engenharias',inst:'ITA',pal_rh:'',online:false},
+    {data:'2026-09-22',evento:'UFPE no Mercado',tipo:'Feira',estado:'PE',n_impactados:150,local:'Campus UFPE',curso:'Business',inst:'UFPE',pal_rh:'',online:false},
+    {data:'2026-08-07',evento:'Visita Texas A&M',tipo:'Visita PRIO',estado:'EUA',n_impactados:25,local:'Auditório PRIO',curso:'Engenharias',inst:'Texas A&M',pal_rh:'Carol',online:true},
+  ],
+  convites: [
+    {evento:'UFPE no Mercado',data:'2026-09-22',participacao:'Sim',motivo:''},
+    {evento:'Feira de Carreiras ITA',data:'2026-08-15',participacao:'Sim',motivo:''},
+    {evento:'Feira de Recrutamento',data:'2026-05-21',participacao:'Sim',motivo:''},
+    {evento:'Conecta',data:'2026-06-10',participacao:'Não',motivo:'Conflito de agenda'},
+    {evento:'Semana Ayra',data:'2026-07-08',participacao:'Não',motivo:'Recursos limitados'},
+    {evento:'Workshop Semec',data:'2026-11-15',participacao:'Sim',motivo:''},
+  ],
+  visitantes: [
+    {nome:'Matheus Alves Silva Figueiredo',faculdade:'UFS',presente:'Sim'},
+    {nome:'Irandi de Jesus Silva',faculdade:'UFS',presente:'Sim'},
+    {nome:'Miguel Lucas Santana Freire',faculdade:'UFS',presente:'Sim'},
+    {nome:'Heitor Felipe Camelo Aguiar',faculdade:'UFRJ',presente:'Não'},
+    {nome:'Felipe de Araújo Pereira',faculdade:'UFRJ',presente:'Sim'},
+    {nome:'Carolina Martins',faculdade:'USP',presente:'Sim'},
+    {nome:'Bruno Costa',faculdade:'UFRJ',presente:'Não'},
+  ],
+  orcamento: 350000,
+  utilizado: 319310.73,
+};
 
-// ── Navigation ────────────────────────────────────────────────────────────────
-function goto(sec, el) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.sb-nav a').forEach(a => a.classList.remove('active'));
-  const target = document.getElementById('sec-' + sec);
-  if (target) target.classList.add('active');
-  if (el) el.classList.add('active');
-  const titles = {home:'Visão Geral',timeline:'Calendário de Eventos',convites:'Convites Recebidos',
-    visitas:'Visitas PRIO',contatos:'Contatos & Visitantes',custos:'Custos & Orçamento'};
-  document.getElementById('topbar-title').textContent = titles[sec] || sec;
-  if (sec === 'timeline') setTimeout(applyTL, 0);
-  return false;
+function goto(sec) {
+  document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.nav a').forEach(a => a.classList.remove('active'));
+  document.getElementById('sec-' + sec).classList.add('active');
+  document.querySelector(`a[onclick="goto('${sec}')"]`).classList.add('active');
+  render(sec);
 }
 
-// ── Timeline ──────────────────────────────────────────────────────────────────
-let curTab = '';
-
-function setTab(tab, el) {
-  curTab = tab;
-  document.querySelectorAll('.tl-tab').forEach(t => t.classList.remove('active'));
-  if (el) el.classList.add('active');
-  applyTL();
+function render(sec) {
+  if (sec === 'calendario') renderCalendario();
+  else if (sec === 'visitas') renderVisitas();
+  else if (sec === 'convites') renderConvites();
+  else if (sec === 'contatos') renderContatos();
+  else if (sec === 'custos') renderCustos();
 }
 
-function applyTL() {
-  const q    = (document.getElementById('search-tl').value||'').toLowerCase();
-  const est  = document.getElementById('filter-est').value;
-  const part = document.getElementById('filter-part').value;
-  const counts = {feira:0, palestra:0, outro:0, visita:0, internacional:0, todos:0};
-
-  allCards.forEach(c => {
-    const tab  = c.dataset.tab || '';
-    const ce   = c.dataset.est || '';
-    const cp   = c.dataset.part || '';
-    const txt  = c.textContent.toLowerCase();
-
-    const tabOk  = !curTab || tab === curTab;
-    const estOk  = !est || ce === est;
-    const partOk = !part || (part==='Sim' ? cp==='Sim' : (part==='Não' ? cp==='Não' : true));
-    const txtOk  = !q || txt.includes(q);
-
-    const ok = tabOk && estOk && partOk && txtOk;
-    c.classList.toggle('hidden', !ok);
-    if (ok) {
-      counts.todos++;
-      if (tab === 'feira') counts.feira++;
-      else if (tab === 'palestra') counts.palestra++;
-      else if (tab === 'visita') counts.visita++;
-      else if (tab === 'internacional') counts.internacional++;
-      else counts.outro++;
-    }
-  });
-
-  // hide empty month separators
-  document.querySelectorAll('#tl-panel .month-sep').forEach(sep => {
-    const m = sep.dataset.month;
-    let hasVisible = false;
-    let next = sep.nextElementSibling;
-    while (next && !next.classList.contains('month-sep')) {
-      if (next.classList.contains('card') && !next.classList.contains('hidden')) { hasVisible = true; break; }
-      next = next.nextElementSibling;
-    }
-    sep.classList.toggle('hidden', !hasVisible);
-  });
-
-  const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-  set('cb-todos', counts.todos);
-  set('cb-feira', counts.feira);
-  set('cb-palestra', counts.palestra);
-  set('cb-outro', counts.outro);
-  set('cb-visita', counts.visita);
-  set('cb-internacional', counts.internacional);
+function renderCalendario() {
+  const tbody = document.getElementById('cal-tbody');
+  tbody.innerHTML = DADOS.eventos.map(e => {
+    const tipo = e.tipo.toLowerCase().replace(/\s/g, '-');
+    return `<tr><td>${e.data}</td><td><strong>${e.evento}</strong></td><td><span class="badge badge-${tipo}">${e.tipo}</span></td><td>${e.estado}</td><td>${e.inst}</td><td>${e.n_impactados}</td><td>${e.local}</td></tr>`;
+  }).join('');
 }
 
-// ── Convites filter ───────────────────────────────────────────────────────────
-function applyConv() {
-  const part  = document.getElementById('conv-part').value;
-  const tipo  = document.getElementById('conv-tipo').value;
-  const est   = document.getElementById('conv-est').value;
-  const q     = (document.getElementById('conv-search').value||'').toLowerCase();
-
-  allConvRows.forEach(r => {
-    const ok = (!part  || r.dataset.part  === part)
-            && (!tipo  || r.dataset.tipo  === tipo)
-            && (!est   || r.dataset.estado=== est)
-            && (!q     || r.textContent.toLowerCase().includes(q));
-    r.classList.toggle('hidden', !ok);
-  });
+function renderVisitas() {
+  const visitas = DADOS.eventos.filter(e => e.tipo === 'Visita PRIO');
+  const grid = document.getElementById('vis-grid');
+  if (!visitas.length) {
+    grid.innerHTML = '<div class="empty">Nenhuma visita agendada</div>';
+    return;
+  }
+  grid.innerHTML = visitas.map(v => `<div class="card" style="border-left-color:var(--teal)"><div class="card-title">${v.evento}</div><div class="card-meta"><strong>${v.data}</strong> | ${v.estado}</div><div style="font-size:12px;line-height:1.7"><div><strong>Instituição:</strong> ${v.inst}</div><div><strong>Formato:</strong> ${v.online ? '🌐 Online' : '🏢 Presencial'}</div><div><strong>Curso:</strong> ${v.curso || '—'}</div><div><strong>Local:</strong> ${v.local}</div><div><strong>Impactados:</strong> ${v.n_impactados}</div><div><strong>Palestrantes:</strong> ${v.pal_rh || '—'}</div></div></div>`).join('');
 }
 
-// ── Export ────────────────────────────────────────────────────────────────────
-function exportReport() {
-  const rows = [['Evento','Estado','Tipo','Data','Participacao']];
-  allCards.filter(c=>!c.classList.contains('hidden')).forEach(c=>{
-    rows.push([c.querySelector('.card-name')?.textContent||'',
-               c.dataset.est||'', c.dataset.tab||'', c.dataset.date||'', c.dataset.part||'']);
-  });
-  const csv = rows.map(r=>r.map(v=>'"'+v+'"').join(',')).join('\n');
-  const a = document.createElement('a');
-  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-  a.download = 'prio_eventos_2026.csv';
-  a.click();
+function renderConvites() {
+  const tbody = document.getElementById('conv-tbody');
+  tbody.innerHTML = DADOS.convites.map(c => `<tr><td><strong>${c.evento}</strong></td><td>${c.data}</td><td><span class="badge badge-${c.participacao.toLowerCase()}">${c.participacao}</span></td><td>${c.motivo || '—'}</td></tr>`).join('');
 }
 
-// ── Init ──────────────────────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  applyTL();
-});
+function renderContatos() {
+  const tbody = document.getElementById('cont-tbody');
+  tbody.innerHTML = DADOS.visitantes.map(v => `<tr><td>${v.nome}</td><td>${v.faculdade}</td><td><span class="badge badge-${v.presente.toLowerCase()}">${v.presente}</span></td></tr>`).join('');
+}
+
+function renderCustos() {
+  const grid = document.getElementById('kpi-grid');
+  grid.innerHTML = `<div class="kpi" style="border-top-color:var(--blue)"><div class="kpi-val">R$ 350k</div><div class="kpi-label">Orçamento Total</div></div><div class="kpi" style="border-top-color:var(--amber)"><div class="kpi-val">R$ 319k</div><div class="kpi-label">Utilizado</div></div><div class="kpi" style="border-top-color:var(--green)"><div class="kpi-val">R$ 31k</div><div class="kpi-label">Restante</div></div><div class="kpi" style="border-top-color:var(--red)"><div class="kpi-val">91%</div><div class="kpi-label">Consumido do Orçamento</div></div>`;
+}
+
+document.addEventListener('DOMContentLoaded', () => renderCalendario());
 </script>
+
 </body>
 </html>
