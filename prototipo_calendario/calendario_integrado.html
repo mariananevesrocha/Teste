@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRIO — Calendário Integrado de Treinamentos e Eventos (protótipo)</title>
+<style>
+  :root{--blue:#1d4ed8;--blue-d:#1e3a8a;--blue-l:#eff6ff;--blue-m:#dbeafe;--text:#111827;--muted:#6b7280;--border:#e5e7eb;--bg:#f3f4f6;--white:#fff;--red:#dc2626;--red-l:#fee2e2;--green:#059669;--green-l:#d1fae5;--amber:#d97706;--amber-l:#fef3c7;--r:10px}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:14px}
+  header{background:var(--white);border-bottom:1px solid var(--border);padding:14px 28px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  header h1{font-size:18px;color:var(--blue-d)}
+  header p{font-size:12px;color:var(--muted);margin-top:2px}
+  .tag{background:var(--amber-l);color:#92400e;font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px}
+  nav{background:var(--blue-d);display:flex;gap:2px;padding:0 20px;flex-wrap:wrap}
+  nav button{background:none;border:none;color:#cbd5e1;padding:12px 16px;font-size:13px;font-weight:600;cursor:pointer;border-bottom:3px solid transparent}
+  nav button:hover{color:#fff}
+  nav button.on{color:#fff;border-bottom-color:#60a5fa;background:rgba(255,255,255,.08)}
+  nav .bd{background:var(--red);color:#fff;border-radius:99px;font-size:10px;padding:1px 6px;margin-left:6px}
+  main{padding:20px 28px;max-width:1400px;margin:0 auto}
+  .view{display:none}.view.on{display:block}
+  .card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+  .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:end}
+  .filters label{display:flex;flex-direction:column;font-size:11px;color:var(--muted);font-weight:600;gap:3px;text-transform:uppercase;letter-spacing:.04em}
+  select,input[type=date],input[type=number]{padding:7px 9px;border:1px solid var(--border);border-radius:7px;font-size:13px;background:#fff;min-width:140px}
+  button.pri{background:var(--blue);color:#fff;border:none;border-radius:7px;padding:8px 14px;font-weight:600;cursor:pointer;font-size:13px}
+  button.pri:hover{background:var(--blue-d)}
+  button.sec{background:#fff;border:1px solid var(--border);border-radius:7px;padding:7px 12px;cursor:pointer;font-size:13px}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:10px;align-items:center}
+  .dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:middle}
+  .monthbar{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+  .monthbar h2{font-size:17px;min-width:170px;text-align:center}
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:14px}
+  @media(max-width:1000px){.layout{grid-template-columns:1fr}}
+  .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+  .dow{font-size:11px;font-weight:700;color:var(--muted);text-align:center;padding:4px 0}
+  .day{min-height:98px;border:1px solid var(--border);border-radius:7px;padding:4px;background:#fff;cursor:pointer;overflow:hidden;position:relative}
+  .day:hover{border-color:var(--blue)}
+  .day.out{opacity:.35}
+  .day.sel{outline:2px solid var(--blue)}
+  .day.bordo{background:#e0e7ff}
+  .day.folga{background:#ecfdf5}
+  .day .n{font-size:11px;font-weight:700;color:var(--muted)}
+  .day .warn{position:absolute;top:3px;right:5px;font-size:11px}
+  .chip{display:block;font-size:10.5px;line-height:1.25;padding:2px 5px;border-radius:4px;margin-top:3px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .more{font-size:10px;color:var(--muted);margin-top:2px}
+  .side h3{font-size:14px;margin-bottom:8px}
+  .ev{border-left:4px solid;padding:8px 10px;background:var(--bg);border-radius:6px;margin-bottom:10px}
+  .ev b{display:block;font-size:13px}
+  .ev small{color:var(--muted);display:block;margin:2px 0 5px}
+  .pp{display:inline-block;font-size:11px;padding:2px 7px;border-radius:99px;margin:2px 3px 0 0;background:#fff;border:1px solid var(--border)}
+  .pp.folga{background:var(--amber-l);border-color:#fcd34d}
+  .pp.bad{background:var(--red-l);border-color:#fca5a5}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{background:var(--blue-l);text-align:left;padding:8px;font-size:11px;text-transform:uppercase;color:var(--blue-d);letter-spacing:.04em}
+  td{padding:8px;border-top:1px solid var(--border);vertical-align:top}
+  .badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px}
+  .b-red{background:var(--red-l);color:#991b1b}.b-amb{background:var(--amber-l);color:#92400e}.b-grn{background:var(--green-l);color:#065f46}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-bottom:14px}
+  .kpi{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:12px 14px}
+  .kpi b{font-size:24px;color:var(--blue-d);display:block}
+  .kpi span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+  .hint{font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.5}
+  .people{max-height:230px;overflow:auto;border:1px solid var(--border);border-radius:7px;padding:6px;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:2px}
+  .people label{font-size:12px;text-transform:none;letter-spacing:0;font-weight:400;color:var(--text);flex-direction:row;align-items:center;gap:6px}
+  .turma{font-size:10px;background:var(--blue-m);color:var(--blue-d);border-radius:4px;padding:0 5px;font-weight:700}
+  .opt{border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:8px;display:flex;justify-content:space-between;gap:10px;align-items:center;background:#fff}
+  .opt:first-child{border-color:var(--green);background:#f0fdf4}
+  ul.road{margin-left:18px;line-height:1.8}
+  .empty{color:var(--muted);padding:14px;text-align:center}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Calendário Integrado de Treinamentos e Eventos</h1>
+    <p>Um só lugar para ver quem está onde, quando e por quê · Protótipo v0</p>
+  </div>
+  <span class="tag">DADOS FICTÍCIOS — somente demonstração</span>
+</header>
+<nav id="nav">
+  <button data-v="cal" class="on">📅 Calendário</button>
+  <button data-v="alert">⚠️ Alertas de colisão<span class="bd" id="bdAlert">0</span></button>
+  <button data-v="folha">💰 Folha: treino na folga</button>
+  <button data-v="assist">🧭 Assistente de datas</button>
+  <button data-v="sobre">ℹ️ Fontes e roadmap</button>
+</nav>
+<main>
+
+<!-- CALENDÁRIO -->
+<section class="view on" id="v-cal">
+  <div class="filters">
+    <label>Pessoa<select id="fPessoa"></select></label>
+    <label>Ativo<select id="fAtivo"></select></label>
+    <label>Frente<select id="fFrente"></select></label>
+    <label>Tipo<select id="fTipo"></select></label>
+    <label>Local<select id="fLocal"></select></label>
+    <button class="sec" id="fLimpar">Limpar filtros</button>
+  </div>
+  <div class="legend" id="legend"></div>
+  <div class="monthbar">
+    <button class="sec" id="prev">◀</button><h2 id="mTitle"></h2><button class="sec" id="next">▶</button>
+    <button class="sec" id="hoje">Mês atual</button>
+  </div>
+  <div class="layout">
+    <div class="card"><div class="grid" id="grid"></div></div>
+    <div class="card side" id="side"></div>
+  </div>
+</section>
+
+<!-- ALERTAS -->
+<section class="view" id="v-alert">
+  <p class="hint">Regras automáticas: <b>(1)</b> a mesma pessoa em dois eventos no mesmo dia; <b>(2)</b> evento em terra num dia em que a pessoa está escalada a bordo. Evita times diferentes chamando o colaborador em sequência por falta de alinhamento.</p>
+  <div class="card" id="alertBox"></div>
+</section>
+
+<!-- FOLHA -->
+<section class="view" id="v-folha">
+  <div class="filters">
+    <label>Mês<select id="folhaMes"></select></label>
+    <button class="pri" id="csv">⬇ Exportar CSV para a Folha/DP</button>
+  </div>
+  <div class="kpis" id="folhaKpi"></div>
+  <p class="hint">Lista automática de quem esteve em treinamento/evento em terra durante a folga (dia de descanso da escala). É a informação que a Folha precisa para o pagamento. O CSV abre direto no Excel.</p>
+  <div class="card" id="folhaBox"></div>
+</section>
+
+<!-- ASSISTENTE -->
+<section class="view" id="v-assist">
+  <p class="hint">Escolha as pessoas, a janela de busca e a duração. O assistente varre a escala e a agenda de todos e devolve as datas em que <b>todos</b> estão disponíveis, sem colidir com outro evento. (v0: regras simples. A versão com IA incorporará também a agenda anual das escolas.)</p>
+  <div class="card">
+    <div class="filters">
+      <label>Filtrar lista por turma<select id="aTurma"></select></label>
+      <label>Buscar de<input type="date" id="aDe"></label>
+      <label>até<input type="date" id="aAte"></label>
+      <label>Duração (dias)<input type="number" id="aDur" min="1" max="15" value="3" style="min-width:90px"></label>
+      <label>Onde será<select id="aModo">
+        <option value="terra">Em terra (pessoas em folga → gera pagamento)</option>
+        <option value="bordo">A bordo (pessoas embarcadas)</option>
+      </select></label>
+      <button class="pri" id="aGo">Sugerir datas</button>
+    </div>
+    <div class="people" id="aPessoas"></div>
+    <div style="margin-top:6px"><button class="sec" id="aTodos">Marcar todos da lista</button> <button class="sec" id="aNenhum">Desmarcar</button></div>
+  </div>
+  <div id="aOut" style="margin-top:14px"></div>
+</section>
+
+<!-- SOBRE -->
+<section class="view" id="v-sobre">
+  <div class="layout" style="grid-template-columns:1fr 1fr">
+    <div class="card">
+      <h3 style="margin-bottom:8px">De onde vêm os dados (versão final)</h3>
+      <table>
+        <tr><th>Fonte</th><th>Dono</th><th>Como entra</th></tr>
+        <tr><td>Gestão de Treinamentos (GT)</td><td>Time de Treinamentos</td><td>Planilha semanal → API depois</td></tr>
+        <tr><td>Escala (STAR)</td><td>Planejamento</td><td>Export semanal → API depois</td></tr>
+        <tr><td>Calendário de embarque</td><td>Prontidão de Embarque</td><td>Planilha</td></tr>
+        <tr><td>ASO</td><td>Saúde Ocupacional</td><td>Planilha/formulário</td></tr>
+        <tr><td>Eventos corporativos</td><td>Comunicação / Bem-estar</td><td>Formulário</td></tr>
+        <tr><td>Pagamentos</td><td>Folha / DP</td><td>Relatório (CSV) → Teradata depois</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:8px">Roadmap</h3>
+      <ul class="road">
+        <li><b>Até 16/11 (MVP):</b> tabela mestra, calendário filtrado, alertas, relatório da folha, assistente por regras</li>
+        <li><b>Fase 2:</b> API do STAR, integração Teradata/folha</li>
+        <li><b>Fase 3:</b> reflexo na agenda do Teams (.ics / Power Automate)</li>
+        <li><b>Fase 4:</b> assistente com IA + agendas anuais das escolas</li>
+      </ul>
+      <p class="hint" style="margin-top:12px">Para trocar os dados: edite a tabela mestra (Excel) e substitua o bloco <code>DADOS</code> no início do script deste arquivo — ou use a versão em SharePoint/Power BI.</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<script>
+/* ====== DADOS (fictícios) — substituir pelos dados reais ====== */
+const DADOS = {
+ "pessoas": [
+  {
+   "mat": "10231",
+   "nome": "Ana Beatriz Souza",
+   "ativo": "Frade",
+   "frente": "Operação",
+   "turma": "A"
+  },
+  {
+   "mat": "10232",
+   "nome": "Bruno Lima",
+   "ativo": "Frade",
+   "frente": "Operação",
+   "turma": "B"
+  },
+  {
+   "mat": "10233",
+   "nome": "Carla Mendes",
+   "ativo": "Frade",
+   "frente": "Manutenção",
+   "turma": "A"
+  },
+  {
+   "mat": "10234",
+   "nome": "Diego Alves",
+   "ativo": "Frade",
+   "frente": "Segurança (SMS)",
+   "turma": "C"
+  },
+  {
+   "mat": "10235",
+   "nome": "Elisa Ramos",
+   "ativo": "Albacora Leste",
+   "frente": "Operação",
+   "turma": "B"
+  },
+  {
+   "mat": "10236",
+   "nome": "Fábio Teixeira",
+   "ativo": "Albacora Leste",
+   "frente": "Manutenção",
+   "turma": "C"
+  },
+  {
+   "mat": "10237",
+   "nome": "Gabriela Costa",
+   "ativo": "Albacora Leste",
+   "frente": "Marítimo",
+   "turma": "D"
+  },
+  {
+   "mat": "10238",
+   "nome": "Henrique Dias",
+   "ativo": "Albacora Leste",
+   "frente": "Segurança (SMS)",
+   "turma": "A"
+  },
+  {
+   "mat": "10239",
+   "nome": "Isabela Martins",
+   "ativo": "Polvo/TBMT",
+   "frente": "Operação",
+   "turma": "D"
+  },
+  {
+   "mat": "10240",
+   "nome": "João Pedro Rocha",
+   "ativo": "Polvo/TBMT",
+   "frente": "Manutenção",
+   "turma": "C"
+  },
+  {
+   "mat": "10241",
+   "nome": "Karina Lopes",
+   "ativo": "Polvo/TBMT",
+   "frente": "Marítimo",
+   "turma": "B"
+  },
+  {
+   "mat": "10242",
+   "nome": "Lucas Ferreira",
+   "ativo": "Wahoo",
+   "frente": "Operação",
+   "turma": "A"
+  },
+  {
+   "mat": "10243",
+   "nome": "Marcela Nunes",
+   "ativo": "Wahoo",
+   "frente": "Segurança (SMS)",
+   "turma": "D"
+  },
+  {
+   "mat": "10244",
+   "nome": "Nelson Barros",
+   "ativo": "Wahoo",
+   "frente": "Manutenção",
+   "turma": "C"
+  },
+  {
+   "mat": "10245",
+   "nome": "Olívia Castro",
+   "ativo": "Frade",
+   "frente": "Marítimo",
+   "turma": "D"
+  },
+  {
+   "mat": "10246",
+   "nome": "Paulo Ribeiro",
+   "ativo": "Polvo/TBMT",
+   "frente": "Segurança (SMS)",
+   "turma": "A"
+  }
+ ],
+ "eventos": [
+  {
+   "id": 1,
+   "titulo": "NR-37 Reciclagem",
+   "tipo": "Regulatório",
+   "inicio": "2026-11-09",
+   "fim": "2026-11-11",
+   "local": "Escola – Macaé",
+   "origem": "GT",
+   "pessoas": [
+    "10231",
+    "10233",
+    "10238",
+    "10242",
+    "10246"
+   ]
+  },
+  {
+   "id": 2,
+   "titulo": "ASO periódico",
+   "tipo": "ASO",
+   "inicio": "2026-11-03",
+   "fim": "2026-11-03",
+   "local": "Clínica Ocupacional",
+   "origem": "Saúde Ocupacional",
+   "pessoas": [
+    "10232",
+    "10235",
+    "10234",
+    "10236",
+    "10240"
+   ]
+  },
+  {
+   "id": 3,
+   "titulo": "Combate a incêndio",
+   "tipo": "Regulatório",
+   "inicio": "2026-11-19",
+   "fim": "2026-11-20",
+   "local": "Escola – Macaé",
+   "origem": "GT",
+   "pessoas": [
+    "10234",
+    "10236",
+    "10240",
+    "10244"
+   ]
+  },
+  {
+   "id": 4,
+   "titulo": "Primeiros socorros",
+   "tipo": "Regulatório",
+   "inicio": "2026-11-16",
+   "fim": "2026-11-17",
+   "local": "Escola – Macaé",
+   "origem": "GT",
+   "pessoas": [
+    "10237",
+    "10239",
+    "10243",
+    "10245"
+   ]
+  },
+  {
+   "id": 5,
+   "titulo": "Simulado de emergência",
+   "tipo": "Regulatório",
+   "inicio": "2026-11-17",
+   "fim": "2026-11-17",
+   "local": "Bordo",
+   "origem": "Prontidão de Embarque",
+   "pessoas": [
+    "10232",
+    "10235",
+    "10234",
+    "10236"
+   ]
+  },
+  {
+   "id": 6,
+   "titulo": "Liderança em campo",
+   "tipo": "Desenvolvimento",
+   "inicio": "2026-11-09",
+   "fim": "2026-11-10",
+   "local": "Escritório – Rio",
+   "origem": "GT",
+   "pessoas": [
+    "10232",
+    "10235",
+    "10241",
+    "10231"
+   ]
+  },
+  {
+   "id": 7,
+   "titulo": "Semana de Saúde e Bem-estar",
+   "tipo": "Evento",
+   "inicio": "2026-11-12",
+   "fim": "2026-11-12",
+   "local": "Escritório – Rio",
+   "origem": "Saúde e Bem-estar",
+   "pessoas": [
+    "10231",
+    "10233",
+    "10237",
+    "10239",
+    "10245",
+    "10241"
+   ]
+  },
+  {
+   "id": 8,
+   "titulo": "Inglês técnico",
+   "tipo": "Desenvolvimento",
+   "inicio": "2026-11-23",
+   "fim": "2026-11-27",
+   "local": "Remoto",
+   "origem": "GT",
+   "pessoas": [
+    "10236",
+    "10240",
+    "10244"
+   ]
+  },
+  {
+   "id": 9,
+   "titulo": "Dia PRIO – Encontro de Lideranças",
+   "tipo": "Evento",
+   "inicio": "2026-11-20",
+   "fim": "2026-11-20",
+   "local": "Escritório – Rio",
+   "origem": "Comunicação",
+   "pessoas": [
+    "10234",
+    "10240",
+    "10237",
+    "10245"
+   ]
+  },
+  {
+   "id": 10,
+   "titulo": "Trabalho em altura",
+   "tipo": "Regulatório",
+   "inicio": "2026-12-02",
+   "fim": "2026-12-04",
+   "local": "Escola – Macaé",
+   "origem": "GT",
+   "pessoas": [
+    "10232",
+    "10235",
+    "10241"
+   ]
+  },
+  {
+   "id": 11,
+   "titulo": "ASO periódico",
+   "tipo": "ASO",
+   "inicio": "2026-11-24",
+   "fim": "2026-11-24",
+   "local": "Clínica Ocupacional",
+   "origem": "Saúde Ocupacional",
+   "pessoas": [
+    "10237",
+    "10239",
+    "10243",
+    "10245"
+   ]
+  },
+  {
+   "id": 12,
+   "titulo": "Operação de ponte rolante",
+   "tipo": "Regulatório",
+   "inicio": "2026-12-07",
+   "fim": "2026-12-09",
+   "local": "Escola – Macaé",
+   "origem": "GT",
+   "pessoas": [
+    "10242",
+    "10246",
+    "10238"
+   ]
+  },
+  {
+   "id": 13,
+   "titulo": "Confraternização de fim de ano",
+   "tipo": "Evento",
+   "inicio": "2026-12-11",
+   "fim": "2026-12-11",
+   "local": "Escritório – Rio",
+   "origem": "Comunicação",
+   "pessoas": [
+    "10231",
+    "10233",
+    "10235",
+    "10242",
+    "10246",
+    "10238"
+   ]
+  },
+  {
+   "id": 14,
+   "titulo": "Brigada de emergência",
+   "tipo": "Regulatório",
+   "inicio": "2026-10-26",
+   "fim": "2026-10-28",
+   "local": "Escola – Macaé",
+   "origem": "GT",
+   "pessoas": [
+    "10237",
+    "10239",
+    "10236",
+    "10240"
+   ]
+  }
+ ]
+};
+/* ================================================================ */
+
+const TIPOS = {
+  "Regulatório":{c:"#2563eb"},
+  "Desenvolvimento":{c:"#7c3aed"},
+  "Evento":{c:"#d97706"},
+  "ASO":{c:"#059669"}
+};
+const MESES=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+const DOW=["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+const $=id=>document.getElementById(id);
+const dn=s=>{const[a,b,c]=s.split('-').map(Number);return Math.floor(Date.UTC(a,b-1,c)/864e5)};
+const fromDn=n=>new Date(n*864e5).toISOString().slice(0,10);
+const br=s=>s.split('-').reverse().join('/');
+const P=Object.fromEntries(DADOS.pessoas.map(p=>[p.mat,p]));
+const TURMA_OFF={A:0,B:7,C:14,D:21};
+// Escala 14x14 (fictícia): 14 dias a bordo, 14 de folga
+const status=(mat,s)=>(((dn(s)+TURMA_OFF[P[mat].turma])%28)+28)%28<14?'bordo':'folga';
+
+// Expande eventos em (pessoa, dia)
+const ocup=[]; // {mat,dia,ev}
+DADOS.eventos.forEach(ev=>{
+  for(let d=dn(ev.inicio);d<=dn(ev.fim);d++) ev.pessoas.forEach(m=>ocup.push({mat:m,dia:fromDn(d),ev}));
+});
+const porPessoaDia={};
+ocup.forEach(o=>{const k=o.mat+'|'+o.dia;(porPessoaDia[k]=porPessoaDia[k]||[]).push(o.ev)});
+
+// Alertas e folga
+const alertas=[],folga=[];
+ocup.forEach(o=>{
+  const st=status(o.mat,o.dia),evs=porPessoaDia[o.mat+'|'+o.dia];
+  if(evs.length>1 && evs[0]===o.ev) alertas.push({tipo:'Dois eventos no mesmo dia',mat:o.mat,dia:o.dia,det:evs.map(e=>e.titulo).join('  ×  '),sev:'red'});
+  if(o.ev.local!=='Bordo' && st==='bordo') alertas.push({tipo:'Em terra, mas escalado a bordo',mat:o.mat,dia:o.dia,det:o.ev.titulo+' ('+o.ev.local+')',sev:'amb'});
+  if(o.ev.local!=='Bordo' && st==='folga') folga.push({mat:o.mat,dia:o.dia,ev:o.ev});
+});
+alertas.sort((a,b)=>a.dia.localeCompare(b.dia));
+folga.sort((a,b)=>a.dia.localeCompare(b.dia)||P[a.mat].nome.localeCompare(P[b.mat].nome));
+const diasComAlerta=new Set(alertas.map(a=>a.dia));
+const alertaPD=new Set(alertas.map(a=>a.mat+'|'+a.dia));
+
+// Estado
+let ano=2026,mes=10,diaSel=null;
+const F={pessoa:'',ativo:'',frente:'',tipo:'',local:''};
+
+function opts(sel,arr,todos,fmt){$(sel).innerHTML=`<option value="">${todos}</option>`+arr.map(x=>`<option value="${x[0]}">${x[1]}</option>`).join('')}
+const uniq=k=>[...new Set(DADOS.pessoas.map(p=>p[k]))].sort();
+opts('fPessoa',DADOS.pessoas.slice().sort((a,b)=>a.nome.localeCompare(b.nome)).map(p=>[p.mat,p.nome+' ('+p.mat+')']),'Todas');
+opts('fAtivo',uniq('ativo').map(x=>[x,x]),'Todos');
+opts('fFrente',uniq('frente').map(x=>[x,x]),'Todas');
+opts('fTipo',Object.keys(TIPOS).map(x=>[x,x]),'Todos');
+opts('fLocal',[...new Set(DADOS.eventos.map(e=>e.local))].sort().map(x=>[x,x]),'Todos');
+$('legend').innerHTML=Object.entries(TIPOS).map(([k,v])=>`<span><i class="dot" style="background:${v.c}"></i>${k}</span>`).join('')+
+ `<span><i class="dot" style="background:#c7d2fe"></i>Escalado a bordo*</span><span><i class="dot" style="background:#a7f3d0"></i>Folga*</span><span>⚠️ colisão</span><span style="font-style:italic">*sombreado só aparece ao filtrar uma pessoa</span>`;
+[['fPessoa','pessoa'],['fAtivo','ativo'],['fFrente','frente'],['fTipo','tipo'],['fLocal','local']].forEach(([id,k])=>$(id).onchange=e=>{F[k]=e.target.value;render()});
+$('fLimpar').onclick=()=>{Object.keys(F).forEach(k=>F[k]='');['fPessoa','fAtivo','fFrente','fTipo','fLocal'].forEach(i=>$(i).value='');render()};
+$('prev').onclick=()=>{mes--;if(mes<0){mes=11;ano--}diaSel=null;render()};
+$('next').onclick=()=>{mes++;if(mes>11){mes=0;ano++}diaSel=null;render()};
+$('hoje').onclick=()=>{ano=2026;mes=10;diaSel=null;render()};
+
+const pessoaOk=m=>{const p=P[m];return (!F.pessoa||m===F.pessoa)&&(!F.ativo||p.ativo===F.ativo)&&(!F.frente||p.frente===F.frente)};
+function eventosDoDia(dia){
+  return DADOS.eventos.filter(e=>dia>=e.inicio&&dia<=e.fim&&(!F.tipo||e.tipo===F.tipo)&&(!F.local||e.local===F.local)&&e.pessoas.some(pessoaOk));
+}
+function renderCal(){
+  $('mTitle').textContent=MESES[mes]+' '+ano;
+  const first=new Date(Date.UTC(ano,mes,1)),start=Math.floor(first/864e5)-first.getUTCDay();
+  let h=DOW.map(d=>`<div class="dow">${d}</div>`).join('');
+  for(let i=0;i<42;i++){
+    const dia=fromDn(start+i),dt=new Date(dia+'T00:00:00Z'),out=dt.getUTCMonth()!==mes;
+    const evs=eventosDoDia(dia);
+    let cls='day'+(out?' out':'')+(dia===diaSel?' sel':'');
+    if(F.pessoa) cls+=' '+status(F.pessoa,dia);
+    const warn=evs.some(e=>e.pessoas.some(m=>pessoaOk(m)&&alertaPD.has(m+'|'+dia)));
+    h+=`<div class="${cls}" data-d="${dia}"><span class="n">${dt.getUTCDate()}</span>${warn?'<span class="warn" title="Colisão">⚠️</span>':''}`+
+      evs.slice(0,3).map(e=>`<span class="chip" style="background:${TIPOS[e.tipo].c}" title="${e.titulo}">${e.titulo}</span>`).join('')+
+      (evs.length>3?`<div class="more">+${evs.length-3} mais</div>`:'')+`</div>`;
+  }
+  $('grid').innerHTML=h;
+  $('grid').querySelectorAll('.day').forEach(el=>el.onclick=()=>{diaSel=el.dataset.d;renderCal();renderSide()});
+  renderSide();
+}
+function renderSide(){
+  if(!diaSel){$('side').innerHTML='<div class="empty">Clique em um dia para ver os eventos, o local e quem participa.</div>';return}
+  const evs=eventosDoDia(diaSel);
+  let h=`<h3>${br(diaSel)}</h3>`;
+  if(F.pessoa)h+=`<p class="hint">${P[F.pessoa].nome}: <b>${status(F.pessoa,diaSel)==='bordo'?'escalado a bordo':'em folga'}</b> neste dia.</p>`;
+  if(!evs.length)h+='<div class="empty">Nenhum evento neste dia.</div>';
+  evs.forEach(e=>{
+    h+=`<div class="ev" style="border-color:${TIPOS[e.tipo].c}"><b>${e.titulo}</b><small>${e.tipo} · ${e.local} · ${br(e.inicio)}${e.fim!==e.inicio?' a '+br(e.fim):''}<br>Origem: ${e.origem}</small>`+
+    e.pessoas.filter(pessoaOk).map(m=>{
+      const st=status(m,diaSel),bad=alertaPD.has(m+'|'+diaSel),fo=st==='folga'&&e.local!=='Bordo';
+      return `<span class="pp ${bad?'bad':fo?'folga':''}" title="${bad?'Colisão':fo?'Treino na folga':'ok'}">${P[m].nome}${bad?' ⚠️':fo?' 💰':''}</span>`}).join('')+`</div>`;
+  });
+  h+='<p class="hint">💰 = em folga (relevante para a Folha) · ⚠️ = colisão</p>';
+  $('side').innerHTML=h;
+}
+
+function renderAlertas(){
+  $('bdAlert').textContent=alertas.length;
+  $('alertBox').innerHTML=alertas.length?`<table><tr><th>Data</th><th>Pessoa</th><th>Ativo</th><th>Alerta</th><th>Detalhe</th></tr>`+
+   alertas.map(a=>`<tr><td>${br(a.dia)}</td><td>${P[a.mat].nome}</td><td>${P[a.mat].ativo}</td><td><span class="badge b-${a.sev}">${a.tipo}</span></td><td>${a.det}</td></tr>`).join('')+'</table>':'<div class="empty">Nenhuma colisão encontrada 🎉</div>';
+}
+
+function renderFolha(){
+  const meses=[...new Set(folga.map(f=>f.dia.slice(0,7)))];
+  if(!$('folhaMes').options.length)$('folhaMes').innerHTML=`<option value="">Todos</option>`+meses.map(m=>`<option value="${m}">${MESES[+m.slice(5)-1]} ${m.slice(0,4)}</option>`).join('');
+  const m=$('folhaMes').value,l=folga.filter(f=>!m||f.dia.startsWith(m));
+  $('folhaKpi').innerHTML=`<div class="kpi"><b>${l.length}</b><span>Dias treinados na folga</span></div><div class="kpi"><b>${new Set(l.map(x=>x.mat)).size}</b><span>Colaboradores</span></div><div class="kpi"><b>${new Set(l.map(x=>x.ev.id)).size}</b><span>Eventos envolvidos</span></div>`;
+  $('folhaBox').innerHTML=l.length?`<table><tr><th>Matrícula</th><th>Nome</th><th>Ativo</th><th>Data</th><th>Evento</th><th>Tipo</th><th>Local</th></tr>`+
+   l.map(f=>`<tr><td>${f.mat}</td><td>${P[f.mat].nome}</td><td>${P[f.mat].ativo}</td><td>${br(f.dia)}</td><td>${f.ev.titulo}</td><td>${f.ev.tipo}</td><td>${f.ev.local}</td></tr>`).join('')+'</table>':'<div class="empty">Sem registros no período.</div>';
+  $('csv').onclick=()=>{
+    const rows=[['Matricula','Nome','Ativo','Data','Evento','Tipo','Local']].concat(l.map(f=>[f.mat,P[f.mat].nome,P[f.mat].ativo,br(f.dia),f.ev.titulo,f.ev.tipo,f.ev.local]));
+    const csv='﻿'+rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(';')).join('\r\n');
+    const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='treino_na_folga.csv';a.click();
+  };
+}
+$('folhaMes').onchange=renderFolha;
+
+// Assistente
+const turmas=[...new Set(DADOS.pessoas.map(p=>p.turma))].sort();
+$('aTurma').innerHTML='<option value="">Todas</option>'+turmas.map(t=>`<option>${t}</option>`).join('');
+$('aDe').value='2026-11-02';$('aAte').value='2026-12-18';
+function listaPessoas(){
+  const t=$('aTurma').value,marcados=new Set([...document.querySelectorAll('#aPessoas input:checked')].map(i=>i.value));
+  $('aPessoas').innerHTML=DADOS.pessoas.filter(p=>!t||p.turma===t).map(p=>`<label><input type="checkbox" value="${p.mat}" ${marcados.has(p.mat)?'checked':''}>${p.nome} <span class="turma">T${p.turma}</span> <span style="color:var(--muted)">${p.ativo}</span></label>`).join('');
+}
+$('aTurma').onchange=listaPessoas;
+$('aTodos').onclick=()=>document.querySelectorAll('#aPessoas input').forEach(i=>i.checked=true);
+$('aNenhum').onclick=()=>document.querySelectorAll('#aPessoas input').forEach(i=>i.checked=false);
+$('aGo').onclick=()=>{
+  const sel=[...document.querySelectorAll('#aPessoas input:checked')].map(i=>i.value);
+  if(!sel.length){$('aOut').innerHTML='<div class="card empty">Selecione ao menos uma pessoa.</div>';return}
+  const de=dn($('aDe').value),ate=dn($('aAte').value),dur=Math.max(1,+$('aDur').value||1),modo=$('aModo').value,alvo=modo==='terra'?'folga':'bordo';
+  const livre=(m,d)=>status(m,fromDn(d))===alvo&&!(porPessoaDia[m+'|'+fromDn(d)]||[]).length;
+  const ok=[],falhas={};sel.forEach(m=>falhas[m]=0);
+  for(let s=de;s+dur-1<=ate;s++){
+    let todos=true;
+    sel.forEach(m=>{let f=false;for(let d=s;d<s+dur;d++)if(!livre(m,d)){f=true;break}if(f){falhas[m]++;todos=false}});
+    if(todos)ok.push(s);
+  }
+  let h='';
+  if(ok.length){
+    h+=`<h3 style="margin-bottom:8px">${ok.length} janela(s) possível(is) — melhores primeiro</h3>`;
+    ok.slice(0,8).forEach((s,i)=>{
+      const ini=fromDn(s),fim=fromDn(s+dur-1);
+      h+=`<div class="opt"><div><b>${br(ini)}${dur>1?' a '+br(fim):''}</b>${i===0?' <span class="badge b-grn">Mais cedo</span>':''}<br><small style="color:var(--muted)">${sel.length} pessoa(s) disponíveis, sem colisão${modo==='terra'?' · '+(sel.length*dur)+' dia(s) de folga trabalhada (impacto na folha)':' · a bordo, sem impacto de folga'}</small></div></div>`;
+    });
+  } else {
+    h+=`<div class="card"><b>Nenhuma janela em comum.</b> Tente reduzir a duração, ampliar o período ou dividir em turmas. Quem mais bloqueia:<ul class="road">`+
+      Object.entries(falhas).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([m,n])=>`<li>${P[m].nome} (T${P[m].turma}) — indisponível em ${n} possibilidade(s) de início</li>`).join('')+`</ul></div>`;
+  }
+  $('aOut').innerHTML=h;
+};
+
+// Navegação
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+b.dataset.v));
+});
+
+function render(){renderCal()}
+render();renderAlertas();renderFolha();listaPessoas();
+</script>
+</body>
+</html>
