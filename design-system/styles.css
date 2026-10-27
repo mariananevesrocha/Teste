@@ -1,0 +1,169 @@
+@import "./tokens.css";
+
+.prio-root {
+  font-family: var(--font-family-campanha);
+  color: var(--color-white);
+  background: var(--color-blue);
+  -webkit-font-smoothing: antialiased;
+}
+.prio-root *,
+.prio-root *::before,
+.prio-root *::after { box-sizing: border-box; }
+
+/* Palco blueprint: azul elétrico com grade de planta técnica */
+.prio-stage {
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-5);
+  background-color: var(--color-blue);
+  background-image:
+    linear-gradient(var(--color-blue-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-blue-line) 1px, transparent 1px);
+  background-size: var(--grid-size) var(--grid-size);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+/* Títulos de campanha */
+.t-estagio {
+  margin: 0;
+  font-size: clamp(88px, 18vw, 220px);
+  line-height: 0.82;
+  font-weight: 900;
+  font-stretch: var(--wdth-extra-condensed);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+.t-programa {
+  margin: 0;
+  font-size: clamp(18px, 3vw, 36px);
+  font-weight: 600;
+  font-style: italic;
+  font-stretch: var(--wdth-extended);
+  text-transform: uppercase;
+}
+.t-ano {
+  margin: 0;
+  font-size: clamp(72px, 14vw, 170px);
+  line-height: 0.85;
+  font-weight: 200;
+  font-style: italic;
+  font-stretch: var(--wdth-extra-condensed);
+}
+.t-inscricoes {
+  margin: 0;
+  font-size: clamp(16px, 2.4vw, 28px);
+  font-weight: 300;
+  font-stretch: var(--wdth-extended);
+  text-transform: uppercase;
+}
+.t-inscricoes b { font-weight: 900; }
+
+/* Distorção em perspectiva dos títulos */
+.warp-title {
+  transform-origin: left center;
+  transform: perspective(700px) rotateY(-9deg) rotateX(3deg) skewX(-3deg);
+}
+
+/* Textura de papel no verde neon */
+.paper-lime {
+  color: var(--color-ink);
+  background-color: var(--color-lime);
+  background-image:
+    radial-gradient(rgba(4, 8, 70, 0.10) 0.6px, transparent 0.8px),
+    radial-gradient(rgba(255, 255, 255, 0.35) 0.6px, transparent 0.8px);
+  background-size: 5px 5px, 7px 7px;
+  background-position: 0 0, 2px 3px;
+}
+
+/* Lockup */
+.prio-lockup { display: flex; flex-direction: column; gap: var(--space-2); }
+.prio-lockup__ano { margin-top: calc(var(--space-2) * -1); }
+
+/* Botão */
+.prio-button {
+  font: inherit;
+  font-size: 18px;
+  font-weight: 300;
+  font-stretch: var(--wdth-extended);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  padding: 14px 28px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  border: 2px solid var(--color-white);
+  background: transparent;
+  color: var(--color-white);
+  transition: background 0.15s, color 0.15s;
+}
+.prio-button b { font-weight: 900; }
+.prio-button:hover { background: var(--color-white); color: var(--color-blue); }
+.prio-button--solid {
+  border-color: var(--color-lime);
+  background: var(--color-lime);
+  color: var(--color-ink);
+}
+.prio-button--solid:hover { background: var(--color-white); border-color: var(--color-white); color: var(--color-ink); }
+.prio-button:focus-visible { outline: 3px solid var(--color-lime); outline-offset: 3px; }
+
+/* Card */
+.prio-card {
+  padding: var(--space-4);
+  border: 1.5px solid var(--color-white);
+  border-radius: var(--radius-card);
+  background: rgba(4, 8, 70, 0.28);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.prio-card--lime { border-color: var(--color-ink); }
+.prio-card__title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 900;
+  font-stretch: var(--wdth-condensed);
+  text-transform: uppercase;
+  line-height: 1;
+}
+.prio-card__body { margin: 0; font-size: 16px; line-height: 1.45; }
+
+/* Etapas do processo seletivo */
+.prio-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-3); counter-reset: etapa; }
+.prio-steps li {
+  counter-increment: etapa;
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: var(--space-3);
+  align-items: start;
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-blue-line);
+}
+.prio-steps li::before {
+  content: counter(etapa);
+  font-size: 64px;
+  line-height: 0.8;
+  font-weight: 200;
+  font-style: italic;
+  font-stretch: var(--wdth-extra-condensed);
+  color: var(--color-lime);
+}
+.prio-steps__title { margin: 0; font-size: 20px; font-weight: 900; font-stretch: var(--wdth-condensed); text-transform: uppercase; }
+.prio-steps__text { margin: 4px 0 0; font-size: 15px; line-height: 1.4; }
+
+/* Selo */
+.prio-sticker {
+  width: 150px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  transform: rotate(-12deg);
+  border: 3px dashed var(--color-ink);
+  outline: 6px solid var(--color-lime);
+  outline-offset: -6px;
+}
+.prio-sticker__year { font-size: 56px; line-height: 0.85; font-weight: 200; font-style: italic; font-stretch: var(--wdth-extra-condensed); }
+.prio-sticker__label { font-size: 11px; font-weight: 800; font-stretch: var(--wdth-extended); text-transform: uppercase; letter-spacing: 0.04em; }

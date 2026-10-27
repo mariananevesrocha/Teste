@@ -1,0 +1,29 @@
+@import url("https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&display=swap");
+
+:root {
+  /* Cores: 80% azul, 15% verde neon, 5% branco */
+  --color-blue: #1a2bff;
+  --color-blue-deep: #0b14c9;
+  --color-blue-line: rgba(255, 255, 255, 0.16);
+  --color-ink: #040846;
+  --color-lime: #c4ff1f;
+  --color-white: #ffffff;
+
+  /* Tipografia: troque aqui se o time de marca informar a fonte original */
+  --font-family-campanha: "Archivo", "Arial Narrow", Arial, sans-serif;
+  --wdth-extra-condensed: 62%;
+  --wdth-condensed: 75%;
+  --wdth-normal: 100%;
+  --wdth-extended: 125%;
+
+  /* Espaço e forma */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 40px;
+  --space-6: 64px;
+  --radius-pill: 999px;
+  --radius-card: 6px;
+  --grid-size: 32px;
+}
